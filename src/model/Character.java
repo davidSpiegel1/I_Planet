@@ -41,6 +41,16 @@ public class Character extends Block{
 	public int getCol() {
 		return col;
 	}
+	
+	// Must use the set row to put our character back
+	public void setRow(int row) {
+		this.row = row;
+	}
+	// Must use the set column to put the character back
+	
+	public void setCol(int col) {
+		this.col = col;
+	}
 	// When our character moves right
 	public void moveRight() {
 		row++;
@@ -69,6 +79,10 @@ public class Character extends Block{
 	@Override
 	public String getKey() {
 		return "C";
+	}
+	@Override
+	public String getDescription() {
+		return name;
 	}
 	
 	

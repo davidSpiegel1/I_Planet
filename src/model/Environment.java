@@ -17,12 +17,14 @@ public class Environment {
 	private String fileName;
 	private Character c;
 	private Block beforeBlock;
+
 	// A constructor to allow for the creation of a map
 	public Environment(Character c, String fileName) throws Exception {
 		this.fileName = fileName;
 		this.map = createMap(); 
 		this.c = c;
 		beforeBlock = inputCharacter();
+		
 	
 	}
 	
@@ -31,6 +33,8 @@ public class Environment {
 	private Block inputCharacter() {
 		Block bb = (Block) map.get(0).get(0);
 		map.get(0).set(0, this.c);
+		this.c.setCol(0);
+		this.c.setRow(0);
 		return bb;
 	}
 
@@ -42,25 +46,50 @@ public class Environment {
 		// Declaring a string and array list
 		String st;
 		ArrayList<ArrayList> arr2 = new ArrayList<ArrayList>();
-		
+		int currentRow = 0;
 		// While loop to look through the level
 		while ((st= br.readLine()) != null) {
 			System.out.println(st);
 			ArrayList<Block>arr = new ArrayList<Block>();
 			// For this line, we will have to make another loop
 			for (int i = 0; i<= st.length()-1;i++) {
-				Block bl = new Block(st.substring(i,i+1));
+				Block bl;
+				// Making an enemy within the map
+				if (st.substring(i,i+1).equalsIgnoreCase("E")) {
+					bl = new Enemy(currentRow,i); 
+				}else if (st.substring(i,i+1).equalsIgnoreCase("S")){
+					bl = new Story(st.substring(i,i+1));	
+				}else {
+				bl = new Block(st.substring(i,i+1));
+				}
 				
 				arr.add(bl);
 				
 			}
+			currentRow++;
 			arr2.add(arr);
 		}
 		return arr2;
 	}
+	// We want to get the current block
+	public Block getCurrentBlock() {
+		return beforeBlock;
+	}
+	
+	// We now want to put the value into inventory and remove it from the map
+	public void putInInventory(Block b) {
+		this.c.addToInventory(b);
+		beforeBlock = new Block(".");
+	}
+	
+	// We want the name from the character
+	public String getName() {
+		return c.getName();
+	}
+	
 	
 	// Move right within environment
-	public void moveRight() throws IllegalArgumentException{
+	public void moveRight() {
 		int currentRow;
 		int currentCol;
 		int prevRow;
@@ -70,17 +99,28 @@ public class Environment {
 		this.c.moveRight();
 		currentRow = c.getRow();
 		currentCol = c.getCol();
-		if ((currentRow < 0 || currentRow > map.get(0).size()) || (currentCol <0 || currentCol > map.size() )){
-			throw new IllegalArgumentException("Err. You have gone out of bounds.");
+		if ((currentRow >= 0 && currentRow < map.get(0).size()) && (currentCol >=0 && currentCol < map.size() )){
+			Block currentBlock = (Block)map.get(currentCol).get(currentRow);
+			if (!(currentBlock.getKey().equals("_")||currentBlock.getKey().equals("|"))){
+			map.get(prevCol).set(prevRow, beforeBlock);
+			beforeBlock = (Block)map.get(currentCol).get(currentRow);
+			map.get(currentCol).set(currentRow, c);
+			
+			}else {
+			this.c.moveLeft();
 		}
-		map.get(prevCol).set(prevRow, beforeBlock);
-		beforeBlock = (Block)map.get(currentCol).get(currentRow);
-		map.get(currentCol).set(currentRow, c);
+		}else {this.c.moveLeft();}
 		
 	}
 	
+
+
+
+	
+	
+	
 	// Move left within environment
-		public void moveLeft() throws IllegalArgumentException{
+		public void moveLeft() {
 			int currentRow;
 			int currentCol;
 			int prevRow;
@@ -90,17 +130,24 @@ public class Environment {
 			this.c.moveLeft();
 			currentRow = c.getRow();
 			currentCol = c.getCol();
-			if ((currentRow < 0 || currentRow > map.get(0).size()) || (currentCol <0 || currentCol > map.size() )){
-				throw new IllegalArgumentException("Err. You have gone out of bounds.");
+			if ((currentRow >= 0 && currentRow < map.get(0).size()) && (currentCol >=0 && currentCol < map.size() )){
+				Block currentBlock = (Block)map.get(currentCol).get(currentRow);
+				if (!(currentBlock.getKey().equals("_")||currentBlock.getKey().equals("|"))){
+				map.get(prevCol).set(prevRow, beforeBlock);
+				beforeBlock = (Block)map.get(currentCol).get(currentRow);
+				map.get(currentCol).set(currentRow, c);
+				
+				}else {
+					this.c.moveRight();
+				}
+			}else {
+				this.c.moveRight();
 			}
-			map.get(prevCol).set(prevRow, beforeBlock);
-			beforeBlock = (Block)map.get(currentCol).get(currentRow);
-			map.get(currentCol).set(currentRow, c);
 			
 		}
 		
 		// Move up within environment
-				public void moveUp() throws IllegalArgumentException{
+				public void moveUp(){
 					int currentRow;
 					int currentCol;
 					int prevRow;
@@ -110,17 +157,24 @@ public class Environment {
 					this.c.moveUp();
 					currentRow = c.getRow();
 					currentCol = c.getCol();
-					if ((currentRow < 0 || currentRow > map.get(0).size()) || (currentCol <0 || currentCol > map.size() )){
-						throw new IllegalArgumentException("Err. You have gone out of bounds.");
+					if ((currentRow >= 0 && currentRow < map.get(0).size()) && (currentCol >=0 && currentCol < map.size() )){
+						Block currentBlock = (Block)map.get(currentCol).get(currentRow);
+						if (!(currentBlock.getKey().equals("_")||currentBlock.getKey().equals("|"))){
+						map.get(prevCol).set(prevRow, beforeBlock);
+						beforeBlock = (Block)map.get(currentCol).get(currentRow);
+						map.get(currentCol).set(currentRow, c);
+					
+						}else {
+							this.c.moveDown();
+						}
+					}else {
+						this.c.moveDown();
 					}
-					map.get(prevCol).set(prevRow, beforeBlock);
-					beforeBlock = (Block)map.get(currentCol).get(currentRow);
-					map.get(currentCol).set(currentRow, c);
 					
 				}
 				
 				// Move down within environment
-				public void moveDown() throws IllegalArgumentException{
+				public void moveDown(){
 					int currentRow;
 					int currentCol;
 					int prevRow;
@@ -130,12 +184,19 @@ public class Environment {
 					this.c.moveDown();
 					currentRow = c.getRow();
 					currentCol = c.getCol();
-					if ((currentRow < 0 || currentRow > map.get(0).size()) || (currentCol <0 || currentCol > map.size() )){
-						throw new IllegalArgumentException("Err. You have gone out of bounds.");
-					}
-					map.get(prevCol).set(prevRow, beforeBlock);
-					beforeBlock = (Block)map.get(currentCol).get(currentRow);
-					map.get(currentCol).set(currentRow, c);
+					if ((currentRow >= 0 && currentRow < map.get(0).size()) && (currentCol >=0 && currentCol < map.size() )){
+						Block currentBlock = (Block)map.get(currentCol).get(currentRow);
+						if (!(currentBlock.getKey().equals("_")||currentBlock.getKey().equals("|"))){
+						map.get(prevCol).set(prevRow, beforeBlock);
+						beforeBlock = (Block)map.get(currentCol).get(currentRow);
+						map.get(currentCol).set(currentRow, c);
+						
+						}else {
+							this.c.moveUp();
+						}}else {
+							this.c.moveUp();
+						}
+					
 					
 				}
 	
@@ -144,6 +205,16 @@ public class Environment {
 		return map;
 	}
 	
+	// How we know when to change levels
+	public boolean canChangeLevel() {
+		boolean canChange = false;
+		if (beforeBlock.getKey().equalsIgnoreCase("O")) {
+			canChange = true;
+		}
+		return canChange;
+				
+	}
+
 	
 	
 	

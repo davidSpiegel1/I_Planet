@@ -45,6 +45,7 @@ public class IplanetConsole {
 			userChoice = getString("");
 			interpreteCommand(userChoice,c);
 			displayMap(c.getEnvMap());
+			c.changeLevel();
 			
 		}
 		
@@ -59,19 +60,30 @@ public class IplanetConsole {
 		}
 		if (command.equalsIgnoreCase("X")) {
 			ArrayList<Block> arr = c.getInventory();
-			displayInventory(arr);
+			displayInventory(arr,c);
 		}
-		if (command.equalsIgnoreCase("Q")){
-			
+		if (command.equalsIgnoreCase("Q")) {
+			displayCurrentBlock(c.getCurrentBlock(),c);
 		}
+		
 
 	}
-				
+	
+	// A module to determine the current block and add it to inventory
+	private static void displayCurrentBlock(Block currentBlock,Controller c) {
+		System.out.println("*** "+currentBlock.getDescription()+"***");
+		String choice = getString("Collect block? y/n");
+		if (choice.equalsIgnoreCase("Y")) {
+			c.putInBag(currentBlock);
+		}
+		
+	}
+
 	// Needing a module to display inventory
-	public static void displayInventory(ArrayList<Block> arr) {
-		System.out.println("*** Current Inventory ***");
+	public static void displayInventory(ArrayList<Block> arr,Controller c) {
+		System.out.println("*** Current Inventory for "+c.getName()+"***");
 		for (int i = 0; i<= arr.size()-1;i++) {
-			System.out.println(arr.get(i));
+			System.out.println(arr.get(i).getKey());
 		}
 		
 		String answer = getString("close?");
