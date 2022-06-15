@@ -21,7 +21,10 @@ public class Block {
 			description = "Tree. Look at this picture!";
 		}else if (k.equalsIgnoreCase("O")){
 			description = "Next level";
+		}else if (k.equalsIgnoreCase("K")) {
+			description = "A Knife. Can kill enemies with.";
 		}
+		
 		else{
 			description = "Nothing.";
 		}

@@ -64,6 +64,11 @@ public class Character extends Block{
 	public void moveUp() {
 		col--;
 	}
+	
+	// When removing from inventory
+	public void removeInventory(int val) {
+		this.inventory.remove(val);
+	}
 	// When our character moves down
 	public void moveDown() {
 		col++;

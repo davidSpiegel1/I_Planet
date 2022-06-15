@@ -87,6 +87,7 @@ public class Environment {
 		map.get(row).set(col,new Block("."));
 	}
 	public void placeBlock(int row,int col,Block b) {
+		
 		beforeBlockEnemy = (Block) map.get(row).get(col);
 		map.get(row).set(col, b);
 	}
@@ -98,6 +99,7 @@ public class Environment {
 		this.c.addToInventory(b);
 		beforeBlock = new Block(".");
 	}
+
 	
 	// We want the name from the character
 	public String getName() {
@@ -231,6 +233,7 @@ public class Environment {
 		return canChange;
 				
 	}
+	
 
 	
 	

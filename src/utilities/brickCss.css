@@ -1,0 +1,15 @@
+*{
+	-fx-base: #346D11;
+}
+
+.button{
+	-fx-font-size: 12pt;
+	-fx-text-fill: green;
+
+	-fx-shape: "M 10 11 L 10 14 M 12 11 L 12 14 L 10 14 L 10 11 L 9 10 L 13 10 L 12 11 L 12 11 M 13 10 L 13 15 L 12 14 L 13 15 M 9 15 L 10 14 L 10 11 L 9 10 L 9 15 M 13 15 L 9 15";
+	-fx-background-color: #979595;
+	
+	
+
+}
+

@@ -35,11 +35,14 @@ public class Story extends Block{
 		return this.discription;
 	}
 	public void findKey(int row, int col) {
-		if (row == 0 && col == 11) {
+		if (row == 15 && col == 7) {
 			keys = "l1";
 		}
-		if (row == 0 && col == 3) {
+		if (row == 16 && col == 6) {
 			keys = "l2";
+		}
+		if (row == 15 && col == 6) {
+			keys = "l3";
 		}
 	}
 	public void interact() {
@@ -52,18 +55,27 @@ public class Story extends Block{
 			}
 			else if (currentLevel == 4) {
 				discription = "Good Luck.";
-				currentLevel = 0;
+				currentLevel = 1;
 			}
 			
 		}
 		else if (keys.equals("l2")) {
-			if (currentLevel == 1) {
-				discription = "Hello. My name is Jack ColterStevens. Welcome to I-Planet!";
+			if (currentLevel == 2) {
+				discription = "So, you made it to the desert!";
 			}
 		}
+		
+		else if (keys.equals("l3")) {
+			if (currentLevel == 2) {
+				discription = "Welcome to the forrests of I-Istanbul. We are looking for hostages.";
+			}
+		}
+		
+		
 		else {
 			discription = "Who are you?";
 		}
+		System.out.println("Current Level"+currentLevel);
 		currentLevel++;
 		
 		

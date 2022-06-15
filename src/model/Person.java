@@ -20,7 +20,7 @@ public class Person extends Block{
 			
 			characterName = "Ashcroft";
 		}
-		else if (row == 4 && col == 15) {
+		else if (row == 10 && col == 3) {
 			intro = "Have you heard of the IPF?";
 		}
 		else {

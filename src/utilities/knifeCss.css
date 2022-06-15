@@ -1,0 +1,11 @@
+*{
+	-fx-base: #346D11;
+}
+
+.button{
+	-fx-font-size: 12pt;
+	-fx-text-fill: grey;
+
+	-fx-shape: "M 12 10 L 13 11 L 12 16 L 11 16 L 11 9 M 11 16 L 10 16 L 10 17 L 13 17 L 13 16 L 12 16 M 11 17 L 11 19 L 12 19 L 12 17";
+	-fx-base: #A3A0A0;
+}

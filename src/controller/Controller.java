@@ -15,6 +15,8 @@ public class Controller {
 	private int currentStoryBeat;
 	private Environment env;
 	private Character c;
+	private boolean isGameOver;
+	private Block currentBlock;
 	// Basically, we are making a constructor for our controller class that
 	//allows for an instance of environment and current level
 	public Controller(Character c) {	
@@ -22,6 +24,8 @@ public class Controller {
 		this.currentStoryBeat = 1;
 		this.c = c;
 		this.env = findEnv();
+		this.isGameOver = false;
+		this.currentBlock = new Block(".");
 	}
 	// Change level module
 	public void changeLevel() {
@@ -30,7 +34,19 @@ public class Controller {
 		this.env = findEnv();
 		}
 	}
+	// Controller needs to hit
+	public void hit(int row,int col) {
+		env.deleteBlock(row,col);
+	}
 	
+	// Getting character row
+	public int getCharRow() {
+		return c.getRow();
+	}
+	// Getting character col
+	public int getCharCol() {
+		return c.getCol();
+	}
 	// Letting the character put something within their inventory
 	public void putInBag(Block b) {
 		/*if (b instanceof Story) {
@@ -79,6 +95,13 @@ public class Controller {
 				e.printStackTrace();
 			}
 		}
+		if (currentLevel == 6) {
+			try {
+				env = new Environment(c,"levelSix.txt");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return env;
 	}
 	
@@ -89,13 +112,14 @@ public class Controller {
 	
 	// Getting the current block
 	public Block getCurrentBlock() {
-		Block b = env.getCurrentBlock();
+		currentBlock = env.getCurrentBlock();
+		Block b = currentBlock;
 		
 		// For the story 
 		if (b instanceof Story) {
 			((Story)b).interact();
 		}
-		if (b instanceof Person) {
+		else if (b instanceof Person) {
 			((Person)b).interact();
 		}
 		return b;
@@ -116,6 +140,10 @@ public class Controller {
 		if (move.equalsIgnoreCase("W")) {
 			env.moveUp();
 		}
+		// How we stop the game!!!
+		if (this.currentBlock.getKey().equals("W") || this.currentBlock.getKey().equals("E")) {
+			this.isGameOver = true;
+		}
 	}
 	
 	// Getting the needed environment
@@ -124,6 +152,7 @@ public class Controller {
 	}
 	// Need a module to move an enemy
 	public void moveEnemy(int prevRow,int prevCol,int newRow,int newCol) {
+		
 		env.deleteBlock(prevRow, prevCol);
 		env.placeBlock(newRow, newCol, new Enemy(newRow,newCol));
 		env.placeBlock(prevRow, prevCol, env.getBeforeBlockEnemy());
@@ -141,7 +170,10 @@ public class Controller {
 	}
 	
 	public boolean isGameOver() {
-		return false;
+		return isGameOver;
+	}
+	public void deleteElementFromInventory(int val) {
+		c.removeInventory(val);
 	}
 
 }
