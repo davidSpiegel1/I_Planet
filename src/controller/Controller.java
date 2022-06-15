@@ -3,9 +3,11 @@ package controller;
 import java.util.ArrayList;
 
 import model.Environment;
+import model.Person;
 import model.Story;
 import model.Block;
 import model.Character;
+import model.Enemy;
 
 public class Controller {
 	
@@ -56,6 +58,27 @@ public class Controller {
 				e.printStackTrace();
 			}
 		}
+		if (currentLevel == 3) {
+			try {
+				env = new Environment(c,"levelThree.txt");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (currentLevel == 4) {
+			try {
+				env = new Environment(c,"levelFour.txt");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (currentLevel == 5) {
+			try {
+				env = new Environment(c,"levelFive.txt");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return env;
 	}
 	
@@ -70,8 +93,10 @@ public class Controller {
 		
 		// For the story 
 		if (b instanceof Story) {
-			((Story)b).setCurrentStoryBeat(currentStoryBeat);
-			currentStoryBeat++;
+			((Story)b).interact();
+		}
+		if (b instanceof Person) {
+			((Person)b).interact();
 		}
 		return b;
 	}
@@ -91,6 +116,17 @@ public class Controller {
 		if (move.equalsIgnoreCase("W")) {
 			env.moveUp();
 		}
+	}
+	
+	// Getting the needed environment
+	public Environment getEnv() {
+		return this.env;
+	}
+	// Need a module to move an enemy
+	public void moveEnemy(int prevRow,int prevCol,int newRow,int newCol) {
+		env.deleteBlock(prevRow, prevCol);
+		env.placeBlock(newRow, newCol, new Enemy(newRow,newCol));
+		env.placeBlock(prevRow, prevCol, env.getBeforeBlockEnemy());
 	}
 	
 	

@@ -17,7 +17,12 @@ public class Block {
 			description = "A stone. Has no practical use.";
 		}else if (k.equalsIgnoreCase("W")) {
 			description = "Water. Has no practical use.";
-		}else {
+		}else if(k.equalsIgnoreCase("t")) {
+			description = "Tree. Look at this picture!";
+		}else if (k.equalsIgnoreCase("O")){
+			description = "Next level";
+		}
+		else{
 			description = "Nothing.";
 		}
 		
@@ -27,6 +32,7 @@ public class Block {
 	public String getKey() {
 		return key;
 	}
+	
 	
 	// Getting the description
 	public String getDescription() {

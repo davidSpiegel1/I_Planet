@@ -1,0 +1,17 @@
+*{
+	-fx-base: #346D11;
+}
+
+.button{
+	-fx-font-size: 12pt;
+	-fx-text-fill: green;
+
+	-fx-shape: "M 10 10 A 1 1 0 0 0 7 10 A 1 1 0 0 0 10 10 M 9 12 A 1 1 0 0 0 8 13 Q 7 14 8 15 Q 12 15 9 12 M 10 10 A 1 1 0 0 0 10 10";
+	-fx-background-color: #FF9175;
+
+}
+
+.first-button{
+	-fx-effect: dropshadow(three-pass-box,black,3,0,0,0);
+
+}

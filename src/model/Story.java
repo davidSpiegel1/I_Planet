@@ -12,15 +12,18 @@ public class Story extends Block{
 	// A constructor to set the level
 	int currentLevel;
 	String discription;
-	public Story(String key) {
-		super(key);
+	String keys;
+	public Story(int row, int col) {
+		super("s");
 		currentLevel = 1;
 		discription = "";
+		keys = "";
+		findKey(row,col);
+		System.err.println(row);
+		System.err.println(col);
+	
 	}
-	// How to change the level
-	public void changeLevel() {
-		currentLevel++;
-	}
+	
 	
 	public void setCurrentStoryBeat(int level) {
 		currentLevel = level;
@@ -29,22 +32,44 @@ public class Story extends Block{
 	// A method to allow for the description
 	@Override
 	public String getDescription() {
-		discription = findDescription(currentLevel);
 		return this.discription;
 	}
-	
-	// A helper function to find the description we need
-	private String findDescription(int cl) {
-		if (cl == 1) {
-			return "You are at your house. We must go to the desert!";
+	public void findKey(int row, int col) {
+		if (row == 0 && col == 11) {
+			keys = "l1";
 		}
-		if (cl == 2) {
-			return "Whats this? A church?";
+		if (row == 0 && col == 3) {
+			keys = "l2";
+		}
+	}
+	public void interact() {
+		if (keys.equals("l1")) {
+			if (currentLevel == 2) {
+				discription = "Hello. My name is Jack ColterStevens. Welcome to I-Planet!";
+			}
+			else if (currentLevel == 3) {
+				discription = "I Will be helping you on your missions. Please, ask me anything.";
+			}
+			else if (currentLevel == 4) {
+				discription = "Good Luck.";
+				currentLevel = 0;
+			}
+			
+		}
+		else if (keys.equals("l2")) {
+			if (currentLevel == 1) {
+				discription = "Hello. My name is Jack ColterStevens. Welcome to I-Planet!";
+			}
 		}
 		else {
-			return "";
+			discription = "Who are you?";
 		}
+		currentLevel++;
+		
+		
 		
 	}
+	
+	
 
 }

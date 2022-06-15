@@ -17,6 +17,7 @@ public class Environment {
 	private String fileName;
 	private Character c;
 	private Block beforeBlock;
+	private Block beforeBlockEnemy;
 
 	// A constructor to allow for the creation of a map
 	public Environment(Character c, String fileName) throws Exception {
@@ -24,6 +25,7 @@ public class Environment {
 		this.map = createMap(); 
 		this.c = c;
 		beforeBlock = inputCharacter();
+		beforeBlockEnemy = new Block("E");
 		
 	
 	}
@@ -58,8 +60,11 @@ public class Environment {
 				if (st.substring(i,i+1).equalsIgnoreCase("E")) {
 					bl = new Enemy(currentRow,i); 
 				}else if (st.substring(i,i+1).equalsIgnoreCase("S")){
-					bl = new Story(st.substring(i,i+1));	
-				}else {
+					bl = new Story(currentRow,i);	
+				}else if (st.substring(i,i+1).equalsIgnoreCase("P")) {
+					bl = new Person(currentRow,i);
+				}
+				else {
 				bl = new Block(st.substring(i,i+1));
 				}
 				
@@ -75,7 +80,19 @@ public class Environment {
 	public Block getCurrentBlock() {
 		return beforeBlock;
 	}
+	// We want to delete a block if needed
+	public void deleteBlock(int row,int col) {
+		// Put a throws statement here!!!
 	
+		map.get(row).set(col,new Block("."));
+	}
+	public void placeBlock(int row,int col,Block b) {
+		beforeBlockEnemy = (Block) map.get(row).get(col);
+		map.get(row).set(col, b);
+	}
+	public Block getBeforeBlockEnemy() {
+		return beforeBlockEnemy;
+	}
 	// We now want to put the value into inventory and remove it from the map
 	public void putInInventory(Block b) {
 		this.c.addToInventory(b);

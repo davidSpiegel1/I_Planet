@@ -1,0 +1,14 @@
+*{
+	-fx-base: #346D11;
+}
+
+.button{
+	-fx-font-size: 12pt;
+	-fx-text-fill: green;
+	-fx-effect: dropshadow(three-pass-box,black,3,0,0,0);
+	-fx-text-fill: green;
+	-fx-shape: "M 5 5 M 4 6 L 4 7 L 5 6 L 5 7 L 3 7 l 1 -1";
+	-fx-base: #346D11;
+}
+
+
