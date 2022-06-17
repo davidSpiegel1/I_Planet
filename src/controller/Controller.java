@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.Button;
 import model.Environment;
 import model.Person;
 import model.Story;
@@ -34,10 +35,19 @@ public class Controller {
 		this.env = findEnv();
 		}
 	}
+	// Change level back
+	public void changeLevelBack() {
+		currentLevel--;
+		this.env = findEnv();
+	}
 	// Controller needs to hit
 	public void hit(int row,int col) {
-		env.deleteBlock(row,col);
+		int newCol = col+1;
+		if (newCol > 0 && newCol <= env.getMap().get(0).size()-1) {
+			env.deleteBlock(row,col);
+		}
 	}
+	
 	
 	// Getting character row
 	public int getCharRow() {
@@ -102,6 +112,20 @@ public class Controller {
 				e.printStackTrace();
 			}
 		}
+		if (currentLevel == 7) {
+			try {
+				env = new Environment(c,"levelSeven.txt");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (currentLevel == 8) {
+			try {
+				env = new Environment(c,"levelEight.txt");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return env;
 	}
 	
@@ -153,9 +177,10 @@ public class Controller {
 	// Need a module to move an enemy
 	public void moveEnemy(int prevRow,int prevCol,int newRow,int newCol) {
 		
-		env.deleteBlock(prevRow, prevCol);
+		//env.deleteBlock(prevRow, prevCol);
 		env.placeBlock(newRow, newCol, new Enemy(newRow,newCol));
 		env.placeBlock(prevRow, prevCol, env.getBeforeBlockEnemy());
+		
 	}
 	
 	
@@ -172,8 +197,20 @@ public class Controller {
 	public boolean isGameOver() {
 		return isGameOver;
 	}
+	public void restartGame() {
+		currentLevel = 1;
+		isGameOver = false;
+	}
 	public void deleteElementFromInventory(int val) {
 		c.removeInventory(val);
+	}
+	public boolean seeIfCanBeUsed(String value) {
+		/*boolean canBeUsed = false;
+		if (value.equalsIgnoreCase("K")) {
+			canBeUsed = true;
+		}
+		return canBeUsed;*/
+		return true;
 	}
 
 }

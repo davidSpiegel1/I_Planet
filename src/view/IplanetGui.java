@@ -94,8 +94,10 @@ public class IplanetGui extends Application{
 	private int currentRow;
 	private int currentCol;
 	private int currentInventory;
+	private boolean weaponUsed = false;
 	// Need a block for using elements
 	private Block useBlock;
+	private String oldColor = ".";
 	
 	// Maybe some constants
 	private final String TITLE_GAME = "I Planet";
@@ -104,6 +106,7 @@ public class IplanetGui extends Application{
 	private final int SCENE_SIZE_COL = 810;
 	private final int ROW_CONSTRAINT = 24;
 	private final int COL_CONSTRAINT = 42;
+	private final double SET_MIN_HEIGHT = 36.5;
 	
 	public static final String MainStyle = "utilities/myCss.css";
 	public static final String CharStyle = "utilities/charCss.css";
@@ -113,7 +116,9 @@ public class IplanetGui extends Application{
 	public static final String BadStyle = "utilities/badGuys.css";
 	public static final String BrickStyle = "utilities/brickCss.css";
 	public static final String KnifeStyle = "utilities/knifeCss.css";
-	
+	public static final String WaterStyle = "utilities/waterCss.css";
+	public static final String BlockStyle = "utilities/blockCss.css";
+	public static final String CharKnifeStyle = "utilities/charWithKnifeCss.css";
 	// Within our start method, we will start the program for IPlanet.
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -162,6 +167,7 @@ public class IplanetGui extends Application{
 				//labelArray[i][j] = new Label(((Block) env.getMap().get(i).get(j)).getKey());
 				labelArray[i][j] = new Label();
 				// If the block is grass
+				
 				getProperColor(labelArray[i][j],((Block) env.getMap().get(i).get(j)).getKey());
 				
 				// Changing the look of the label
@@ -189,7 +195,7 @@ public class IplanetGui extends Application{
 		}
 		infoDeck.setAlignment(Pos.BOTTOM_CENTER);
 		infoDeck.setBackground(
-				new Background(new BackgroundFill(Color.rgb(42, 0, 67), CornerRadii.EMPTY, Insets.EMPTY)));
+				new Background(new BackgroundFill(Color.rgb(42, 0, 67), new CornerRadii(7.0), Insets.EMPTY)));
 		pane.setAlignment(Pos.TOP_CENTER);
 		pane.setVgap(10);
 		pane.setAlignment(Pos.TOP_CENTER);
@@ -275,11 +281,12 @@ public class IplanetGui extends Application{
 				}
 				
 				
+				
 			}
 
 			
 		});
-		
+	
 		stage.setScene(scene);
 		stage.setTitle(TITLE_GAME);
 		stage.show();
@@ -290,13 +297,16 @@ public class IplanetGui extends Application{
 	public void displayOption(int curIndex,double x, double y) {
 		Stage badPop1 = new Stage();
 		int endingHeight = 20;
-		Button l2 = new Button("Use");
+		Button l2;
 		Button l1 = new Button("remove");
+		if (weaponUsed) {
+			l2 = new Button("Disable All");
+		}else {
+			l2 = new Button("Use");
+		}
+		l2.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;"+"-fx-border-width: .3;");
+		l1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;"+"-fx-border-width: .3;");
 		
-		VBox vbox2 = new VBox(3,l2,l1);
-		vbox2.setBackground(
-				new Background(new BackgroundFill(Color.rgb(91, 188, 66), CornerRadii.EMPTY, Insets.EMPTY)));
-		Scene sc1 = new Scene(vbox2, 60,30);
 		l1.setOnAction((e)->{
 			c.deleteElementFromInventory(curIndex);
 			inList.remove(curIndex);
@@ -306,16 +316,31 @@ public class IplanetGui extends Application{
 			
 		});
 		l2.setOnAction((e)->{
+			if (!weaponUsed) {
+			if (c.seeIfCanBeUsed(inList.get(curIndex).getText())) {
+				weaponUsed = true;
+			}
+			}else {
+				if (c.seeIfCanBeUsed(inList.get(curIndex).getText())) {
+					weaponUsed = false;
+				}
+				
+			}
 			
 			badPop1.close();
+			
 		});
-		
+		VBox vbox2 = new VBox(3,l2,l1);
+		vbox2.setBackground(
+				new Background(new BackgroundFill(Color.rgb(91, 188, 66), CornerRadii.EMPTY, Insets.EMPTY)));
+		Scene sc1 = new Scene(vbox2, 60,30);
 	
 		// Curr x and y: 305,77
 		badPop1.setX(x+305);
 		badPop1.setY(y+77);
 		badPop1.setTitle("Game Over");
 		badPop1.setResizable(false);
+		
 		Timer animTimer = new Timer();
         animTimer.scheduleAtFixedRate(new TimerTask() {
             int i=0;
@@ -325,17 +350,18 @@ public class IplanetGui extends Application{
                 if (i<endingHeight) {
                     badPop1.setHeight(badPop1.getHeight()+3);
                 } else {
+                    
                     this.cancel();
+                    
                 }
                 i++;
             }
 
         }, 80, 2);
-        badPop1.setOnCloseRequest((e)->{
-        	badPop1.close();
-        });
+        System.out.println(badPop1.isFocused());
         badPop1.setScene(sc1);
 		badPop1.show();
+        
 	}
 	// May delete
 	public void translateObject(Node n, double dur, int cyle, int howFar, boolean isPoly) {
@@ -351,18 +377,40 @@ public class IplanetGui extends Application{
 	}
 	public void displayGameOver() {
 		Stage badPop1 = new Stage();
-		Label l2 = new Label("You Lost");
+		Label l2 = new Label("You Lost :(");
+		Button b1 = new Button("Play again?");
+
+		l2.setFont(new Font("ariel",50));
+		l2.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 10.0;"+"-fx-border-width: 5;"+"-fx-text-fill: red");
 		
-		l2.setTextFill(Color.WHITE);
 		l2.setBackground(
-				new Background(new BackgroundFill(Color.rgb(91, 188, 66), new CornerRadii(6.0), Insets.EMPTY)));
+				new Background(new BackgroundFill(Color.rgb(42, 0, 67), new CornerRadii(6.0), Insets.EMPTY)));
 		
-		l2.setStyle("-fx-border-radius: 6.0;");
-		l2.setMaxWidth(Double.MAX_VALUE);
-		l2.setAlignment(Pos.CENTER);
-		VBox vbox2 = new VBox(3, l2);
+		
+		//l2.setMaxWidth(Double.MAX_VALUE);
+		l2.setAlignment(Pos.BASELINE_LEFT);
+		
+		b1.setFont(new Font("ariel",50));
+		b1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 10.0;"+"-fx-border-width: 5;"+"-fx-text-fill: green");
+		b1.setBackground(
+				new Background(new BackgroundFill(Color.rgb(42, 0, 67), new CornerRadii(6.0), Insets.EMPTY)));
+		b1.setAlignment(Pos.BASELINE_RIGHT);
+		// What happends if you start the game over
+		b1.setOnAction((e)->{
+			Character chacracter = new Character(0,0,"No NAME FOR NOW");
+			this.c = new Controller(chacracter);
+			env = c.getEnv();
+			weaponUsed = false;
+			badPop1.close();
+			
+		});
+		
+		
+		
+		VBox vbox2 = new VBox(3, l2,b1);
 		vbox2.setBackground(
-				new Background(new BackgroundFill(Color.rgb(91, 188, 66), CornerRadii.EMPTY, Insets.EMPTY)));
+				new Background(new BackgroundFill(Color.rgb(42, 0, 67), CornerRadii.EMPTY, Insets.EMPTY)));
+		vbox2.setAlignment(Pos.CENTER);
 		Scene sc1 = new Scene(vbox2, SCENE_SIZE_ROW,SCENE_SIZE_COL);
 
 		badPop1.setScene(sc1);
@@ -410,6 +458,11 @@ public class IplanetGui extends Application{
 			c.changeLevel();
 			updateLabels();
 		}
+		if (b.getKey().equals("B")) {
+			c.changeLevelBack();
+			updateLabels();
+		}
+		
 		
 		
 	}
@@ -417,7 +470,6 @@ public class IplanetGui extends Application{
 		this.env = env;
 		for (int i = 0; i<= size_row-1;i++) {
 			for (int j = 0; j<= size_col-1;j++) {
-				//labelArray[i][j].setText(((Block) env.getMap().get(i).get(j)).getKey());
 				getProperColor(labelArray[i][j],((Block) env.getMap().get(i).get(j)).getKey());
 			}
 		}
@@ -445,26 +497,34 @@ public class IplanetGui extends Application{
 						int newRow = i;
 						int newCol = j;
 						// While the index is not allowed
+						if (newRow > row) {
+							newRow--;
+						}else if (newRow < row) {
+							newRow++;
+						}
+						if (newCol > col) {
+							newCol--;
+						}else if(newCol < col) {
+							newCol++;
+						}
 						if (!(newRow> size_row-1 || newRow < 0) && !(newCol> size_col-1 || newCol <0)) {
-							if (newRow > row) {
-								newRow--;
-							}else if (newRow < row) {
-								newRow++;
-							}
-							if (newCol >= col) {
-								newCol--;
-							}else if(newCol < col) {
-								newCol++;
+							if (!((Block) c.getEnvMap().get(newRow).get(newCol)).getKey().equals("_") && !((Block) c.getEnvMap().get(newRow).get(newCol)).getKey().equals("|" ) &&!((Block) c.getEnvMap().get(newRow).get(newCol)).getKey().equals("C" )) {
+							
+								oldColor = ((Block) c.getEnvMap().get(newRow).get(newCol)).getKey();
+								System.out.println(oldColor+" OLDCOLOR");
+								c.moveEnemy(i, j, newRow, newCol);
+							
 							}
 						}
-							c.moveEnemy(i, j, newRow, newCol);
-							// Must update everything (i think)
-							labelArray[i][j].setBackground(
-									new Background(new BackgroundFill(Color.rgb(113, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+						//labelArray[i][j].setBackground(
+									//new Background(new BackgroundFill(Color.rgb(113, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
 							//labelArray[newRow][newCol].setText(((Block) newGrid.get(newRow).get(newCol)).getKey());
 						
 						
 					}
+					
+					// Where we make everything move
+					
 					
 		
 				
@@ -486,17 +546,26 @@ public class IplanetGui extends Application{
 					new Background(new BackgroundFill(Color.rgb(109, 255, 77), CornerRadii.EMPTY, Insets.EMPTY)));
 			}
 		else if (key.equals("E")) {
+			if (!oldColor.equals("E")) {
+			getProperColor(label,oldColor);
+			}
 			label.setGraphic(buttonBuilder("E"));
-			label.setBackground(
-					new Background(new BackgroundFill(Color.rgb(113, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+			//label.setBackground(
+					//new Background(new BackgroundFill(Color.rgb(113, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
 			
 		}
 		
 		else if (key.equals("C")) {
 			//label.setGraphic(buttonBuilder("C"));
+		
+			if (weaponUsed) {
+				getProperColor(label,c.getCurrentBlock().getKey());
+				label.setGraphic(buttonBuilder("CK"));
+			}else {
+				getProperColor(label,c.getCurrentBlock().getKey());
+				label.setGraphic(buttonBuilder("C"));
+			}
 			
-			getProperColor(label,c.getCurrentBlock().getKey());
-			label.setGraphic(buttonBuilder("C"));
 			
 			
 		}
@@ -506,14 +575,14 @@ public class IplanetGui extends Application{
 					new Background(new BackgroundFill(Color.rgb(88,103,110), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
 		else if (key.equals("W")) {
-			label.setGraphic(null);
+			label.setGraphic(buttonBuilder("W"));
 			label.setBackground(
 					new Background(new BackgroundFill(Color.rgb(0,89,160), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
 		else if (key.equals("s")) {
 			label.setGraphic(buttonBuilder("s"));
 			label.setBackground(
-					new Background(new BackgroundFill(Color.rgb(244,227,169), CornerRadii.EMPTY, Insets.EMPTY)));
+					new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
 		else if (key.equals("t")) {
 			
@@ -531,6 +600,13 @@ public class IplanetGui extends Application{
 			label.setBackground(
 					new Background(new BackgroundFill(Color.rgb(20, 100, 140), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
+		else if (key.equals("B")) {
+			
+			// Or maybe we can build an object with a node
+			label.setGraphic(null);
+			label.setBackground(
+					new Background(new BackgroundFill(Color.rgb(20, 100, 140), CornerRadii.EMPTY, Insets.EMPTY)));
+		}
 		else if (key.equals("K")) {
 			
 			// Or maybe we can build an object with a node
@@ -542,8 +618,13 @@ public class IplanetGui extends Application{
 		else if (key.equals("P")) {
 			label.setGraphic(buttonBuilder("P"));
 			label.setBackground(
-					new Background(new BackgroundFill(Color.rgb(20, 100, 140), CornerRadii.EMPTY, Insets.EMPTY)));
+					new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
+		/*else if (key.equals(".")) {
+			label.setGraphic(buttonBuilder("."));
+			label.setBackground(
+					new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));
+		}*/
 		
 		// If the block is dirt
 		else {
@@ -551,7 +632,7 @@ public class IplanetGui extends Application{
 		label.setBackground(
 				new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
-		//label.setDisable(true);
+		label.setMinHeight(SET_MIN_HEIGHT);;
 	}
 	
 
@@ -568,7 +649,7 @@ public Button buttonBuilder(String type) {
 	//public void translateObject(Node n, double dur, int cyle, int howFar, boolean isPoly) {
 	else if (type.equals("C")) {
 		b1.getStylesheets().add(CharStyle);
-		//translateUp(b1, .5, 3, 1,0,0);
+		translateUp(b1, .2, 3, 1,0,0);
 	
 		
 	}
@@ -583,12 +664,25 @@ public Button buttonBuilder(String type) {
 	}
 	else if (type.equals("E")) {
 		b1.getStylesheets().add(BadStyle);
+		translateUp(b1, .2, 3, 1,0,0);
 	}
 	else if (type.equals("|") || type.equals("_")) {
 		b1.getStylesheets().add(BrickStyle);
 	}
 	else if (type.equals("K")) {
 		b1.getStylesheets().add(KnifeStyle);
+	}
+	else if (type.equals("W")) {
+		b1.getStylesheets().add(WaterStyle);
+		
+	}
+	else if (type.equals(".")) {
+		b1.getStylesheets().add(BlockStyle);
+	}
+	else if (type.equals("CK")) {
+		b1.getStylesheets().add(CharKnifeStyle);
+		this.curHeader.setText("Use G to hit!");
+		translateUp(b1, .2, 3, 1,0,0);
 	}
 	b1.setText("");
 
@@ -597,11 +691,21 @@ public Button buttonBuilder(String type) {
 	b1.setDisable(true);
 	return b1;
 }
+public void displayContinousAnimation(Node n, double dur,double up,double down,double ogDown,double ogUp) {
+	Path path = new Path();
+	path.getElements().add(new MoveTo(up,down));
+	path.getElements().add(new CubicCurveTo(ogDown+20,ogDown+5,ogUp+10,ogUp+18,ogDown+5,ogUp+18));
+	PathTransition pathTransition = new PathTransition();
+	pathTransition.setDuration(Duration.seconds(dur));
+	pathTransition.setNode(n);
+	pathTransition.setPath(path);
+	pathTransition.play();
+}
 
 public void translateUp(Node n, double dur,double up,double down,double ogDown,double ogUp) {
 	Path path = new Path();
 	path.getElements().add(new MoveTo(up,down));
-	path.getElements().add(new CubicCurveTo(up-5,down-10,up+5,down-15,ogDown+5,ogUp+15));
+	path.getElements().add(new CubicCurveTo(ogDown+20,ogDown+5,ogUp+10,ogUp+18,ogDown+5,ogUp+18));
 	PathTransition pathTransition = new PathTransition();
 	pathTransition.setDuration(Duration.seconds(dur));
 	pathTransition.setNode(n);

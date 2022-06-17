@@ -20,8 +20,8 @@ public class Person extends Block{
 			
 			characterName = "Ashcroft";
 		}
-		else if (row == 10 && col == 3) {
-			intro = "Have you heard of the IPF?";
+		else if (row == 11 && col == 15) {
+			characterName = "Rasputin";
 		}
 		else {
 			intro = "What are you looking at?";
@@ -41,7 +41,26 @@ public class Person extends Block{
 				intro = "What is the IPDF? Well, it is the I-Planetary Defence force of course!";
 			}
 			else if (currentInteraction == 3) {
-				intro = "I joined it a couple years ago. I love it!";
+				intro = "I joined it a years ago. I love it!";
+			}
+			else if (currentInteraction == 3) {
+				intro = "Of course, some think it is wrong, but when things get terrible, when the world caves in and you face hell itself...";
+			}
+			
+		}
+		if (characterName.equals("Rasputin")) {
+			if (currentInteraction == 1) {
+				intro = "Your following the WOLF I see.";
+			}
+			else if (currentInteraction == 2) {
+				
+				intro = "Colterstevens, he's the one guiding you? ";
+			}
+			else if (currentInteraction == 3) {
+				intro = "Good man. I served under him back in the great war.";
+			}
+			else if (currentInteraction == 4) {
+				intro = "Lost a leg. Ha! Do you want to know why they call him the wolf?";
 			}
 		}
 		currentInteraction++;

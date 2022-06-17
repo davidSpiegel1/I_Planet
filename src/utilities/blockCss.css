@@ -1,0 +1,13 @@
+*{
+	-fx-base: #32EAFF;
+}
+
+.button{
+	-fx-font-size: 15pt;
+	-fx-text-fill: blue;
+
+	-fx-text-fill: blue;
+	-fx-shape: "M 5 14 A 1 1 0 0 0 5 16 C 5 15 4 15 5 14";
+	-fx-base: #D0882A;
+	
+}

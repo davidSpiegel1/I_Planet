@@ -9,6 +9,7 @@ public class Block {
 		findDescription(key);
 
 	}
+	
 	private void findDescription(String k) {
 		if (k.equalsIgnoreCase("G")) {
 			description = "Grass. Has no practical use.";
@@ -23,6 +24,8 @@ public class Block {
 			description = "Next level";
 		}else if (k.equalsIgnoreCase("K")) {
 			description = "A Knife. Can kill enemies with.";
+		}else if (k.equalsIgnoreCase("B")) {
+			description = "Back to previous level..";
 		}
 		
 		else{

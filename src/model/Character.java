@@ -16,6 +16,7 @@ public class Character extends Block{
 	private int col;
 	private String name;
 	private ArrayList<Block> inventory;
+
 	
 	// Another constructor for block form
 	public Character(int row, int col,String name) {
@@ -26,6 +27,7 @@ public class Character extends Block{
 		this.row = row;
 		this.col = col;
 		this.name = name;
+	
 		inventory = new ArrayList<Block>();
 	}
 	

@@ -19,8 +19,7 @@ public class Story extends Block{
 		discription = "";
 		keys = "";
 		findKey(row,col);
-		System.err.println(row);
-		System.err.println(col);
+		
 	
 	}
 	

@@ -3,10 +3,10 @@
 }
 
 .button{
-	-fx-font-size: 12pt;
+	-fx-font-size: 15pt;
 	-fx-text-fill: green;
 
-	-fx-shape: "M 10 10 A 1 1 0 0 0 7 10 A 1 1 0 0 0 10 10 M 9 12 A 1 1 0 0 0 8 13 Q 7 14 8 15 Q 12 15 9 12 M 10 10 A 1 1 0 0 0 10 10";
+	-fx-shape: "M 20 20 A 2 2 90 0 0 14 20 A 2 2 90 0 0 20 20 M 18 24 A 2 2 90 0 0 16 26 Q 14 28 16 30 Q 24 30 18 24 M 20 20 A 2 2 90 0 0 20 20 M 15 21 A 1 1 0 0 0 17 21 L 15 21 Q 16 16 17 21 M 18 21 A 1 1 0 0 0 19 21 L 17 21 Q 18 16 19 21";
 	-fx-background-color: #FF9175;
 
 }
