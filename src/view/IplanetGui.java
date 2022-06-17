@@ -257,6 +257,8 @@ public class IplanetGui extends Application{
 					displayInteraction(b);
 				}
 				if (e.getCode().equals(KeyCode.G)) {
+				if(!weaponUsed) {
+			
 					Block b = c.getCurrentBlock();
 					Button b1 = new Button(b.getKey());
 					b1.setFocusTraversable(false);
@@ -268,6 +270,11 @@ public class IplanetGui extends Application{
 					inList.add(b1);
 					c.putInBag(b);
 					currentInventory++;
+				}else {
+					c.hit(c.getCharRow(), c.getCharCol());
+					
+				}
+					
 				}
 				if (e.getCode().equals(KeyCode.I)) {
 					deleteCurrentInventory();

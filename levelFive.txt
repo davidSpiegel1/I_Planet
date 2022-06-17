@@ -1,4 +1,4 @@
-tttttGGGGtttttttt
+tBtttGGGGtttttttt
 tttttGGGGtttttttt
 tttttGGGGtttttttt
 tttttGGGGtttttttt
@@ -12,6 +12,6 @@ tttttpttttttttttt
 ttttttttttGGGGttt
 tttGGGGtttGGGGttt
 tttGOGGtttttttttt
+tttGGGGtttttttttt
+tttGGGGtttttttttt
 ttttttttttttttttt
-.................
-.................
