@@ -72,56 +72,56 @@ public class Controller {
 	private Environment findEnv(){
 		if (currentLevel == 1) {
 			try {
-				env = new Environment(c,"levelOne.txt");
+				env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelOne.txt");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		if (currentLevel == 2) {
 			try {
-				env = new Environment(c,"levelTwo.txt");
+				env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelTwo.txt");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 		if (currentLevel == 3) {
 			try {
-				env = new Environment(c,"levelThree.txt");
+				env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelThree.txt");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 		if (currentLevel == 4) {
 			try {
-				env = new Environment(c,"levelFour.txt");
+				env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelFour.txt");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 		if (currentLevel == 5) {
 			try {
-				env = new Environment(c,"levelFive.txt");
+				env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelFive.txt");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 		if (currentLevel == 6) {
 			try {
-				env = new Environment(c,"levelSix.txt");
+				env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelSix.txt");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 		if (currentLevel == 7) {
 			try {
-				env = new Environment(c,"levelSeven.txt");
+				env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelSeven.txt");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 		if (currentLevel == 8) {
 			try {
-				env = new Environment(c,"levelEight.txt");
+				env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelEight.txt");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
