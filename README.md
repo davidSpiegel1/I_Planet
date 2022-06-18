@@ -18,5 +18,8 @@ grab objects and use objects while observing environment characteristics. You ca
  		<li> When inventory is open, you can click on the block you want to grab</li>
  		<li> Blocks you grab will show up on character</li>
  		<li> Now G is to use the block</li>
- 		</ul></li>
- </o1>
+ 		</ul></li></o1>
+ 		
+ 	
+   <l1> <applet code ="I_Planet.class" archive ="I_Planet_Jar.jar" width = 640 height = 480></applet></l1>
+
