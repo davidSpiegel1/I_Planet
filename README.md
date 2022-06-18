@@ -1,8 +1,10 @@
-<h1><strong>I Planet</strong></h1>
+
+
 <p>I Planet is a fun, interactive top view game which allows the user to traverse landscapes,
-grab objects and use objects while observing environment characteristics. You can currently:
+ grab objects and use objects while observing environment characteristics. You can currently:
  </p>
- 
+
+## Controls
  <o1>
  	<li> Interact with blocks (<strong>E</strong>)<ul>
  		<li> Only blocks that are not barriers or can kill you</li>
@@ -22,4 +24,10 @@ grab objects and use objects while observing environment characteristics. You ca
  		
  	
    <l1> <applet code ="I_Planet.class" archive ="I_Planet_Jar.jar" width = 640 height = 480></applet></l1>
+
+
+## What it looks like
+![Title screen](file:///Users/davidspiegel/git/I_Planet/gameShot.png)
+
+## Play
 
