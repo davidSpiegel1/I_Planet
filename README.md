@@ -29,5 +29,4 @@
 ## What it looks like
 ![Title screen](file:///Users/davidspiegel/git/I_Planet/gameShot.png)
 
-## Play
 

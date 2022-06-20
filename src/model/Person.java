@@ -23,6 +23,9 @@ public class Person extends Block{
 		else if (row == 11 && col == 15) {
 			characterName = "Rasputin";
 		}
+		else if (row == 10 && col == 5) {
+			characterName = "Help";
+		}
 		else {
 			intro = "What are you looking at?";
 		}
@@ -63,6 +66,20 @@ public class Person extends Block{
 				intro = "Lost a leg. Ha! Do you want to know why they call him the wolf?";
 			}
 		}
+		if (characterName.equals("Help")) {
+			if (currentInteraction == 1) {
+				intro = "Your gonna save my family, right?";
+			}
+			else if (currentInteraction == 2) {
+				
+				intro = "They are in the town! These monsters!? ";
+			}
+			else if (currentInteraction == 3) {
+				intro = "You will?! Thank god!";
+			}
+			
+		}
+		
 		currentInteraction++;
 	return description;
 }
