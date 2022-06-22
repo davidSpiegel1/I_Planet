@@ -23,7 +23,7 @@ public class Person extends Block{
 		else if (row == 11 && col == 15) {
 			characterName = "Rasputin";
 		}
-		else if (row == 10 && col == 5) {
+		else if (row == 10 && col == 11) {
 			characterName = "Help";
 		}
 		else {
@@ -68,11 +68,11 @@ public class Person extends Block{
 		}
 		if (characterName.equals("Help")) {
 			if (currentInteraction == 1) {
-				intro = "Your gonna save my family, right?";
+				intro = "Your gonna save my child, right?";
 			}
 			else if (currentInteraction == 2) {
 				
-				intro = "They are in the town! These monsters!? ";
+				intro = "My child! in the town! Those monsters!? ";
 			}
 			else if (currentInteraction == 3) {
 				intro = "You will?! Thank god!";

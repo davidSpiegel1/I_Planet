@@ -40,14 +40,17 @@ public class Story extends Block{
 		}
 		
 		
-		if (row == 15 && col == 6) {
-			keys = "l3";
-		}
 		if (row == 8 && col == 15) {
 			keys = "l2";
 		}
-		if (row == 16 && col == 7) {
+		if (row == 15 && col == 6) {
+			keys = "l3";
+		}
+		if (row == 14 && col == 10) {
 			keys = "l4";
+		}
+		if (row == 15 && col == 9) {
+			keys = "l5";
 		}
 	}
 	public void interact() {
@@ -96,13 +99,50 @@ public class Story extends Block{
 				discription = "Do what you can for the rest.";
 			}
 		}
+		
 		else if (keys.equals("l4")) {
 			if (currentLevel == 2) {
-				discription = "Okay, so what?.";
+				discription = "Darnit solder! On your feet!";
 			}
 			else if (currentLevel == 4) {
-				discription = "Remember, we are HERE for the chancellor. Keep an eye out.";
+				discription = "The chancellor should be through here!";
 			}
+			else if (currentLevel == 6) {
+				discription = "A child? No, we are getting the chancellor!";
+			}
+		}
+		else if (keys.equals("l5")) {
+			if (currentLevel == 2) {
+				discription = "Fine! We will take both. We gotta get out of here!";
+			}
+			else if (currentLevel == 4) {
+				discription = "I'm glade you save the child. Let's move!";
+			}
+			
+		}
+		else if (keys.equals("l6")) {
+			if (currentLevel == 2) {
+				discription = "Leave me! I can find my own way!";
+			}
+			else if (currentLevel == 4) {
+				discription = "Your a good fighter. Maybe a better wolf than I..";
+			}
+			else if (currentLevel == 8) {
+				discription = "Now go! I'll find you guys!";
+			}
+			
+		}
+		else if (keys.equals("l7")) {
+			if (currentLevel == 2) {
+				discription = "Name's John. Soldier, where is jack?";
+			}
+			else if (currentLevel == 4) {
+				discription = "Where is the WOLF? ";
+			}
+			else if (currentLevel == 8) {
+				discription = "I'll never leave him behind he is my friend!";
+			}
+			
 		}
 		
 		else {

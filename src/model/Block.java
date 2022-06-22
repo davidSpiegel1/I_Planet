@@ -26,7 +26,10 @@ public class Block {
 			description = "A Knife. Can kill enemies with.";
 		}else if (k.equalsIgnoreCase("B")) {
 			description = "Back to previous level..";
+		}else if (k.equalsIgnoreCase("X")) {
+			description = "Gun. Kills lots of enemies.";
 		}
+		
 		
 		else{
 			description = "Nothing.";

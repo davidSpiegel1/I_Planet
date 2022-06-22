@@ -223,7 +223,8 @@ public class Controller {
 		 boolean canBeUsed = false; 
 		 if (value.equalsIgnoreCase("K")) { 
 		canBeUsed = true; 
-		 } 
+		 } else if (value.equalsIgnoreCase("X")) { 
+				canBeUsed = true;}
 		 return canBeUsed;
 
 	}

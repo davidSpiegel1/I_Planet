@@ -97,6 +97,7 @@ public class IplanetGui extends Application{
 	public static final String WaterStyle = "utilities/waterCss.css";
 	public static final String BlockStyle = "utilities/blockCss.css";
 	public static final String CharKnifeStyle = "utilities/charWithKnifeCss.css";
+	public static final String GunStyle = "utilities/gunCss.css";
 	
 
 	// Within our start method, we will start the program for IPlanet.
@@ -630,6 +631,11 @@ public class IplanetGui extends Application{
 			label.setBackground(
 					new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
+		else if (key.equals("X")) {
+			label.setGraphic(buttonBuilder("X"));
+			label.setBackground(
+					new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));
+		}
 		/*
 		 * else if (key.equals(".")) { label.setGraphic(buttonBuilder("."));
 		 * label.setBackground( new Background(new BackgroundFill(Color.rgb(137, 110,
@@ -680,9 +686,14 @@ public class IplanetGui extends Application{
 			b1.getStylesheets().add(BlockStyle);
 		} else if (type.equals("CK")) {
 			b1.getStylesheets().add(CharKnifeStyle);
-			this.curHeader.setText("Use G to hit!");
+			//this.curHeader.setText("Use G to hit!");
 			translateUp(b1, .2, 3, 1, 0, 0);
 		}
+		 else if (type.equals("X")) {
+		b1.getStylesheets().add(GunStyle);
+		//translateUp(b1, .2, 3, 1, 0, 0);
+		
+		 }
 		b1.setText("");
 
 		b1.setBackground(new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));
