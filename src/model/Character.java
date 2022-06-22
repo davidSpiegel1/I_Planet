@@ -83,6 +83,8 @@ public class Character extends Block {
 	public void addToInventory(Block b) {
 		inventory.add(b);
 	}
+	
+	
 
 	// Getting inventory
 	public ArrayList<Block> getInventory() {
