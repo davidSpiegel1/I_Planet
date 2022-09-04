@@ -13,6 +13,8 @@ public class Person extends Block{
 		System.out.println(row);
 		System.out.println(col);
 		characterName = " ";
+		currentInteraction = 0;
+		intro = ".";
 		findDescription(row,col);
 	}
 	private void findDescription(int row, int col) {
@@ -46,8 +48,8 @@ public class Person extends Block{
 			else if (currentInteraction == 3) {
 				intro = "I joined it a years ago. I love it!";
 			}
-			else if (currentInteraction == 3) {
-				intro = "Of course, some think it is wrong, but when things get terrible, when the world caves in and you face hell itself...";
+			else if (currentInteraction == 4) {
+				intro = "Of course, some think it is wrong, but when the world caves in and you face hell itself...";
 			}
 			
 		}

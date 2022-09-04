@@ -1,10 +1,9 @@
 package view;
 
-import java.applet.Applet;
 
 import javafx.application.Application;
 
-public class I_Planet  extends Applet{
+public class I_Planet  {
 	
 	private static final long serialVersionUID = -1015806863953544689L;
 
@@ -13,3 +12,5 @@ public class I_Planet  extends Applet{
 	}
 
 }
+
+

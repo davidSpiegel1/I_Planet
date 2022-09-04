@@ -11,6 +11,7 @@ import controller.Controller;
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -61,7 +62,11 @@ public class IplanetGui extends Application{
 	private GridPane infoDeck;
 	private Label curDescription;
 	private Label curHeader;
-
+	private Label map;
+	
+	// Some buttons that can change
+	private Button b1;
+	private Button b2;
 	// We also know we will need a controller
 	private Controller c;
 	private Environment env;
@@ -72,6 +77,7 @@ public class IplanetGui extends Application{
 	private int currentInventory;
 	private boolean weaponUsed = false;
 	private boolean isInventoryShowing = false;
+	private boolean isMapShowing = false;
 	// Need a block for using elements
 	private Block useBlock;
 	private String oldColor = ".";
@@ -103,6 +109,10 @@ public class IplanetGui extends Application{
 	// Within our start method, we will start the program for IPlanet.
 	@Override
 	public void start(Stage stage) throws Exception {
+		
+		// BUTTONS (May delete!!)
+		b1 = new Button("");
+		b2 = new Button("");
 
 		// We must have a character
 		Character chacracter = new Character(0, 0, "No NAME FOR NOW");
@@ -113,6 +123,12 @@ public class IplanetGui extends Application{
 		// Descriptions and headers for new pane
 		curDescription = new Label("NOnull");
 		curHeader = new Label("NOull");
+		map = new Label("                 Map");
+		map.setStyle("-fx-text-fill: grey");
+		
+		/// Making a map label with a button in it
+		//map = makeMap(map);
+		
 		inList = new ArrayList<Button>();
 		// Needing the sizes to be able to change
 		size_row = env.getMap().size();
@@ -140,7 +156,7 @@ public class IplanetGui extends Application{
 		 * Font("Arial",30));
 		 */
 
-		// infoDeck.add(grabItem,3,0);
+		infoDeck.add(map,3,0);
 		infoDeck.add(curDescription, 2, 0);
 		infoDeck.add(curHeader, 1, 0);
 
@@ -235,6 +251,14 @@ public class IplanetGui extends Application{
 					isInventoryShowing = false;
 					setTextToDisplay(c.getEnv());
 				}
+				if(e.getCode().equals(KeyCode.M) ) {
+					try {
+						map = makeMap();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 				if (e.getCode().equals(KeyCode.G)) {
 					if (!weaponUsed) {
 
@@ -285,38 +309,65 @@ public class IplanetGui extends Application{
 			}
 
 		});
+	
 
 		stage.setScene(scene);
 		stage.setTitle(TITLE_GAME);
 		stage.show();
+		stage.setOnCloseRequest((e)->{
+			
+			stage.close();
+		});
+		
 
+	}
+
+	private Label makeMap() throws Exception {
+		map.setStyle("-fx-text-fill: cornflowerblue");
+		
+		displayMap(isMapShowing,map.getLayoutX(),map.getLayoutY());
+		
+		
+		
+		
+		
+		return map;
+	}
+
+	private void displayMap (boolean isMapShowing,double layoutX, double layoutY) throws Exception {
+		MapGUI map = new MapGUI();
+		map.displayOption(this.map,c.getCharRow(),c.getCharCol(),isMapShowing,layoutX,layoutY);
+		//map2.setStyle("-fx-text-fill: grey");
+		
+		
 	}
 
 	// Display option, for when we want to use an object
 	public void displayOption(int curIndex, double x, double y) {
 		Stage badPop1 = new Stage();
 		int endingHeight = 20;
-		Button l2;
-		Button l1 = new Button("remove");
+
+		b1.setText("Remove");
 		if (weaponUsed) {
-			l2 = new Button("Disable All");
+			b2.setText("Disable All");
 		} else {
-			l2 = new Button("Use");
+			b2.setText("Use");
 		}
-		l2.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;" + "-fx-border-width: .3;");
-		l1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;" + "-fx-border-width: .3;");
+		b2.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;" + "-fx-padding: 10;" + "-fx-"
+				+ "-fx-border-width: .3;" + "-fx-text-fill: red");
+		b1.setStyle(
+				"-fx-border-color: GREY;" + "-fx-border-radius: 6.0;" + "-fx-border-width: .3;" + "-fx-text-fill: red");
 		VBox vbox2;
 		// If you can use the item use will be there
 		if (c.seeIfCanBeUsed(inList.get(curIndex).getText())) {
-		vbox2 = new VBox(3, l2, l1);
+			vbox2 = new VBox(3, b2, b1);
+		} else {
+			vbox2 = new VBox(3, b1);
 		}
-		else {
-		vbox2 = new VBox(3,l1);
-		}
-		
+
 		vbox2.setBackground(
 				new Background(new BackgroundFill(Color.rgb(91, 188, 66), CornerRadii.EMPTY, Insets.EMPTY)));
-		
+
 		Scene sc1 = new Scene(vbox2, 60, 30);
 
 		// Curr x and y: 305,77
@@ -327,25 +378,22 @@ public class IplanetGui extends Application{
 
 		Timer animTimer = new Timer();
 		animTimer.scheduleAtFixedRate(new TimerTask() {
-			int i = 0;
-
+			int in = 0;
 			@Override
 			public void run() {
-				if (i < endingHeight) {
+				if (in < endingHeight) {
 					badPop1.setHeight(badPop1.getHeight() + 3);
 				} else {
-
 					this.cancel();
-
 				}
-				i++;
+				in++;
 			}
-
 		}, 80, 2);
+
 		badPop1.setScene(sc1);
 		badPop1.show();
-		
-		l2.setOnAction((e) -> {
+
+		b2.setOnAction((e) -> {
 			if (!weaponUsed) {
 				if (c.seeIfCanBeUsed(inList.get(curIndex).getText())) {
 					weaponUsed = true;
@@ -357,25 +405,28 @@ public class IplanetGui extends Application{
 
 			}
 			vbox2.getChildren().clear();
+
 			badPop1.close();
 
 		});
-		l1.setOnAction((e) -> {
+		b1.setOnAction((e) -> {
 			c.deleteElementFromInventory(curIndex);
 			inList.remove(curIndex);
 			currentInventory--;
-			
+
 			deleteCurrentInventory();
 			createInventory(c.getInventory());
 			displayInventory(c.getInventory());
-			
+
 			vbox2.getChildren().clear();
 			badPop1.close();
 
 		});
-		
+
+	
 		badPop1.setOnCloseRequest((e)->{
 			vbox2.getChildren().clear();
+			badPop1.close();
 		});
 		
 
@@ -450,16 +501,16 @@ public class IplanetGui extends Application{
 
 	}
 	private void displayInventory(ArrayList<Block> inventory) {
-		
 
-		this.curDescription.setText(":");
-		this.curHeader.setText("Current Inventory");
+		this.curDescription.setText("");
+		this.curHeader.setText("Current Inventory:");
 
 	}
 
 	private void deleteCurrentInventory() {
 
 		infoDeck.getChildren().clear();
+		infoDeck.add(map, 3, 0);
 		infoDeck.add(curHeader, 2, 0);
 		infoDeck.add(curDescription, 1, 0);
 

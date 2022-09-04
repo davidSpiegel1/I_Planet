@@ -1,12 +1,21 @@
 package utilities;
 
-// Importing needed classes
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
-import model.Environment;
+
+// Importing needed classes
+
 import model.Character;
+import model.Environment;
+import model.Person;
 import model.Block;
-import controller.Controller;
 
 /**
  * 
@@ -28,6 +37,7 @@ class I_PlanetTests {
 		assertEquals("p",b2.getKey());
 		
 	}
+	
 	
 	@Test
 	void TestBlockDescription() {
@@ -73,6 +83,8 @@ class I_PlanetTests {
 		assertEquals(1,c.getRow());
 		c.moveUp();
 		assertEquals(0,c.getCol());
+		c.moveLeft();
+		assertEquals(0,c.getRow());
 		// Now we will try to set the col and row
 		c.setCol(2);
 		c.setRow(2);
@@ -90,5 +102,72 @@ class I_PlanetTests {
 		assertEquals("Man2",c2.getName());
 		
 	}
-
+	@Test
+	void TestInventoryCharacter() {
+		Character c = new Character(0,0,"Man");
+		// Now checking if the inventory works correctly
+		c.addToInventory(new Block("s"));
+		c.addToInventory(new Block("t"));
+		c.addToInventory(new Block("O"));
+		c.removeInventory(0);
+		ArrayList<Block> arr = c.getInventory();
+		assertEquals("t",arr.get(0).getKey());
+		assertEquals("O",arr.get(1).getKey());
+		
+	}
+	@Test
+	void TestOverrideMethodsCharacter() {
+		Character c = new Character(0,0,"Man");
+		// Checking get description to be name and get key to be "C"
+		assertEquals("Man",c.getDescription());
+		assertEquals("C",c.getKey());
+	}
+	@Test
+	void TestPersonClass() {
+		// The default of person
+		Person p = new Person(0,0);
+		assertEquals("What are you looking at?",p.getDescription());
+		// What comes else could come up
+		Person p1 = new Person(4,14);
+		System.out.println(p1.getDescription());
+		System.out.println(p1.interact());
+		System.out.println(p1.getDescription());
+		System.out.println(p1.interact());
+		assertEquals("My name is Ashcroft. General in IPDF!",p1.getDescription());
+		System.out.println(p1.interact());
+		assertEquals("What is the IPDF? Well, it is the I-Planetary Defence force of course!",p1.getDescription());
+		System.out.println(p1.interact());
+		assertEquals("I joined it a years ago. I love it!",p1.getDescription());
+		System.out.println(p1.interact());
+		assertEquals("Of course, some think it is wrong, but when the world caves in and you face hell itself...",p1.getDescription());
+		// 
+		Person p2 = new Person(11,15);
+		System.out.println(p2.getDescription());
+		System.out.println(p2.interact());
+		System.out.println(p2.getDescription());
+		System.out.println(p2.interact());
+		assertEquals("Your following the WOLF I see.",p2.getDescription());
+		System.out.println(p2.interact());
+		assertEquals("Colterstevens, he's the one guiding you? ",p2.getDescription());
+		System.out.println(p2.interact());
+		assertEquals("Good man. I served under him back in the great war.",p2.getDescription());
+		System.out.println(p2.interact());
+		assertEquals("Lost a leg. Ha! Do you want to know why they call him the wolf?",p2.getDescription());
+		//
+		Person p3 = new Person(10,11);
+		System.out.println(p3.getDescription());
+		System.out.println(p3.interact());
+		System.out.println(p3.getDescription());
+		System.out.println(p3.interact());
+		assertEquals("Your gonna save my child, right?",p3.getDescription());
+		System.out.println(p3.interact());
+		assertEquals("My child! in the town! Those monsters!? ",p3.getDescription());
+		System.out.println(p3.interact());
+	}
+	
+	
+	
+	
+	
+	
 }
