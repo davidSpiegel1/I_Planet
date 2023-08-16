@@ -22,7 +22,7 @@ public class Person extends Block{
 			
 			characterName = "Ashcroft";
 		}
-		else if (row == 11 && col == 15) {
+		else if (row == 10 && col == 15) {
 			characterName = "Rasputin";
 		}
 		else if (row == 10 && col == 11) {
