@@ -21,7 +21,7 @@ public class Character extends Block {
 	public Character(int row, int col, String name) {
 		// Must call this so block can also use this
 		super("C");
-
+  
 		// Now, our row and column and name
 		this.row = row;
 		this.col = col;
@@ -29,6 +29,17 @@ public class Character extends Block {
 
 		inventory = new ArrayList<Block>();
 	}
+    
+    public Character(){
+        super("C");
+        this.setDescription("The main character");
+        this.row = 0;
+        this.col = 0;
+        this.name = "Bill";
+        this.inventory = new ArrayList<Block>();
+        
+        
+    }
 
 	// A way to get the characters name
 	public String getName() {
@@ -100,6 +111,8 @@ public class Character extends Block {
 	public String getDescription() {
 		return name;
 	}
+    
+
 
 	
 }

@@ -1,7 +1,7 @@
 package view;
 
 
-import javafx.application.Application;
+//import javafx.application.Application;
 
 public class I_Planet  {
 	

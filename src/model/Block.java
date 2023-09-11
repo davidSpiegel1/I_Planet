@@ -47,5 +47,18 @@ public class Block {
 	public String getDescription() {
 		return description;
 	}
+    
+    public void setDescription(String description){
+        
+        this.description = description;
+    }
+    
+    @Override
+    public String toString(){
+        String str = "";
+        str+= key;
+       
+        return str;
+    }
 
 }

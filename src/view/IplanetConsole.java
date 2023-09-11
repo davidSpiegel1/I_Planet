@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import controller.Controller;
 import model.*;
-import model.Character;
 
 /**
  * 
@@ -117,5 +116,6 @@ public class IplanetConsole {
 	public static void displayGoodBye() {
 		System.out.println("Goodbye!");
 	}
+    
 
 }

@@ -1,52 +1,12 @@
-package view;
+/*package view;
+ 
 
 // Needed imports
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import controller.Controller;
-import javafx.animation.PathTransition;
-import javafx.animation.TranslateTransition;
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import model.Block;
 import model.Character;
 import model.Environment;
 
-/**
- * 
- * @author davidspiegel
- * 
- *         Description: The IPlanet GUI version
- *
- */
 
 @SuppressWarnings("deprecation")
 public class IplanetGui extends Application{
@@ -150,12 +110,7 @@ public class IplanetGui extends Application{
 		// curHeader.setMinHeight(650);
 		curHeader.setFont(new Font("Arial", 30));
 		curHeader.setStyle("-fx-text-fill: cornflowerblue");
-		/*
-		 * grabItem = new Button("Collect block");
-		 * grabItem.setStyle("-fx-text-fill: cornflowerblue"); grabItem.setFont(new
-		 * Font("Arial",30));
-		 */
-
+	
 		infoDeck.add(map,3,0);
 		infoDeck.add(curDescription, 2, 0);
 		infoDeck.add(curHeader, 1, 0);
@@ -519,16 +474,7 @@ public class IplanetGui extends Application{
 	}
 
 	private void displayInteraction(Block b) {
-		/*
-		 * Stage interactionPageStage = new Stage(); Label l1 = new Label(b.getKey());
-		 * Label l2 = new Label(b.getDescription()); VBox vb = new VBox(1,l1,l2);
-		 * 
-		 * Scene newScene = new Scene(vb,SCENE_SIZE_ROW,300);
-		 * 
-		 * interactionPageStage.setScene(newScene);
-		 * interactionPageStage.setTitle("Interaction"); interactionPageStage.show();
-		 */
-
+		
 		this.curDescription.setText(b.getDescription() + " Press g to grab");
 		this.curHeader.setText(b.getKey());
 		if (b.getKey().equals("O")) {
@@ -687,12 +633,7 @@ public class IplanetGui extends Application{
 			label.setBackground(
 					new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
-		/*
-		 * else if (key.equals(".")) { label.setGraphic(buttonBuilder("."));
-		 * label.setBackground( new Background(new BackgroundFill(Color.rgb(137, 110,
-		 * 77), CornerRadii.EMPTY, Insets.EMPTY))); }
-		 */
-
+	
 		// If the block is dirt
 		else {
 			label.setGraphic(null);
@@ -776,6 +717,6 @@ public class IplanetGui extends Application{
 
 
 
-}
+}*/
 
 
