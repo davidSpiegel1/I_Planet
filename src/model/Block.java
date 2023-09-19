@@ -28,7 +28,9 @@ public class Block {
 			description = "Back to previous level..";
 		}else if (k.equalsIgnoreCase("X")) {
 			description = "Gun. Kills lots of enemies.";
-		}
+		}else if (k.equalsIgnoreCase("d")){
+            description ="Animal. Should be moving.";
+        }
 		
 		
 		else{

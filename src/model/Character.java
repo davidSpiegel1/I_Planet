@@ -101,6 +101,11 @@ public class Character extends Block {
 	public ArrayList<Block> getInventory() {
 		return inventory;
 	}
+    
+    // Setting inventory
+    public void setInventory(ArrayList<Block>bl){
+        this.inventory= bl;
+    }
 
 	@Override
 	public String getKey() {

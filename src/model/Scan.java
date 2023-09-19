@@ -11,10 +11,14 @@ public class Scan{
     private String content = "";
     private ArrayList<String> allowedChars;
     private ArrayList<Block> nodeList;// The needed node list
+    private Character c = new Character();// Neded character object (For live/ inventory)
+    private int charPos;
     
     // A constructor. I think we will use StringBuilder and FileInputStream to do the scanning
     public Scan(String fileName){
         // Our final node list
+      
+        
         nodeList = new ArrayList<Block>();
         
         
@@ -49,6 +53,7 @@ public class Scan{
         al.add("s");
         al.add("O");
         al.add("E");
+        al.add("d"); // d for dog (Or cow)
         
         return al;
         
@@ -88,7 +93,12 @@ public class Scan{
             else if (this.allowedChars.contains(String.valueOf(initText))){
                 
                 if (initText == 'C'){
-                    this.nodeList.add(new Character());
+                    this.nodeList.add(this.c);
+                    this.charPos = curIndex;
+                    
+                }
+                else if (initText == 'd'){
+                    this.nodeList.add(new Animal(curIndex,"d",20));
                     
                 }
                 else{
@@ -128,6 +138,19 @@ public class Scan{
         String content = sb.toString();
         return content;
         
+    }
+    
+    // Getters and setters for the character object ot try and keep it consistent
+    public void setCharacter(Character c){
+        
+        this.c = c;
+    }
+    
+    public int getCharPosition(){
+        return this.charPos;
+    }
+    public Character getCharacter(){
+        return this.c;
     }
     
     

@@ -14,7 +14,6 @@
 			2.) While doing this, we allow for character design and artistic elements
 
 
-
 	-- New character design --
 
 		* Somehow find a chatGTP API and connect to it
@@ -22,12 +21,14 @@
 		* Also, we want characters to move without the user character moving
 			* We could do this using animations and manipulating the specific element within the 
 			  2D list object. 
+		* Maybe we could have server-based multiplayer
+
+	-- Issues --
+		* Currently, deleting inventory is not working.
+			* Possible fix: Use 'e' to derive the correct Node to delete 			from GridPane
+			
+
 	
-	-- Using swing not javaFX --
-		
-		* JavaFX has to have an added libary, like swing better a bit 
-		* So, we want to use swing instead.
-		* So, we have to refactor the entire codebase gui
 
 
 

@@ -20,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -39,8 +40,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.layout.*;
-
+import java.awt.*;
+import java.awt.event.*;  
 import javafx.beans.binding.Bindings;
+
+import javafx.animation.Timeline;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 
 //import javafx.scene.layout.StackPane;
 import model.Block;
@@ -58,6 +64,7 @@ public class IplanetFX extends Application{
     // Some instance variables
     private GridPane mainGame;
     private GridPane infoDeck;
+    private StackPane centerPane;
     
     private Label curDescription = new Label("Description"); // Description for object we hav
     private Label curHeader = new Label("Header"); // Header for what we have
@@ -74,7 +81,6 @@ public class IplanetFX extends Application{
 
 	public static void main(String args[]){
 
-		
 		launch(args);
 	}
 
@@ -113,7 +119,7 @@ public class IplanetFX extends Application{
         
         
         // We will have a temp center pane
-        StackPane centerPane = new StackPane(mainGame);
+        centerPane = new StackPane(mainGame);
         centerPane.setStyle("-fx-background-color:cyan");
                     centerPane.setPrefSize(amountCol*50, labelList.size()*50);
         
@@ -158,7 +164,15 @@ public class IplanetFX extends Application{
         vb.setFillWidth(true);
         //vb.setFillHeight(true);
         //vb.setStyle("-fx-border-radius: 6.0");
-        
+        Timeline tl = new Timeline(
+          new KeyFrame(
+              Duration.millis(800),
+                  event -> {
+                      c.moveBlocks(mainGame);
+                        }
+                  ));
+        tl.setCycleCount(Animation.INDEFINITE);
+        tl.play();
         
         
         // We will now try and have something move
@@ -396,7 +410,16 @@ public class IplanetFX extends Application{
                     //curHeader.setText(c.get)
                     infoDeck = clearButtons(infoDeck);
                     curHeader.setText(c.getKey());
+                    String deScript = c.getDescription();
+                    if (deScript.equalsIgnoreCase("next level")){
+                        
+                        System.out.println("Doing the next level!");
+                        changeLevel();
+                    }else{
                     curDescription.setText(c.getDescription());
+                   
+                   
+                    }
                     
                 }
                 if(e.getCode().equals(KeyCode.M) ) {
@@ -404,9 +427,26 @@ public class IplanetFX extends Application{
                 }
                 if (e.getCode().equals(KeyCode.G)) {
                     // Get inventory and grab object
+                    infoDeck = clearButtons(infoDeck);
                     Block prevB = c.getPrevBlock();
                     Block curB = c.getCurBlock();
+                    
+                    // Going to try and place dirt after grabing
+                    // Could try to set prevBlock and prevLabel
+                    Block b = new Block(".");
+                    //Label l = new Label("");
+                    Background br = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
+                    
+                    
+                    c.setPrevBlock(b);
+                    c.setPrevLabelBackground(br);
+                    
+                    
+                    
+                    
                     Label curLabel = c.getCurLabel();
+                    //curLabel.setBackground(new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));
+                    
                     Node n = curLabel.getGraphic();
                     translateLeftRight(n, .6, 0, 1, 1, 0);
                     curLabel.setGraphic(b1);
@@ -414,7 +454,7 @@ public class IplanetFX extends Application{
                     System.out.println(inventory);
                     curHeader.setText("Inventory: ");
                     curDescription.setText("");
-                    ArrayList<Button> inventoryButtons = c.parseInventory(inventory);
+                    ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,stage,infoDeck,curDescription,curHeader);
                     System.out.println("The button list; "+inventoryButtons.toString());
                     for (int i = 0; i<= inventoryButtons.size()-1;i++){
                         infoDeck.add(inventoryButtons.get(i),i+2,0);
@@ -427,18 +467,18 @@ public class IplanetFX extends Application{
                 }
                 if (e.getCode().equals(KeyCode.I)) {
                     // Get
-                    
+                    infoDeck = clearButtons(infoDeck);
                     curHeader.setText("Inventory: ");
                     curDescription.setText("");
-
+                    
                     Block curB = c.getCurBlock();
                     ArrayList<Block> inventory = c.getInventory(curB);
-                    ArrayList<Button> inventoryButtons = c.parseInventory(inventory);
+                    ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,stage,infoDeck,curDescription,curHeader);
                     for (int i = 0; i<= inventoryButtons.size()-1;i++){
                         infoDeck.add(inventoryButtons.get(i),i+2,0);
+                        
                     }
-                    //curHeader.setText("Inventory: ");
-                    //curDescription.setText(inventory.toString());
+                    
                 }
             }
         });
@@ -450,15 +490,17 @@ public class IplanetFX extends Application{
     
     public GridPane clearButtons(GridPane gp){
         
-        ArrayList<Button> bl = new ArrayList<Button>();
+        ArrayList<MenuButton> bl = new ArrayList<MenuButton>();
         
         for (Node child: gp.getChildren()){
-            if (child instanceof Button){
+        if (child != null){
+            if (child instanceof MenuButton){
                 //gp.getChildren().remove(child);
                 // mainGame.getChildren().remove(c.getCurLabel());
-                bl.add((Button)child);
+                bl.add((MenuButton)child);
             }
         }
+            }
         
         for (int i = 0; i<= bl.size()-1;i++){
             gp.getChildren().remove(bl.get(i));
@@ -467,7 +509,51 @@ public class IplanetFX extends Application{
         return gp;
     }
     
-    
+    public void changeLevel(){
+        
+        c.changeLevel();
+        
+        
+        ArrayList<Block> list = c.constructMap(); // Consturcting the map
+        mainGame.getChildren().clear();
+        labelList.clear();
+        labelList = c.parse(list);
+        int col = 0;
+        int row = 0;
+        int amountCol = c.getAmountCol();
+        System.out.println("The columns amount: "+amountCol);
+        
+        
+        // We will have a temp center pane
+        centerPane.getChildren().clear();
+        centerPane.getChildren().add(mainGame);
+        centerPane.setStyle("-fx-background-color:cyan");
+                    centerPane.setPrefSize(amountCol*50, labelList.size()*50);
+        
+        
+
+
+        // Getting the board
+        for (int j = 0; j<= labelList.size()-1;j++){
+                Label curLabel = labelList.get(j);
+            
+                curLabel.prefWidthProperty().bind(Bindings.min(centerPane.widthProperty().divide(amountCol),
+                                                                            centerPane.heightProperty().divide(labelList.size()/amountCol)));
+                curLabel.prefHeightProperty().bind(Bindings.min(centerPane.widthProperty().divide(amountCol),
+                                                                            centerPane.heightProperty().divide(labelList.size()/amountCol)));
+            
+            
+                mainGame.add(labelList.get(j),col,row);
+                
+                if (col > amountCol){
+                    col = 0;
+                    row++;
+                }else{
+                    col++;
+                }
+        }
+        
+    }
     
     // Translate up to emulate movement
     public void translateUp(Node n, double dur, double up, double down, double ogDown, double ogUp) {
