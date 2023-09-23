@@ -1,14 +1,15 @@
 *{
-	-fx-base: #346D11;
+	-fx-base: #F0CDC1;
 }
 
 .button{
 	-fx-font-size: 12pt;
 	-fx-text-fill: black;
-
+    -fx-effect: dropshadow(three-pass-box,#565656,3,.5,2,2);
 	-fx-shape: "M 10 10 A 1 1 0 0 0 7 10 A 1 1 0 0 0 10 10 M 9 12 A 1 1 0 0 0 8 12 Q 7 14 8 15 Q 10 15 9 12";
-	-fx-border-color: black;
-	-fx-background-color: #FF9175;
+	
+	-fx-background-color: #C7C7C7;
+    -fx-opacity: 0.8;
 	
 	
 	
@@ -16,7 +17,7 @@
 }
 
 .first-button{
-	-fx-effect: dropshadow(gaussian, black, 0, 2, 2, 2);
-	-fx-border-color: black;
-	-fx-background-color: #FF9175;
+	-fx-effect: dropshadow(gaussian, black, 1, 2, 2, 2);
+	
+	-fx-background-color: #C7C7C7;
 }

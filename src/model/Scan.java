@@ -54,6 +54,7 @@ public class Scan{
         al.add("O");
         al.add("E");
         al.add("d"); // d for dog (Or cow)
+    
         
         return al;
         
@@ -100,6 +101,9 @@ public class Scan{
                 else if (initText == 'd'){
                     this.nodeList.add(new Animal(curIndex,"d",20));
                     
+                }
+                else if (initText == 'p'){
+                    this.nodeList.add(new People(curIndex,"p",20));
                 }
                 else{
                     this.nodeList.add(new Block(String.valueOf(initText)));

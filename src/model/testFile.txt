@@ -1,13 +1,13 @@
 ..........|...........
+..........|..........d
 ..........|...........
-......d...|...........
 ..........|..ttttttttt
 _________GtGGGpGGgggGG
 GGGtGGGGGGtGGGtGGggGGG
 GGGGGGtGtGtGGGtGGttttt
 GGGGGGGGGtGttGtGGttttt
 GGGGGGGGtGGGGGtGGttttt
-GGGGGGGGGGGtGGGGGttttt
+GGGGGGGpGGGtGGGGGttttt
 tGGGtGtGGGGtGGtGGttttt
 GGGGGGEGtGGGGGGGGttttt
 GGGGGGGGGGGGGGGGWttttt

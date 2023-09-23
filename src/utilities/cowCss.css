@@ -4,13 +4,14 @@
 
 .button{
 	-fx-font-size: 16pt;
-	-fx-text-fill: white;
-	-fx-effect: dropshadow(three-pass-box,black,3,0,0,0);
+	-fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box,#5B435C,3,.5,2,2);
 
 	-fx-shape: "M 0 0 H 0 H 0 Q 0 0.5 -1 0 Q 2 -2 1 0 Q 0 0 0 3 Q 2 0 3 3 Q 3 0 5 0";
-	-fx-border-color: black;
-	-fx-base: #A3A0A0;
-	-fx-background-color: #B48EAD;
+	
+	-fx-base: #C98BCC;
+	-fx-background-color: #C98BCC;
+    -fx-opacity: 0.8;
 
 	
 }

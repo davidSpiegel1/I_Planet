@@ -44,6 +44,9 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
+import java.util.Random;
+
+
 // The class of the controller
 public class Controller2{
     private int currentLevel;
@@ -77,7 +80,7 @@ public class Controller2{
         this.isGameOver = false;
         this.levelNames = new ArrayList<String>();
         p = new Parse(); // parser object intiated
-        
+   
         
         
         this.levelNames = this.populateLevelNames(this.levelNames);
@@ -414,40 +417,95 @@ public class Controller2{
         
         ArrayList<MovableBlock> mb = this.p.getMovableBlocks();
         ArrayList<Label> ml = this.p.getMovableLabels();
+        String direction[] = {"a","s","d","w"};
+        Random rand = new Random();
+        int upperBound = 4;
         for (int i = 0; i<= mb.size()-1;i++){
-           
+            
             System.out.println("Moving Blocks!");
             int prevPos = mb.get(i).getPos();
             System.out.println("The prevPos: "+prevPos);
             
             
+            String dir = direction[rand.nextInt(upperBound)];
+            System.out.println("The direction: "+dir);
+            
+            if (dir.equals("d")){
             // Trying to move right
             if (prevPos+1 <= this.levelArr.size()-1){
-                //if (!this.levelArr.get(prevPos+1).getKey().equals("_") && !this.levelArr.get(prevPos+1).getKey().equals("|")){
-                    
-                    
-                    //Block charBlock = this.levelArr.get(prevPos+1);
-                    //this.levelArr.set(prevPos,charBlock);
-                   
+                if (!this.levelArr.get(prevPos+1).getKey().equals("_") && !this.levelArr.get(prevPos+1).getKey().equals("|") && ((prevPos+1)%(this.amountCol)) != 0){
                     mb.get(i).moveRight();
                     int newPos = mb.get(i).getPos();
-                    //this.levelArr.set(newPos,mb.get(i));
+            
                     System.out.println("The newPos: "+newPos);
                     
                     Node n = ml.get(i).getGraphic();
                     n = translateRight(n);
                     n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
                     ml.get(i).setGraphic(n);
-            
-                    
-                    
-                    
-                    //}
-                
-                
+                }
             }
-  
-          
+            }
+            else if (dir.equals("a")){
+                if (prevPos-1 <= this.levelArr.size()-1 && prevPos-1 >= 0){
+                    if (!this.levelArr.get(prevPos-1).getKey().equals("_") && !this.levelArr.get(prevPos-1).getKey().equals("|")){
+                mb.get(i).moveLeft();
+                int newPos = mb.get(i).getPos();
+               
+                System.out.println("The newPos: "+newPos);
+                
+                Node n = ml.get(i).getGraphic();
+                n = translateLeft(n);
+                n.setManaged(false);
+                n.toFront();
+                ml.get(i).toFront();
+                ml.get(i).setGraphic(n);
+                    }
+                } 
+            }
+            else if (dir.equals("w")){
+                if (prevPos-this.amountCol-2 >=0){
+                    
+                    if (!this.levelArr.get(prevPos-this.amountCol-2).getKey().equals("_") && !this.levelArr.get(prevPos-this.amountCol-2).getKey().equals("|")){
+                        
+                        
+                    mb.get(i).moveUp(this.amountCol);
+                    int newPos = mb.get(i).getPos();
+      
+                    System.out.println("The newPos: "+newPos);
+                    
+                    Node n = ml.get(i).getGraphic();
+                    n = translateUp(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
+                    ml.get(i).setGraphic(n);
+                    
+                }
+                    }
+            }
+            else if (dir.equals("s")){
+                if (prevPos+this.amountCol+2 <= this.levelArr.size()-1){
+                    
+                    if (!this.levelArr.get(prevPos+this.amountCol+2).getKey().equals("_") && !this.levelArr.get(prevPos+this.amountCol+2).getKey().equals("|")){
+                        
+                    mb.get(i).moveDown(this.amountCol);
+                    int newPos = mb.get(i).getPos();
+                    //this.levelArr.set(newPos,mb.get(i));
+                    System.out.println("The newPos: "+newPos);
+                    
+                    Node n = ml.get(i).getGraphic();
+                    n = translateDown(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
+                    ml.get(i).setGraphic(n);
+                    
+                }
+                    }
+            }
             
         }
         this.p.setMovableBlocks(mb);
@@ -461,24 +519,52 @@ public class Controller2{
         double x = n.getLayoutX();
         System.out.println("what the layout was: "+ x);
         double y = n.getLayoutY();
-        
-        
-        //int x = n.getX();
-        double toX = (int)x+10.0;
-        int toY = (int)y;
-        
-        //n.setScaleX(2);
-        //n.relocate(toX,toY);
-        n.setLayoutX(x+10);
+    
+        n.setLayoutX(x+32);
       
-        
-        
         double x2 = n.getLayoutX();
         System.out.println("what th layout is: "+x2);
         
-        
-        
+        return n;
+    }
+    public Node translateLeft(Node n) {
+
+        double x = n.getLayoutX();
+        System.out.println("what the layout was: "+ x);
+        double y = n.getLayoutY();
+    
+        n.setLayoutX(x-32);
       
+        double x2 = n.getLayoutX();
+        System.out.println("what th layout is: "+x2);
+        
+        return n;
+    }
+    
+    public Node translateUp(Node n) {
+
+        double x = n.getLayoutX();
+        System.out.println("what the layout was: "+ x);
+        double y = n.getLayoutY();
+    
+        n.setLayoutY(y-32);
+      
+        double x2 = n.getLayoutY();
+        System.out.println("what th layout is: "+x2);
+        
+        return n;
+    }
+    public Node translateDown(Node n) {
+
+        double x = n.getLayoutX();
+        System.out.println("what the layout was: "+ x);
+        double y = n.getLayoutY();
+    
+        n.setLayoutY(y+32);
+      
+        double x2 = n.getLayoutY();
+        System.out.println("what th layout is: "+x2);
+        
         return n;
     }
     

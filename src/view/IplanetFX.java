@@ -166,7 +166,7 @@ public class IplanetFX extends Application{
         //vb.setStyle("-fx-border-radius: 6.0");
         Timeline tl = new Timeline(
           new KeyFrame(
-              Duration.millis(800),
+              Duration.millis(1000),
                   event -> {
                       c.moveBlocks(mainGame);
                         }

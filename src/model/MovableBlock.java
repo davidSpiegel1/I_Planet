@@ -23,19 +23,26 @@ public class MovableBlock extends Block{
         super(key);
         this.pos = pos;
         this.key = key;
-        this.maxCol = 500;
+        this.maxCol = maxCol;
         
     }
     
   
     
-    public boolean moveRight(){
-        boolean couldMove = false;
-        if (this.pos+1 < maxCol-1){
-            this.pos++;
-            couldMove = true;
-        }
-        return couldMove;
+    public void moveRight(){
+        this.pos++;
+    }
+    
+    public void moveLeft(){
+        this.pos--;
+    }
+    
+    public void moveUp(int amountCol){
+        this.pos -= amountCol+2;
+    }
+    
+    public void moveDown(int amountCol){
+        this.pos += amountCol+2;
     }
     
     public void setPos(int pos){

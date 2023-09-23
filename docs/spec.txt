@@ -10,7 +10,7 @@
 			2.) Internal game logic (nested) (Might be in controller)
 			3.) Menu/Option dashboard
 		# We also have another GUI file for parsing map
-			1.) Each *object* in I Planet will have a node associated with it (Derived from .txt)
+			1.) Each *object* in I Planet will have a node associated with it (Derived from .txt file)
 			2.) While doing this, we allow for character design and artistic elements
 
 
@@ -23,12 +23,31 @@
 			  2D list object. 
 		* Maybe we could have server-based multiplayer
 
+
 	-- Issues --
+
 		* Currently, deleting inventory is not working.
-			* Possible fix: Use 'e' to derive the correct Node to delete 			from GridPane
+			- Possible fix: Use 'e' to derive the correct Node to delete 						from GridPane
+			- Worked!
+
+		* There are multiple issues with moving characters:
+			- The solution used: Instead of changing the 
+					    actual grid, we will just animate
+					    the graphic across the screen (1)
+		* There is an issue with moving right with the characters.
+			- The solution used: If position%amountOfCol == 0:
+						Then, we cannot move right
+
+
+
+
+
+	-- FootNotes --
+(1) Note that this requires the node class to have a coordinate so we know where the 'seed' is going.
+						
+
 			
 
 	
-
 
 

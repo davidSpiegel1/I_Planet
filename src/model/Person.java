@@ -58,7 +58,6 @@ public class Person extends Block{
 				intro = "Your following the WOLF I see.";
 			}
 			else if (currentInteraction == 2) {
-				
 				intro = "Colterstevens, he's the one guiding you? ";
 			}
 			else if (currentInteraction == 3) {
@@ -73,15 +72,12 @@ public class Person extends Block{
 				intro = "Your gonna save my child, right?";
 			}
 			else if (currentInteraction == 2) {
-				
 				intro = "My child! in the town! Those monsters!? ";
 			}
 			else if (currentInteraction == 3) {
 				intro = "You will?! Thank god!";
 			}
-			
 		}
-		
 		currentInteraction++;
 	return description;
 }
