@@ -1,12 +1,13 @@
 
 
 .button{
-	-fx-font-size: 11pt;
+	-fx-font-size: 12pt;
 	-fx-text-fill: black;
-
+	-fx-effect: dropshadow(three-pass-box,#565656,3,.5,2,2);
 	-fx-shape: "M 40 40 A 4 4 90 0 0 28 40 A 4 4 90 0 0 40 40 M 36 48 A 4 4 90 0 0 32 48 Q 28 56 32 60 Q 40 60 36 48 M 40 48 L 42 43 L 42 46 L 41 49 L 40 50 L 40 48";
-	-fx-border-color: black;
-	-fx-background-color: #FF9175;
+	
+	-fx-background-color: #C7C7C7;
+    	-fx-opacity: 0.8;
 	
 	
 	
@@ -15,10 +16,10 @@
 
 .first-button{
 	-fx-effect: dropshadow(gaussian, black, 0, 2, 2, 2);
-	-fx-border-color: black;
+	
 	-fx-background-color: #FF9175;
 }";
-	-fx-border-color: black;
+	
 	-fx-background-color: #FF9175;
 	
 	

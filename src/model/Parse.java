@@ -88,6 +88,7 @@ public class Parse {
     private Label curHeader;
     private ArrayList<MovableBlock> movingBlocks;
     private ArrayList<Label> movingLabels;
+    private Node usedNode = null;
 
     public Parse() {
         labelList = new ArrayList<Label>();
@@ -137,7 +138,7 @@ public class Parse {
                 l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
             } else if (arr.get(i) instanceof MovableBlock) {
 
-                if (arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("p")) {
+                if (arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("p") || arr.get(i).getKey().equals("E")) {
 
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
                     l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
@@ -166,9 +167,9 @@ public class Parse {
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
                     l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
                 } else {
-                    // l1.setText(arr.get(i).getKey());
+
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
-                    // l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
+        
                 }
             }
       
@@ -202,8 +203,11 @@ public class Parse {
         }
         return b;
     }
+    
+    
+    
 
-    public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, Stage primaryStage, GridPane infoDeck,
+public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, Stage primaryStage, GridPane infoDeck,
             Label curDescription, Label curHeader) {
 
         // Setting the character instance variable to the block arraylist inventory
@@ -215,14 +219,21 @@ public class Parse {
 
         ArrayList<MenuButton> buttonArr = new ArrayList<MenuButton>();
         // Looping through the
-        shouldAdd = true;
-
+   
+        ArrayList<String> foundTypes = new ArrayList<String>(); // List of types found
+        
+        
         for (int i = 0; i <= blockArr.size() - 1; i++) {
+            
+            System.out.println("The class name: "+blockArr.get(i).getKey());
+            if (!foundTypes.contains(blockArr.get(i).getKey())){
+            
             MenuItem m1 = new MenuItem("Use");
             MenuItem m2 = new MenuItem("Remove");
             MenuButton b = new MenuButton(blockArr.get(i).getKey());
             curB = b;
             b.setId(blockArr.get(i).getKey());
+            
             menuArr.add(b);
             curI = i;
             // b.setBackground(findBackGround(blockArr.get(i).getKey()));
@@ -262,6 +273,9 @@ public class Parse {
                 @Override
                 public void handle(ActionEvent e) {
                     System.out.println("Use pressed!");
+                    setUsedNode(curB.getGraphic());
+                    
+                    
                 }
 
             });
@@ -275,11 +289,10 @@ public class Parse {
                         for (int i = 0; i <= blockArr.size() - 1; i++) {
                             if (((MenuItem) e.getSource()).getId().equals(blockArr.get(i).getKey())) {
                                 char1.removeInventory(i);
+                                
                                 break;
                             }
                         }
-
-                        // System.out.println(((MenuItem)e.getSource()).getParentMenu().getProperties().get(MenuButton.class.getCanonicalName()));
                         System.out.println(((MenuItem) e.getSource()).getId());
                         int val = 0;
                         for (int i = 0; i <= menuArr.size() - 1; i++) {
@@ -311,10 +324,20 @@ public class Parse {
 
             b.getItems().add(m1);
             b.getItems().add(m2);
-
-            Stage options = new Stage();
-            options.initModality(Modality.NONE);
-            options.initStyle(StageStyle.DECORATED);
+                
+    
+            Button num = new Button("1");
+          
+            num.setStyle("-fx-text-fill: #303841;" +
+                        "-fx-background-color: transparent;" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 10;" );
+            num.setAlignment(Pos.TOP_LEFT);
+          
+            num.setFocusTraversable(false);
+                
+            b.setGraphic(num);
             b.setFocusTraversable(false);
 
             setOnDragDetected(b);
@@ -386,16 +409,47 @@ public class Parse {
                 }
             });
 
-            if (shouldAdd) {
+         
 
                 buttonArr.add(b);
-            } else {
-                shouldAdd = true;
-            }
-            // buttonArr.add(b);
+                foundTypes.add(blockArr.get(i).getKey());
+                
+                }else{
+                    
+                    System.out.println("Already in list!");
+                    for (int j = 0; j<= menuArr.size()-1;j++){
+                        if (blockArr.get(i).getKey().equals(menuArr.get(j).getText())){
+                            try{
+                                Button n = (Button)menuArr.get(j).getGraphic();
+                                System.out.println("The number: "+n.getText());
+                                int nextNum = Integer.parseInt(n.getText())+1;
+                                System.out.println("The next number: "+nextNum);
+                                n.setText(Integer.toString(nextNum));
+                                
+                                System.out.println("Found the button for "+ menuArr.get(j).getText());
+                                }catch(NumberFormatException et){
+                                    System.out.println("Error Parsing integer for incrementing inventory block!! "+et);
+                                }
+                                
+                        }
+                    }
+                    
+                    
+                    
+                } // Else we say it is already contained
+         
+     
         }
 
         return buttonArr;
+    }
+    
+    public void setUsedNode(Node n){
+        this.usedNode = n;
+    }
+    
+    public Node getUsedNode(){
+        return this.usedNode;
     }
 
     public Button buttonBuilder(String type) {

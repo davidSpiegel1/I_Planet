@@ -22,6 +22,7 @@
 			* We could do this using animations and manipulating the specific element within the 
 			  2D list object. 
 		* Maybe we could have server-based multiplayer
+		* Made characters look better by giving drop-shadow and getting rid of outline
 
 
 	-- Issues --
@@ -37,6 +38,14 @@
 		* There is an issue with moving right with the characters.
 			- The solution used: If position%amountOfCol == 0:
 						Then, we cannot move right
+		* The characters are moving randomly and coordinated together.
+			- This looks ugly, so we will fix it by doing two things:
+				(1) - Use a shortest path algorithm and a 'place_to_go' field
+					to make the objects move with purpose
+				(2) - Fix animation and time between ticks to make the characters
+				         look more fluid
+
+		* The inventory must allow for bundling (
 
 
 
@@ -44,7 +53,7 @@
 
 	-- FootNotes --
 (1) Note that this requires the node class to have a coordinate so we know where the 'seed' is going.
-						
+	(1.1) Meaning, we have to make sure to cover the 'seed' block.						
 
 			
 

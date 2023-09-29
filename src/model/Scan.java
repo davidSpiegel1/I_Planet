@@ -105,6 +105,9 @@ public class Scan{
                 else if (initText == 'p'){
                     this.nodeList.add(new People(curIndex,"p",20));
                 }
+                else if (initText == 'E'){
+                    this.nodeList.add(new Enemies(curIndex,"E",20)); // May need to fix amountCol now that it's used
+                }
                 else{
                     this.nodeList.add(new Block(String.valueOf(initText)));
                     
@@ -124,6 +127,10 @@ public class Scan{
         }
         
         
+        return this.nodeList;
+    }
+    
+    public ArrayList<Block> getNodeList(){
         return this.nodeList;
     }
     

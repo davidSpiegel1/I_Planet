@@ -40,6 +40,7 @@ import model.Parse;
 import model.Scan;
 import model.Character;
 import model.MovableBlock;
+import model.Enemies;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.*;
@@ -415,12 +416,89 @@ public class Controller2{
     // A method to move the blocks that are movable
     public void moveBlocks(GridPane gp){
         
+        if (p.getUsedNode() != null){
+            System.out.println("Not null!!");
+            //System.out.println(p.getUsedNode().getClassCssMetaData());
+            Button n = (Button)this.curLabel.getGraphic();
+            n.getStylesheets().addAll("/utilities/charWithKnifeCss.css","/utilities/charCss.css");
+            // getStylesheets()
+            System.out.println(n.getStylesheets());
+            this.curLabel.setGraphic(n);
+            p.setUsedNode(null);
+        }
+        else{
+            System.out.println("Null!");
+        }
+        
+   
         ArrayList<MovableBlock> mb = this.p.getMovableBlocks();
         ArrayList<Label> ml = this.p.getMovableLabels();
         String direction[] = {"a","s","d","w"};
         Random rand = new Random();
         int upperBound = 4;
         for (int i = 0; i<= mb.size()-1;i++){
+            // Trying the enemies block
+            if (mb.get(i) instanceof Enemies){
+                System.out.println("The enemies!!");
+                Enemies e1 = (Enemies)mb.get(i);
+                e1.setLevelArr(this.sc.getNodeList());
+                e1.updatePurpose(this.charPos);// Must update the purpose each time!
+                int newPos = e1.generateNewPos();
+                System.out.println("The new position! " +newPos);
+                System.out.println("The character postion: "+this.charPos);
+                ArrayList<String> moves = e1.getMoves();
+                System.out.println("The new moveis: "+moves);
+              
+                
+                for (int p = 0; p<= moves.size()-1;p++){
+                    String curMove = moves.get(p);
+                    
+                    if (curMove.equals("s")){
+                    
+                    Node n = ml.get(i).getGraphic();
+                    n = translateDown(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
+                    ml.get(i).setGraphic(n);
+                    }
+                    else if (curMove.equals("d")){
+                        
+                        Node n = ml.get(i).getGraphic();
+                        n = translateRight(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                    }
+                    else if (curMove.equals("w")){
+                        
+                        Node n = ml.get(i).getGraphic();
+                        n = translateUp(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                    }
+                    else if (curMove.equals("a")){
+                        
+                        Node n = ml.get(i).getGraphic();
+                        n = translateLeft(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                    }
+                    
+                }
+                
+                
+                e1.clearMoves();
+                
+                
+            }else{
+            
+            
             
             System.out.println("Moving Blocks!");
             int prevPos = mb.get(i).getPos();
@@ -506,6 +584,7 @@ public class Controller2{
                 }
                     }
             }
+                }// End of enemy condition
             
         }
         this.p.setMovableBlocks(mb);
