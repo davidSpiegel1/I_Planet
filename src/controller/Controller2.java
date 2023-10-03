@@ -56,6 +56,7 @@ public class Controller2{
     private boolean isGameOver;
     private int charPos;
     private int amountCol;
+    private int ogCharPos;
     private Block prevBlock = null;
     
     private boolean didMove = false;// An instance variable to check if the person moved or not
@@ -77,11 +78,13 @@ public class Controller2{
         // Us initializing everything
         this.currentLevel = 0; // The current level
         this.charPos = 0;
+        this.ogCharPos = 0;
         this.prevBlock = null;
         this.amountCol = 20;
         this.isGameOver = false;
         this.levelNames = new ArrayList<String>();
         p = new Parse(); // parser object intiated
+        
    
         
         
@@ -423,11 +426,6 @@ public class Controller2{
     
     // A method to move the blocks that are movable
     public void moveBlocks(GridPane gp){
-        
-        
- 
-        
-        
         if (p.getUsedNode() != null){
             System.out.println("Not null!!");
             //this.curLabel.getChildren().add(new Label("h"));
@@ -486,40 +484,23 @@ public class Controller2{
                     String curMove = moves.get(p);
                     
                     if (curMove.equals("s")){
-                    
-                   // Node n = ml.get(i).getGraphic();
+
                     n = translateDown(n);
-                    //n.setManaged(false);
-                    //n.toFront();
-                   // ml.get(i).toFront();
-                   // ml.get(i).setGraphic(n);
+       
                     }
                     else if (curMove.equals("d")){
-                        
-                        //Node n = ml.get(i).getGraphic();
+
                         n = translateRight(n);
-                       // n.setManaged(false);
-                        //n.toFront();
-                        //ml.get(i).toFront();
-                        //ml.get(i).setGraphic(n);
+      
                     }
                     else if (curMove.equals("w")){
-                        
-                        //Node n = ml.get(i).getGraphic();
+
                         n = translateUp(n);
-                        //n.setManaged(false);
-                        //n.toFront();
-                        //ml.get(i).toFront();
-                        //ml.get(i).setGraphic(n);
+
                     }
                     else if (curMove.equals("a")){
-                        
-                       // Node n = ml.get(i).getGraphic();
                         n = translateLeft(n);
-                        //n.setManaged(false);
-                        //n.toFront();
-                        //ml.get(i).toFront();
-                        //ml.get(i).setGraphic(n);
+    
                     }
                     
                 }
@@ -630,6 +611,142 @@ public class Controller2{
     }
     
     
+    // This will be the third iteration of moveChar
+    public ArrayList<Label> moveChar3(String move, ArrayList<Label> labelArr){
+        Node n = null;
+        
+        if (move.equals("s")){
+            System.out.println("Testing down button!");
+            if (this.charPos+this.amountCol+2 <= this.levelArr.size()-1){
+                // Condition of barriers
+                if (!this.levelArr.get(this.charPos+this.amountCol+2).getKey().equals("_") && !this.levelArr.get(this.charPos+this.amountCol+2).getKey().equals("|")){
+                     
+                    // Translating the graphic
+                    n = labelArr.get(this.ogCharPos).getGraphic();
+                    n = translateDown(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    labelArr.get(this.ogCharPos).toFront();
+                    labelArr.get(this.ogCharPos).setGraphic(n);
+                    // Same as before but we will see
+                    Block c = this.levelArr.get(this.charPos);
+                    this.levelArr.set(this.charPos,this.prevBlock);
+                    //this.curLabel = labelArr.get(this.charPos);
+                    //labelArr.set(this.charPos,this.prevLabel);
+                    this.charPos+= this.amountCol+2;
+                    this.prevBlock = this.levelArr.get(this.charPos);
+                    this.levelArr.set(this.charPos,c);
+                    //this.prevLabel = labelArr.get(this.charPos);
+                    //labelArr.set(this.charPos,this.curLabel);
+                    this.didMove = true;
+                    }
+            }
+        }
+        else if (move.equals("d")){
+            System.out.println("Testing right button!");
+            if (this.charPos+1 <= this.levelArr.size()-1){
+                // The condition for barriers
+                if (!this.levelArr.get(this.charPos+1).getKey().equals("_") && !this.levelArr.get(this.charPos+1).getKey().equals("|")){
+                    
+                    n = labelArr.get(this.ogCharPos).getGraphic();
+                    n = translateRight(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    labelArr.get(this.ogCharPos).toFront();
+                    labelArr.get(this.ogCharPos).setGraphic(n);
+                    
+                    Block c = this.levelArr.get(this.charPos);
+                    this.levelArr.set(this.charPos,this.prevBlock);
+                
+                    //this.curLabel = labelArr.get(this.charPos);
+                    //labelArr.set(this.charPos,this.prevLabel);
+                
+           
+            
+                    this.charPos++; // Incrementing the character position..
+                    this.prevBlock = this.levelArr.get(this.charPos);
+                    this.levelArr.set(this.charPos,c);
+                
+                    //this.prevLabel = labelArr.get(this.charPos);
+                    //labelArr.set(this.charPos,this.curLabel);
+                    this.didMove = true;
+                    
+                }// End of condition of barriers
+            }
+        }
+        else if (move.equals("w")){
+            System.out.println("Testing up button!");
+            if (this.charPos-this.amountCol-2 >=0){
+                // Condition of barriers
+                if (!this.levelArr.get(this.charPos-this.amountCol-2).getKey().equals("_") && !this.levelArr.get(this.charPos-this.amountCol-2).getKey().equals("|")){
+                    System.out.println("Got to w with;"+(this.charPos-this.amountCol-2));
+                
+                n = labelArr.get(this.ogCharPos).getGraphic();
+                n = translateUp(n);
+                n.setManaged(false);
+                n.toFront();
+                labelArr.get(this.ogCharPos).toFront();
+                labelArr.get(this.ogCharPos).setGraphic(n);
+                    
+                Block c = this.levelArr.get(this.charPos);
+                this.levelArr.set(this.charPos,this.prevBlock);
+                
+                //this.curLabel = labelArr.get(this.charPos);
+                //labelArr.set(this.charPos,this.prevLabel);
+                
+                
+                this.charPos-= this.amountCol+2;
+                this.prevBlock = this.levelArr.get(this.charPos);
+                this.levelArr.set(this.charPos,c);
+                
+                
+                //this.prevLabel = labelArr.get(this.charPos);
+                //labelArr.set(this.charPos,this.curLabel);
+                this.didMove = true;
+                    
+                    }// End of the condition of barriers
+            }
+            
+        }
+        else if (move.equals("a")){
+            if (this.charPos-1 <= this.levelArr.size()-1 && this.charPos-1 >= 0){
+                // Condition of barriers
+                if (!this.levelArr.get(this.charPos-1).getKey().equals("_") && !this.levelArr.get(this.charPos-1).getKey().equals("|")){
+                
+                n = labelArr.get(this.ogCharPos).getGraphic();
+                n = translateLeft(n);
+                n.setManaged(false);
+                n.toFront();
+                labelArr.get(this.ogCharPos).toFront();
+                labelArr.get(this.ogCharPos).setGraphic(n);
+                    
+                Block c = this.levelArr.get(this.charPos);
+                this.levelArr.set(this.charPos,this.prevBlock);
+                // Now just do the same for the label arr
+                //this.curLabel = labelArr.get(this.charPos);
+                //labelArr.set(this.charPos,this.prevLabel);
+                
+                
+                this.charPos--;
+                this.prevBlock = this.levelArr.get(this.charPos);
+                this.levelArr.set(this.charPos,c);
+                
+                //this.prevLabel = labelArr.get(this.charPos);
+                //labelArr.set(this.charPos,this.curLabel);
+                
+                this.didMove = true;
+                }// End of condition of barriers
+            }
+        }
+        
+        
+        
+        
+        return labelArr;
+        
+    }
+    
+    
     public Node translateRight(Node n) {
 
         double x = n.getLayoutX();
@@ -662,8 +779,8 @@ public class Controller2{
         double x = n.getLayoutX();
         System.out.println("what the layout was: "+ x);
         double y = n.getLayoutY();
-    
-        n.setLayoutY(y-32);
+        // Used to be: 32
+        n.setLayoutY(y-40);
       
         double x2 = n.getLayoutY();
         System.out.println("what th layout is: "+x2);
@@ -675,8 +792,8 @@ public class Controller2{
         double x = n.getLayoutX();
         System.out.println("what the layout was: "+ x);
         double y = n.getLayoutY();
-    
-        n.setLayoutY(y+32);
+        // Used to be: 32
+        n.setLayoutY(y+40);
       
         double x2 = n.getLayoutY();
         System.out.println("what th layout is: "+x2);

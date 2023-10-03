@@ -233,7 +233,15 @@ public class IplanetFX extends Application{
                 //Button b2 = new Button("");
                 
                 if (e.getCode().equals(KeyCode.DOWN)) {
-                    System.out.println("Here!");
+                    // Gonna have a move char3 that we will try and use
+                    String move = "s";
+                    labelList = c.moveChar3(move,labelList); // Move char 3 will take a string for move and the list of blocks
+                    int curPos = c.getCharPos();
+                    translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
+                    
+                    
+                    
+                    /*System.out.println("Here!");
                     int prevPos = c.getCharPos();
                     
                     //labelList.clear();
@@ -283,12 +291,17 @@ public class IplanetFX extends Application{
                             Label curLabel = c.getCurLabel();
                             curLabel.setGraphic(b1);
                             
-                        }
+                        }*/
                         
                     
                 }
                 if (e.getCode().equals(KeyCode.RIGHT)) {
-                    System.out.println("Here!");
+                    
+                    String move = "d";
+                    labelList = c.moveChar3(move,labelList);
+                    int curPos = c.getCharPos();
+                    translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
+                    /*System.out.println("Here!");
                     int prevPos = c.getCharPos();
                     
                     //labelList.clear();
@@ -331,11 +344,16 @@ public class IplanetFX extends Application{
                     else{
                         Label curLabel = c.getCurLabel();
                         curLabel.setGraphic(b1);
-                    }
+                    }*/
                     
                 }
                 if (e.getCode().equals(KeyCode.UP)) {
-                    System.out.println("Here!");
+                    
+                    String move = "w";
+                    labelList = c.moveChar3(move,labelList);
+                    int curPos = c.getCharPos();
+                    translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
+                    /*System.out.println("Here!");
                     int prevPos = c.getCharPos();
                     
                     //labelList.clear();
@@ -382,10 +400,16 @@ public class IplanetFX extends Application{
                         }else{
                             Label curLabel = c.getCurLabel();
                             curLabel.setGraphic(b1);
-                        }
+                        }*/
                 }
                 if (e.getCode().equals(KeyCode.LEFT)) {
-                    System.out.println("Here! left");
+                    
+                    
+                    String move = "a";
+                    labelList = c.moveChar3(move,labelList);
+                    int curPos = c.getCharPos();
+                    translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
+                    /*System.out.println("Here! left");
                     int prevPos = c.getCharPos();
                     if (prevPos != 0){
                     
@@ -442,7 +466,9 @@ public class IplanetFX extends Application{
                             curLabel.setGraphic(b1);
                             
                         }
-                }}
+                }*/
+                     
+                     }
                 if (e.getCode().equals(KeyCode.SPACE)) {
                     //curHeader.setText(c.get)
                     infoDeck = clearButtons(infoDeck);
@@ -470,6 +496,7 @@ public class IplanetFX extends Application{
                     
                     // Going to try and place dirt after grabing
                     // Could try to set prevBlock and prevLabel
+                    
                     Block b = new Block(".");
                     //Label l = new Label("");
                     Background br = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
@@ -481,14 +508,21 @@ public class IplanetFX extends Application{
                     
                     
                     
-                    Label curLabel = c.getCurLabel();
+                    //Label curLabel = c.getCurLabel();
+                    int curPos = c.getCharPos();
+                    Label curLabel = labelList.get(curPos);
+                    
                     //curLabel.setBackground(new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));
                     
                     Node n = curLabel.getGraphic();
                     translateLeftRight(n, .6, 0, 1, 1, 0);
-                    curLabel.setGraphic(b1);
+                
+                    curLabel.setGraphic(null);
                     ArrayList<Block> inventory = c.putInInventory(curB,prevB);
                     System.out.println(inventory);
+                    
+                    
+                    // Doing display stuff
                     curHeader.setText("Inventory: ");
                     curDescription.setText("");
                     ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
