@@ -44,9 +44,18 @@ import java.awt.*;
 import java.awt.event.*;  
 import javafx.beans.binding.Bindings;
 
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Menu;
+
 import javafx.animation.Timeline;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+
+import javafx.scene.input.MouseEvent;
 
 //import javafx.scene.layout.StackPane;
 import model.Block;
@@ -65,6 +74,13 @@ public class IplanetFX extends Application{
     private GridPane mainGame;
     private GridPane infoDeck;
     private StackPane centerPane;
+    private Stage mainStage;
+    
+    // Menu Items
+    private MenuButton statButton;
+    private MenuItem statChar;
+    private MenuItem statMap;
+    private MenuItem statInventory;
     
     private Label curDescription = new Label("Description"); // Description for object we hav
     private Label curHeader = new Label("Header"); // Header for what we have
@@ -88,7 +104,7 @@ public class IplanetFX extends Application{
 	@Override
 	public void start(Stage stage){
         
-        
+        mainStage = stage;
         
 		stage.setTitle("I Planet");
         c = new Controller2(); // Initalizing the controller
@@ -103,8 +119,18 @@ public class IplanetFX extends Application{
         curHeader = new Label("Header");
         curHeader.setFont(new Font("Arial", 30));
         curHeader.setStyle("-fx-text-fill: cornflowerblue");
+        
+       
+        
+        statButton = constructStats();
+        
+        statButton.setId("important");
+        
         infoDeck.add(curDescription,2,0);
         infoDeck.add(curHeader,1,0);
+        infoDeck.add(statButton,3,0);
+        
+     
         
         
         
@@ -134,10 +160,7 @@ public class IplanetFX extends Application{
                                                                             centerPane.heightProperty().divide(labelList.size()/amountCol)));
                 curLabel.prefHeightProperty().bind(Bindings.min(centerPane.widthProperty().divide(amountCol),
                                                                             centerPane.heightProperty().divide(labelList.size()/amountCol)));
-            
-            
                 mainGame.add(labelList.get(j),col,row);
-                
                 if (col > amountCol){
                     col = 0;
                     row++;
@@ -169,6 +192,24 @@ public class IplanetFX extends Application{
               Duration.millis(1000),
                   event -> {
                       c.moveBlocks(mainGame);
+                      if (c.getPrevBlock().getKey().equals("W")){
+                          Character c1 = (Character)c.getCurBlock();
+                          c1.decrementLife();
+                          c.setCurBlock(c1);
+            
+                          // Later stuff
+                          displayCharInfo();
+                      }
+                      if (((Character)c.getCurBlock()).getLife() == 0){
+                          
+                          System.out.println("Game Over!!!");
+                          displayGameOver(stage);
+                          
+                          
+                          
+                          
+                      }
+                      
                         }
                   ));
         tl.setCycleCount(Animation.INDEFINITE);
@@ -176,12 +217,6 @@ public class IplanetFX extends Application{
         
         
         // We will now try and have something move
-        
-
-		
-        
-        
-        
         Scene scene = new Scene(vb,SCENE_SIZE_ROW,SCENE_SIZE_COL);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
@@ -342,6 +377,8 @@ public class IplanetFX extends Application{
                     
                     newLabel.setBackground(c.getPrevLabel().getBackground());
                     mainGame.add(newLabel,c1,r1);
+                        
+                        
                         }else{
                             Label curLabel = c.getCurLabel();
                             curLabel.setGraphic(b1);
@@ -454,7 +491,7 @@ public class IplanetFX extends Application{
                     System.out.println(inventory);
                     curHeader.setText("Inventory: ");
                     curDescription.setText("");
-                    ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,stage,infoDeck,curDescription,curHeader);
+                    ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
                     System.out.println("The button list; "+inventoryButtons.toString());
                     for (int i = 0; i<= inventoryButtons.size()-1;i++){
                         infoDeck.add(inventoryButtons.get(i),i+2,0);
@@ -473,11 +510,20 @@ public class IplanetFX extends Application{
                     
                     Block curB = c.getCurBlock();
                     ArrayList<Block> inventory = c.getInventory(curB);
-                    ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,stage,infoDeck,curDescription,curHeader);
+                    ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
                     for (int i = 0; i<= inventoryButtons.size()-1;i++){
                         infoDeck.add(inventoryButtons.get(i),i+2,0);
                         
                     }
+                    
+                }
+                if (e.getCode().equals(KeyCode.C)){
+                    // For the character info!!
+                    System.out.println("Characer question requested: ");
+                    displayCharInfo();
+                    
+                    
+                    
                     
                 }
             }
@@ -488,6 +534,57 @@ public class IplanetFX extends Application{
     
     
     
+    /*
+     Something to help with the end of the game!!
+     Should return the 'controller' as a new controller with nothing there
+     FIX!! Make prettier!!
+     
+     
+     */
+    public Controller displayGameOver(Stage stage1) {
+        stage1 = new Stage();
+        mainStage = stage1;
+        Label l2 = new Label("You Lost :(");
+        Button b1 = new Button("Play again?");
+
+
+        l2.setFont(new Font("ariel", 50));
+        l2.setStyle(
+                "-fx-border-color: GREY;" +
+                    "-fx-border-radius: 10.0;" +
+                    "-fx-border-width: 5;" +
+                    "-fx-text-fill: red;"+
+                    "-fx-background-color: grey;");
+
+        l2.setBackground(new Background(new BackgroundFill(Color.rgb(42, 0, 67), new CornerRadii(6.0), Insets.EMPTY)));
+
+        // l2.setMaxWidth(Double.MAX_VALUE);
+        l2.setAlignment(Pos.BASELINE_LEFT);
+
+        b1.setFont(new Font("ariel", 50));
+        b1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 10.0;" + "-fx-border-width: 5;"
+                + "-fx-text-fill: green");
+        b1.setBackground(new Background(new BackgroundFill(Color.rgb(42, 0, 67), new CornerRadii(6.0), Insets.EMPTY)));
+        b1.setAlignment(Pos.BASELINE_RIGHT);
+        // What happends if you start the game over
+        b1.setOnAction((e) -> {
+            
+            mainStage.close();
+
+        });
+
+        VBox vbox2 = new VBox(3, l2, b1);
+        vbox2.setBackground(new Background(new BackgroundFill(Color.rgb(42, 0, 67), CornerRadii.EMPTY, Insets.EMPTY)));
+        vbox2.setAlignment(Pos.CENTER);
+        Scene sc1 = new Scene(vbox2, SCENE_SIZE_ROW, SCENE_SIZE_COL);
+
+        stage1.setScene(sc1);
+        stage1.setTitle("Game Over");
+        stage1.show();
+        
+        return null; // WIll return the controller value
+    }
+    
     public GridPane clearButtons(GridPane gp){
         
         ArrayList<MenuButton> bl = new ArrayList<MenuButton>();
@@ -495,9 +592,24 @@ public class IplanetFX extends Application{
         for (Node child: gp.getChildren()){
         if (child != null){
             if (child instanceof MenuButton){
+                
+            
                 //gp.getChildren().remove(child);
                 // mainGame.getChildren().remove(c.getCurLabel());
-                bl.add((MenuButton)child);
+            
+                if (((MenuButton)child).getId()!= null){
+                    System.out.println("The id of child: "+((MenuButton)child).getId());
+                    if (!((MenuButton)child).getId().equals(((MenuButton)statButton).getId())){
+                        bl.add((MenuButton)child);
+                    }else{
+                        System.out.println("The id of statButton: "+child.getId());
+                        child.setId("important");
+                    }
+                    
+                }else{
+                    System.out.println("The id of child: "+((MenuButton)child).getId());
+                    bl.add((MenuButton)child);
+                }
             }
         }
             }
@@ -554,6 +666,123 @@ public class IplanetFX extends Application{
         }
         
     }
+    
+    // To construct the proper stats for the game
+    public MenuButton constructStats(){
+        
+        // The status of everything button
+        statButton = new MenuButton("=");
+        statButton.setAlignment(Pos.BASELINE_RIGHT);
+      
+        statButton.setFocusTraversable(false);
+        statButton.setStyle("-fx-background-color: #2A0043;"+
+                "-fx-text-fill: cadetblue;" +
+                "-fx-font-family: Courier New;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 15;");
+    
+        statButton.getStylesheets().add("/model/myButton.css");
+        
+        // Setting the map, character, and inventory options
+        statMap = new MenuItem("Map");
+        statMap.setId("important");
+    
+        statMap.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println("Map pressed!");
+                
+            }
+        });
+        
+        
+        statChar = new MenuItem("Char info");
+        statChar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println("Char info pressed!");
+                displayCharInfo();
+                
+            }
+        });
+        statInventory = new MenuItem("Inventory");
+        statInventory.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                
+                
+                System.out.println("Inventory pressed!");
+                infoDeck = clearButtons(infoDeck);
+                curHeader.setText("Inventory: ");
+                curDescription.setText("");
+                
+                Block curB = c.getCurBlock();
+                ArrayList<Block> inventory = c.getInventory(curB);
+                ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
+                for (int i = 0; i<= inventoryButtons.size()-1;i++){
+                    infoDeck.add(inventoryButtons.get(i),i+2,0);
+                    
+                }
+                
+            }
+        });
+        
+        
+        
+        statButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                statButton.setStyle("-fx-background-color: #2A0043;"+
+                        "-fx-text-fill: cadetblue;" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;");
+            }
+            
+        });// For exiting the button
+                                    
+                                    
+        statButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                statButton.setStyle("-fx-background-color: cadetblue;"+
+                        "-fx-text-fill: cornflowerblue;" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;");
+            }
+        });
+        
+        // Adding options to statButton
+        statButton.getItems().add(statMap);
+        statButton.getItems().add(statChar);
+        statButton.getItems().add(statInventory);
+        
+        return statButton;
+        
+        
+    }
+    
+    
+    public void displayCharInfo(){
+        infoDeck = clearButtons(infoDeck); //
+        curHeader.setText(" ");
+        String charLife = "";
+        Character ci = (Character)c.getCurBlock();
+        String charName = ci.getName();
+        for (int p = 0; p<= 9;p++){
+            if (p <= ci.getLife()-1){
+                charLife += ".";
+            }else{
+                charLife += "_";
+            }
+        }
+        curHeader.setText(charName);
+        curDescription.setText(charLife);
+    }
+    
     
     // Translate up to emulate movement
     public void translateUp(Node n, double dur, double up, double down, double ogDown, double ogUp) {

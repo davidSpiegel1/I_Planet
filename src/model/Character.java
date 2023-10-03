@@ -16,6 +16,7 @@ public class Character extends Block {
 	private int col;
 	private String name;
 	private ArrayList<Block> inventory;
+    private int life;
 
 	// Another constructor for block form
 	public Character(int row, int col, String name) {
@@ -35,10 +36,22 @@ public class Character extends Block {
         this.setDescription("The main character");
         this.row = 0;
         this.col = 0;
+        this.life = 10;
         this.name = "Bill";
         this.inventory = new ArrayList<Block>();
         
         
+    }
+    
+    // A way to decrease life
+    public void decrementLife(){
+        this.life--;
+    }
+    public void incrementLife(){
+        this.life++;
+    }
+    public int getLife(){
+        return this.life;
     }
 
 	// A way to get the characters name

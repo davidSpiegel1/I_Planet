@@ -1,12 +1,12 @@
-..........|...........
+........E.|...........
 ..........|..........d
 ..........|...........
 ..........|..ttttttttt
-_________GtGGGpGGgggGG
+_________GtGWWWWGgggGG
 GGGtGGGGGGtGGGtGGggGGG
 GGGGGGtGtGtGGGtGGttttt
 GGGGGGGGGtGttGtGGttttt
-GGGGGGGGtGGGGGtGGttttt
+GGGGGGGGtGtGGGtGGttttt
 GGGGGGGpGGGtGGGGGttttt
 tGGGtGtGGGGtGGtGGttttt
 GGGGGGEGtGGGGGGGGttttt

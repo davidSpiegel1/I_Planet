@@ -76,6 +76,7 @@ public class Parse {
     public static final String CharKnifeStyle = "/utilities/charWithKnifeCss.css";
     public static final String GunStyle = "/utilities/gunCss.css";
     public static final String cowStyle = "/utilities/cowCss.css";
+    public static final String DoorStyle = "/utilities/doorCss.css";
 
     // Making a character object
     private Character char1;
@@ -163,7 +164,7 @@ public class Parse {
             } else {
                 if (arr.get(i).getKey().equals("t") || arr.get(i).getKey().equalsIgnoreCase("G")
                         || arr.get(i).getKey().equals("_") ||
-                        arr.get(i).getKey().equals("|") || arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("W")) {
+                        arr.get(i).getKey().equals("|") || arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("W") || arr.get(i).getKey().equals("O")) {
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
                     l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
                 } else {
@@ -207,12 +208,12 @@ public class Parse {
     
     
 
-public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, Stage primaryStage, GridPane infoDeck,
+public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane infoDeck,
             Label curDescription, Label curHeader) {
 
         // Setting the character instance variable to the block arraylist inventory
         char1.setInventory(blockArr);
-        curPane = infoDeck;
+        
         menuArr = new ArrayList<MenuButton>();
         this.curDescription = curDescription;
         this.curHeader = curHeader;
@@ -273,7 +274,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, Stage pri
                 @Override
                 public void handle(ActionEvent e) {
                     System.out.println("Use pressed!");
-                    setUsedNode(curB.getGraphic());
+                    setUsedNode(curB);
                     
                     
                 }
@@ -478,8 +479,10 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, Stage pri
             b1.getStylesheets().add(JackStyle);
         } else if (type.equals("E")) {
             b1.getStylesheets().add(BadStyle);
-            // translateUp(b1, .2, 3, 1, 0, 0);
-        } else if (type.equals("|") || type.equals("_")) {
+        
+        } else if (type.equals("O")){
+            b1.getStylesheets().add(DoorStyle);
+        }else if (type.equals("|") || type.equals("_")) {
             b1.getStylesheets().add(BrickStyle);
         } else if (type.equals("K")) {
             b1.getStylesheets().add(KnifeStyle);
