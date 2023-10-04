@@ -119,20 +119,16 @@ public class Parse {
             l1.setMinHeight(SET_MIN_HEIGHT);
             this.labelList.add(l1);
         }
-
         return this.labelList;
     }
 
     public ArrayList<Label> constructGui(ArrayList<Block> arr, Block prevBlock) {
-
+        
         movingBlocks = new ArrayList<MovableBlock>();// Initializing moving blocks
         movingLabels = new ArrayList<Label>();// For moving labels
-        
         for (int i = 0; i <= arr.size() - 1; i++) {
-            
             Label l1 = new Label();
             l1.setGraphic(null);
-            
             if (arr.get(i).getKey().equals("C")) {
                 
                 l1.setBackground(findBackGround(prevBlock.getKey()));

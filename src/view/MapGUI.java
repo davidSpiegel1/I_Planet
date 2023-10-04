@@ -29,7 +29,7 @@ import javafx.stage.Stage;
 import model.Block;
 import model.MapModel;
 
-public class MapGUI {
+public class MapGUI{
 	
 	public ArrayList<Label>labelArray;
 	public HBox pane;

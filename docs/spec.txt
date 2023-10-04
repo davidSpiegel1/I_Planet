@@ -66,6 +66,7 @@
 				a.) There is a library for that 
 			3.) Has to have current info of possible enemies and character
 			4.) Be zoomable??
+			5.) Make edges circular
 		<Footnote> Google earth kinda?
 
 		

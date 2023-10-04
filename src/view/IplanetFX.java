@@ -54,6 +54,11 @@ import javafx.scene.control.Menu;
 import javafx.animation.Timeline;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.ParallelTransition;
 
 import javafx.scene.input.MouseEvent;
 
@@ -93,8 +98,6 @@ public class IplanetFX extends Application{
     private final int SCENE_SIZE_COL = 810;
     public static final String CharStyle = "/utilities/charCss.css";
     
-    
-
 	public static void main(String args[]){
 
 		launch(args);
@@ -108,6 +111,7 @@ public class IplanetFX extends Application{
         
 		stage.setTitle("I Planet");
         c = new Controller2(); // Initalizing the controller
+        
         // Initalizing mainGame
         mainGame = new GridPane();
         mainGame.setBackground((new Background( new BackgroundFill(Color.rgb(42, 0, 67), CornerRadii.EMPTY, Insets.EMPTY))));
@@ -120,8 +124,6 @@ public class IplanetFX extends Application{
         curHeader.setFont(new Font("Arial", 30));
         curHeader.setStyle("-fx-text-fill: cornflowerblue");
         
-       
-        
         statButton = constructStats();
         
         statButton.setId("important");
@@ -130,28 +132,19 @@ public class IplanetFX extends Application{
         infoDeck.add(curHeader,1,0);
         infoDeck.add(statButton,3,0);
         
-     
-        
-        
-        
         ArrayList<Block> list = c.constructMap(); // Consturcting the map
         
-      
         labelList = c.parse(list);
         int col = 0;
         int row = 0;
         int amountCol = c.getAmountCol();
         System.out.println("The columns amount: "+amountCol);
         
-        
         // We will have a temp center pane
         centerPane = new StackPane(mainGame);
         centerPane.setStyle("-fx-background-color:cyan");
                     centerPane.setPrefSize(amountCol*50, labelList.size()*50);
         
-        
-
-
         // Getting the board
         for (int j = 0; j<= labelList.size()-1;j++){
                 Label curLabel = labelList.get(j);
@@ -168,11 +161,7 @@ public class IplanetFX extends Application{
                     col++;
                 }
         }
-       
-        
-  
-        //mainGame.setVgap(0);
-        //mainGame.setHgap(0);
+    
         mainGame.setAlignment(Pos.BOTTOM_CENTER);
         
         infoDeck.setAlignment(Pos.BOTTOM_CENTER);
@@ -185,14 +174,36 @@ public class IplanetFX extends Application{
         vb.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;");
         vb.setSpacing(0);
         vb.setFillWidth(true);
-        //vb.setFillHeight(true);
-        //vb.setStyle("-fx-border-radius: 6.0");
+    
         Timeline tl = new Timeline(
           new KeyFrame(
               Duration.millis(1000),
                   event -> {
+                      
                       c.moveBlocks(mainGame);
+                      
                       if (c.getPrevBlock().getKey().equals("W")){
+                          
+                          Label l1 = labelList.get(0);
+                          Node n = l1.getGraphic();
+                          //l1.setStyle("-fx-background-color: black;");
+                          // Manipulate node
+                          n.setStyle("-fx-background-color: #E9927E;");
+                          FadeTransition ft = new FadeTransition(Duration.millis(3000), n);
+                          ft.setFromValue(0.5);
+                          ft.setToValue(1.0);
+                          ft.setCycleCount(1);
+                          //ft.setAutoReverse(true);
+                          ft.setOnFinished((e) -> {
+                              n.setStyle("-fx-background-color: #C7C7C7;");
+                              
+
+                                           });
+                          ft.play();
+                          
+                          
+                          
+                          
                           Character c1 = (Character)c.getCurBlock();
                           c1.decrementLife();
                           c.setCurBlock(c1);
@@ -201,14 +212,27 @@ public class IplanetFX extends Application{
                           displayCharInfo();
                       }
                       if (((Character)c.getCurBlock()).getLife() == 0){
-                          
                           System.out.println("Game Over!!!");
-                          displayGameOver(stage);
                           
+                          Label l1 = labelList.get(0);
+                          Node n = l1.getGraphic();
+                          n.setStyle("-fx-background-color: #E9927E;");
                           
+                          RotateTransition rt = new RotateTransition(Duration.millis(300), n);
+                          rt.setByAngle(90);
+                          rt.setCycleCount(1);
+                          rt.setAutoReverse(true);
                           
-                          
-                      }
+                          rt.setOnFinished((e) -> {
+                                               
+                              displayGameOver(stage);
+
+                                           });
+                          rt.play();
+                              
+                
+                      
+                          }
                       
                         }
                   ));
@@ -487,6 +511,13 @@ public class IplanetFX extends Application{
                 }
                 if(e.getCode().equals(KeyCode.M) ) {
                     
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 }
                 if (e.getCode().equals(KeyCode.G)) {
                     // Get inventory and grab object
@@ -498,29 +529,24 @@ public class IplanetFX extends Application{
                     // Could try to set prevBlock and prevLabel
                     
                     Block b = new Block(".");
-                    //Label l = new Label("");
+
                     Background br = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
                     
                     
                     c.setPrevBlock(b);
                     c.setPrevLabelBackground(br);
                     
-                    
-                    
-                    
-                    //Label curLabel = c.getCurLabel();
                     int curPos = c.getCharPos();
                     Label curLabel = labelList.get(curPos);
                     
-                    //curLabel.setBackground(new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));
-                    
-                    Node n = curLabel.getGraphic();
-                    translateLeftRight(n, .6, 0, 1, 1, 0);
+                    //Node n = curLabel.getGraphic();
+                    Node n = labelList.get(0).getGraphic();
+                    grabAnimation(n);
+                    //translateLeftRight(n, .6, 0, 1, 1, 0);
                 
                     curLabel.setGraphic(null);
                     ArrayList<Block> inventory = c.putInInventory(curB,prevB);
                     System.out.println(inventory);
-                    
                     
                     // Doing display stuff
                     curHeader.setText("Inventory: ");
@@ -532,9 +558,6 @@ public class IplanetFX extends Application{
                     }
                     // Will display inventory
                     //displayInventory();
-                    
-                        
-
                 }
                 if (e.getCode().equals(KeyCode.I)) {
                     // Get
@@ -565,6 +588,58 @@ public class IplanetFX extends Application{
         stage.setScene(scene);
         stage.show();
 	}
+    
+    public void grabAnimation(Node n){
+        
+        
+        
+        RotateTransition rt = new RotateTransition(Duration.millis(200), n);
+        rt.setFromAngle(60);
+        rt.setToAngle(0);
+        //rt.setCycleCount(2);
+        //rt.setAutoReverse(true);
+        
+       
+     
+        
+        ScaleTransition st = new ScaleTransition(Duration.millis(290),n);
+        st.setFromX(.01);
+        st.setFromY(1);
+        st.setToX(1);
+        st.setToY(1);
+        st.setCycleCount(1);
+        
+        ScaleTransition st2 = new ScaleTransition(Duration.millis(200),n);
+        st2.setFromX(1.3f);
+        st2.setFromY(1);
+        st2.setToX(1);
+        st2.setToY(1);
+        st2.setCycleCount(1);
+        
+  
+        
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(st2,rt);
+        //st2.play();
+        
+        parallelTransition.setCycleCount(1);
+        /*parallelTransition.setOnFinished((e) -> {
+                             
+            //RotateTransition r3 = new RotateTransition(Duration.millis(50), n);
+            r3.setByAngle(-90);
+            r3.setCycleCount(1);
+            rt.setCycleCount(2);
+            rt.setAutoReverse(true);
+
+            });*/
+
+        parallelTransition.play();
+        //st2.play();
+        
+        
+        
+    }
     
     
     
