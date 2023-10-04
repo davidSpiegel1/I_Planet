@@ -8,7 +8,6 @@ import javafx.geometry.Pos;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
@@ -17,6 +16,7 @@ import javafx.scene.control.Label;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.FileInputStream;
+import javafx.scene.input.ZoomEvent;
 
 
 public class MapGUI2 extends Application
@@ -39,8 +39,8 @@ public class MapGUI2 extends Application
 				System.out.println("two");
 				if(ch != '\n')
 				{
-					cellLabel.setMinWidth(50);
-					cellLabel.setMinHeight(50);
+					cellLabel.setMinWidth(25);
+					cellLabel.setMinHeight(25);
 					System.out.println("three");
 
 
@@ -103,7 +103,7 @@ public class MapGUI2 extends Application
 			System.out.print("error");
 			e.printStackTrace();
 		}
-		level.setMinSize(800, 800);
+		level.setMinSize(400, 400);
 		level.setPadding(new Insets(10, 10, 10, 10));
 		level.setVgap(5);
 		level.setHgap(5);
@@ -129,17 +129,7 @@ public class MapGUI2 extends Application
 	@Override
 	public void start(Stage primaryStage)
 	{
-		primaryStage.setTitle("Hello World");
-		Button btn = new Button();
-		btn.setText("Say: 'Hello World!'");
-		btn.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent event)
-			{
-				System.out.println("Hello World!");	
-			}
-		});
+		primaryStage.setTitle("I Planet Map");
 
 		//level one	
 		GridPane levelOne = loadFiles("levelOne.txt");
@@ -155,6 +145,39 @@ public class MapGUI2 extends Application
 		//Holds overall layout
 		VBox mapLayout = new VBox(2);
 		ScrollPane scroll = new ScrollPane(mapLayout);
+		scroll.setPannable(true);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setFitToWidth(true);
+
+	
+		scroll.setOnZoom(new EventHandler<ZoomEvent>() {
+			@Override public void handle(ZoomEvent event) {
+			    scroll.setScaleX(scroll.getScaleX() * event.getZoomFactor());
+			    scroll.setScaleY(scroll.getScaleY() * event.getZoomFactor());
+			    System.out.println("Rectangle: Zoom event" +
+				", inertia: " + event.isInertia() + 
+				", direct: " + event.isDirect());
+		 
+			    event.consume();
+			}
+		});
+
+		scroll.setOnZoomStarted(new EventHandler<ZoomEvent>() {
+			@Override public void handle(ZoomEvent event) {
+			    //inc(scroll);
+			    System.out.println("Rectangle: Zoom event started");
+			    event.consume();
+			}
+		});
+
+		scroll.setOnZoomFinished(new EventHandler<ZoomEvent>() {
+			@Override public void handle(ZoomEvent event) {
+			    //dec(scroll);
+			    System.out.println("Rectangle: Zoom event finished");
+			    event.consume();
+			}
+		});
 
 		//Populate vbox
 		mapLayout.getChildren().add(levelOne);
@@ -166,7 +189,8 @@ public class MapGUI2 extends Application
 		mapLayout.getChildren().add(levelSeven);
 		mapLayout.getChildren().add(levelEight);
 	
-		primaryStage.setScene(new Scene(scroll));
+		primaryStage.setScene(new Scene(scroll, 690, 400));
 		primaryStage.show();
 	}
+
 }
