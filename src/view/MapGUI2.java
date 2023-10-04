@@ -21,20 +21,78 @@ import java.io.FileInputStream;
 public class MapGUI2 extends Application
 //public class MapGUI2
 {
-	public static void loadFiles()
+	public static GridPane loadFiles()
 	{
+		GridPane level = new GridPane();
 		try
 		{
+			System.out.println("One");
 			FileInputStream file = new FileInputStream("../utilities/levelOne.txt");
 
 			int ch;
+			int x = 0;
+			int y = 0;
 			while((ch = file.read()) != -1)
 			{
-				System.out.print((char)ch);
-				if(ch == '\n')
+				Label cellLabel = new Label();
+				System.out.println("two");
+				if(ch != '\n')
 				{
-					System.out.print("EOL");
+					cellLabel.setMinWidth(50);
+					cellLabel.setMinHeight(50);
+					System.out.println("three");
+
+
+					switch(ch)
+					{
+						case 'G':
+							cellLabel.setStyle("-fx-background-color: #994d00;"); //brown
+							System.out.println("adding " + (char)ch);
+							break;
+						case 't':
+							cellLabel.setStyle("-fx-background-color: #003300"); //dark green
+							System.out.println("adding " + (char)ch);
+							break;
+						case 'p':
+							cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
+							System.out.println("adding " + (char)ch);
+							break;
+						case 'g':	
+							cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
+							System.out.println("adding " + (char)ch);
+							break;
+						case 'O':
+							cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
+							System.out.println("adding " + (char)ch);
+							break;
+						case 'W':
+							cellLabel.setStyle("-fx-background-color: #0000ff"); //blue
+							System.out.println("adding " + (char)ch);
+							break;
+						case '.':
+							cellLabel.setStyle("-fx-background-color: #663300"); //brown
+							System.out.println("adding " + (char)ch);
+							break;
+						case '|':
+							cellLabel.setStyle("-fx-background-color: #8c8c8c"); //grey
+							System.out.println("adding " + (char)ch);
+							break;
+						default:
+							cellLabel.setStyle("-fx-background-color: #ff00ff"); //pink (missing texture)
+							System.out.println("Hit default");
+
+					}
+					level.add(cellLabel, x, y);
+					x++;
 				}
+				else if(ch == '\n')
+				{
+					y+=1;
+					x = 0;
+				}
+				System.out.println(x);
+				System.out.println(y);
+
 			}
 			file.close();
 		}
@@ -43,13 +101,14 @@ public class MapGUI2 extends Application
 			System.out.print("error");
 			e.printStackTrace();
 		}
+		return level;
 	}
 
 
 	public static void initMap(String args[])
 	{
 		launch(args);
-		loadFiles();
+		//loadFiles();
 	}
 
 
@@ -79,18 +138,20 @@ public class MapGUI2 extends Application
 		//StackPane root = new StackPane();
 		//root.getChildren().add(btn);
 		Label cellLabel = new Label();
-		GridPane levelOne = new GridPane();
-		levelOne.setMinSize(400, 200);
+		GridPane levelOne = loadFiles();
+		System.out.println("Load files check");
+		
+		levelOne.setMinSize(800, 800);
 		levelOne.setPadding(new Insets(10, 10, 10, 10));
 		levelOne.setVgap(5);
 		levelOne.setHgap(5);
 		levelOne.setAlignment(Pos.CENTER);
-		levelOne.add(cellLabel, 0, 0);
-		cellLabel.setMinWidth(10);
-		cellLabel.setMinHeight(10);
+		//levelOne.add(cellLabel, 0, 0);
+		//cellLabel.setMinWidth(10);
+		//cellLabel.setMinHeight(10);
 		
-		cellLabel.setStyle("-fx-background-color: blue;");
-
+		//cellLabel.setStyle("-fx-background-color: blue;");
+	
 		primaryStage.setScene(new Scene(levelOne));
 		primaryStage.show();
 	}
