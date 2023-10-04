@@ -1,5 +1,5 @@
 // Kyle !!
-//package view;
+package view;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -19,8 +19,8 @@ import java.io.FileInputStream;
 import javafx.scene.input.ZoomEvent;
 
 
-public class MapGUI2 extends Application
-//public class MapGUI2
+//public class MapGUI2 extends Application
+public class MapGUI2
 {
 	public static GridPane loadFiles(String levelFile)
 	{
@@ -28,75 +28,85 @@ public class MapGUI2 extends Application
 		try
 		{
 			System.out.println("One");
-			FileInputStream file = new FileInputStream("../utilities/" + levelFile);
-
-			int ch;
-			int x = 0;
-			int y = 0;
-			while((ch = file.read()) != -1)
+			File file = new File("utilities/" + levelFile);
+			if(file.exists())
 			{
-				Label cellLabel = new Label();
-				System.out.println("two");
-				if(ch != '\n')
+				FileInputStream fileStream = new FileInputStream("utilities/" + levelFile);
+
+				int ch;
+				int x = 0;
+				int y = 0;
+			
+				while((ch = fileStream.read()) != -1)
 				{
-					cellLabel.setMinWidth(25);
-					cellLabel.setMinHeight(25);
-					System.out.println("three");
-
-
-					switch(ch)
+					Label cellLabel = new Label();
+					System.out.println("two");
+					if(ch != '\n')
 					{
-						case 'G':
-							cellLabel.setStyle("-fx-background-color: #994d00;"); //brown
-							System.out.println("adding " + (char)ch);
-							break;
-						case 't':
-							cellLabel.setStyle("-fx-background-color: #003300"); //dark green
-							System.out.println("adding " + (char)ch);
-							break;
-						case 'p':
-							cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
-							System.out.println("adding " + (char)ch);
-							break;
-						case 'g':	
-							cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
-							System.out.println("adding " + (char)ch);
-							break;
-						case 'O':
-							cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
-							System.out.println("adding " + (char)ch);
-							break;
-						case 'W':
-							cellLabel.setStyle("-fx-background-color: #0000ff"); //blue
-							System.out.println("adding " + (char)ch);
-							break;
-						case '.':
-							cellLabel.setStyle("-fx-background-color: #663300"); //brown
-							System.out.println("adding " + (char)ch);
-							break;
-						case '_':
-						case '|':
-							cellLabel.setStyle("-fx-background-color: #8c8c8c"); //grey
-							System.out.println("adding " + (char)ch);
-							break;
-						default:
-							cellLabel.setStyle("-fx-background-color: #ff00ff"); //pink (missing texture)
-							System.out.println("Hit default");
+						cellLabel.setMinWidth(25);
+						cellLabel.setMinHeight(25);
+						System.out.println("three");
 
+
+						switch(ch)
+						{
+							case 'G':
+								cellLabel.setStyle("-fx-background-color: #994d00;"); //brown
+								System.out.println("adding " + (char)ch);
+								break;
+							case 't':
+								cellLabel.setStyle("-fx-background-color: #003300"); //dark green
+								System.out.println("adding " + (char)ch);
+								break;
+							case 'p':
+								cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
+								System.out.println("adding " + (char)ch);
+								break;
+							case 'g':	
+								cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
+								System.out.println("adding " + (char)ch);
+								break;
+							case 'O':
+								cellLabel.setStyle("-fx-background-color: #ffff00"); //yellow (temp)
+								System.out.println("adding " + (char)ch);
+								break;
+							case 'W':
+								cellLabel.setStyle("-fx-background-color: #0000ff"); //blue
+								System.out.println("adding " + (char)ch);
+								break;
+							case '.':
+								cellLabel.setStyle("-fx-background-color: #663300"); //brown
+								System.out.println("adding " + (char)ch);
+								break;
+							case '_':
+							case '|':
+								cellLabel.setStyle("-fx-background-color: #8c8c8c"); //grey
+								System.out.println("adding " + (char)ch);
+								break;
+							default:
+								cellLabel.setStyle("-fx-background-color: #ff00ff"); //pink (missing texture)
+								System.out.println("Hit default");
+
+						}
+						level.add(cellLabel, x, y);
+						x++;
 					}
-					level.add(cellLabel, x, y);
-					x++;
-				}
-				else if(ch == '\n')
-				{
-					y+=1;
-					x = 0;
-				}
-				System.out.println(x);
-				System.out.println(y);
+					else if(ch == '\n')
+					{
+						y+=1;
+						x = 0;
+					}
+					System.out.println(x);
+					System.out.println(y);
 
+				}
+
+				fileStream.close();
 			}
-			file.close();
+			else
+			{
+				System.out.println("Error: " + levelFile + " not Found!");
+			}
 		}
 		catch(IOException e)
 		{
@@ -111,22 +121,20 @@ public class MapGUI2 extends Application
 	}
 
 
-	public static void initMap(String args[])
+	public static void initMap()
 	{
-		launch(args);
-		//loadFiles();
+		//launch();
+		System.out.println("Placeholder");
 	}
 
 
 	public static void main(String args[]){
 		
-		initMap(args);
+		//initMap(args);
 		//launch(args);
 	}
 	
 
-	//Override inherited behaviour?
-	@Override
 	public void start(Stage primaryStage)
 	{
 		primaryStage.setTitle("I Planet Map");
@@ -149,8 +157,9 @@ public class MapGUI2 extends Application
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setFitToWidth(true);
-
-	
+		
+		//I can't test this in a vm, so I don't know if it works
+/*	
 		scroll.setOnZoom(new EventHandler<ZoomEvent>() {
 			@Override public void handle(ZoomEvent event) {
 			    scroll.setScaleX(scroll.getScaleX() * event.getZoomFactor());
@@ -162,7 +171,7 @@ public class MapGUI2 extends Application
 			    event.consume();
 			}
 		});
-
+*/
 		scroll.setOnZoomStarted(new EventHandler<ZoomEvent>() {
 			@Override public void handle(ZoomEvent event) {
 			    //inc(scroll);
