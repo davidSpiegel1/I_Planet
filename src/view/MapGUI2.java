@@ -7,9 +7,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import java.io.File;
 import javafx.scene.control.Label;
@@ -21,13 +22,13 @@ import java.io.FileInputStream;
 public class MapGUI2 extends Application
 //public class MapGUI2
 {
-	public static GridPane loadFiles()
+	public static GridPane loadFiles(String levelFile)
 	{
 		GridPane level = new GridPane();
 		try
 		{
 			System.out.println("One");
-			FileInputStream file = new FileInputStream("../utilities/levelOne.txt");
+			FileInputStream file = new FileInputStream("../utilities/" + levelFile);
 
 			int ch;
 			int x = 0;
@@ -73,6 +74,7 @@ public class MapGUI2 extends Application
 							cellLabel.setStyle("-fx-background-color: #663300"); //brown
 							System.out.println("adding " + (char)ch);
 							break;
+						case '_':
 						case '|':
 							cellLabel.setStyle("-fx-background-color: #8c8c8c"); //grey
 							System.out.println("adding " + (char)ch);
@@ -101,6 +103,10 @@ public class MapGUI2 extends Application
 			System.out.print("error");
 			e.printStackTrace();
 		}
+		level.setMinSize(800, 800);
+		level.setPadding(new Insets(10, 10, 10, 10));
+		level.setVgap(5);
+		level.setHgap(5);
 		return level;
 	}
 
@@ -135,24 +141,32 @@ public class MapGUI2 extends Application
 			}
 		});
 
-		//StackPane root = new StackPane();
-		//root.getChildren().add(btn);
-		Label cellLabel = new Label();
-		GridPane levelOne = loadFiles();
-		System.out.println("Load files check");
-		
-		levelOne.setMinSize(800, 800);
-		levelOne.setPadding(new Insets(10, 10, 10, 10));
-		levelOne.setVgap(5);
-		levelOne.setHgap(5);
-		levelOne.setAlignment(Pos.CENTER);
-		//levelOne.add(cellLabel, 0, 0);
-		//cellLabel.setMinWidth(10);
-		//cellLabel.setMinHeight(10);
-		
-		//cellLabel.setStyle("-fx-background-color: blue;");
+		//level one	
+		GridPane levelOne = loadFiles("levelOne.txt");
+		GridPane levelTwo = loadFiles("levelTwo.txt");
+		GridPane levelThree = loadFiles("levelThree.txt");
+		GridPane levelFour = loadFiles("levelFour.txt");
+		GridPane levelFive = loadFiles("levelFive.txt");
+		GridPane levelSix = loadFiles("levelSix.txt");
+		GridPane levelSeven = loadFiles("levelSeven.txt");
+		GridPane levelEight = loadFiles("levelEight.txt");
 	
-		primaryStage.setScene(new Scene(levelOne));
+		
+		//Holds overall layout
+		VBox mapLayout = new VBox(2);
+		ScrollPane scroll = new ScrollPane(mapLayout);
+
+		//Populate vbox
+		mapLayout.getChildren().add(levelOne);
+		mapLayout.getChildren().add(levelTwo);
+		mapLayout.getChildren().add(levelThree);
+		mapLayout.getChildren().add(levelFour);
+		mapLayout.getChildren().add(levelFive);
+		mapLayout.getChildren().add(levelSix);
+		mapLayout.getChildren().add(levelSeven);
+		mapLayout.getChildren().add(levelEight);
+	
+		primaryStage.setScene(new Scene(scroll));
 		primaryStage.show();
 	}
 }
