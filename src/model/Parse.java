@@ -54,6 +54,8 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.*;
 
+import view.AnimateEngine;
+
 public class Parse {
 
     // An instance variable of scanner
@@ -90,6 +92,7 @@ public class Parse {
     private ArrayList<MovableBlock> movingBlocks;
     private ArrayList<Label> movingLabels;
     private Node usedNode = null;
+    private AnimateEngine ag;
 
     public Parse() {
         labelList = new ArrayList<Label>();
@@ -102,6 +105,9 @@ public class Parse {
     public ArrayList<Label> getList() {
 
         return this.labelList;
+    }
+    public void setAnimateEngine(AnimateEngine ag){
+        this.ag = ag;
     }
 
     public ArrayList<Label> constructGui(ArrayList<Block> arr) {
@@ -144,9 +150,9 @@ public class Parse {
                             new KeyFrame(
                                     Duration.millis(800),
                                     event -> {
-
+                                        
                                         Node n = l1.getGraphic();
-                                        translateUp(n, .2, 3, 1, 0, 0);
+                                        ag.translateUp2(n, .2, 3, 1, 0, 0);
                                         l1.setGraphic(n);
 
                                     }));

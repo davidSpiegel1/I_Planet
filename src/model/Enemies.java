@@ -32,10 +32,55 @@ public class Enemies extends MovableBlock{
     // Fastest way to 'purpose' coordinate
     
     public int generateNewPos(){
+        // I going right gets closer to 'purpose', then we go right
+        if (this.pos+1 <= this.levelArr.size()-1){
+            //if (!this.levelArr.get(this.pos+1).getKey().equals("_") && !this.levelArr.get(this.pos+1).getKey().equals("|") && ((this.pos+1)%(this.amountCol)) != 0){
+                int possRight = this.pos+1;
+            
+                int modOfRight = possRight%(this.amountCol+2);
+                // If possible left value has less distance
+                if (Math.abs(possRight-this.purpose) <= Math.abs(this.pos-this.purpose)){
+                    if (modOfRight != 0){
+                    this.pos = possRight;
+                    this.moveList.add("d"); // Making the move to left
+                    }
+                }
+            //}
+        }
+        
+        // If going left gets closer to 'purpose', then we go left
+        //System.out.println("The mod of left: "+modOfLeft);
+        if (this.pos-1 >= 0){
+               // if (!this.levelArr.get(this.pos-1).getKey().equals("_") && !this.levelArr.get(this.pos-1).getKey().equals("|")){
+                    int possLeft = this.pos-1;
+           
+                    int modOfLeft = possLeft%(this.amountCol+2);// Mod of left will give a good spot
+                    // If possible left value has less distance
+                 
+                    if (Math.abs(possLeft-this.purpose) <= Math.abs(this.pos-this.purpose)){
+                        // We must check that the position is within the grid
+                        // Maybe, if the mod of the new position is not one
+                        System.out.println("The mod of left: "+modOfLeft);
+                        System.out.println("The poss of left: "+possLeft);
+                        //System.out.println("The left thing: "+possLeft%(this.amountCol+2));
+                        if (modOfLeft != 0){
+                            
+                        this.pos = possLeft;
+                        this.moveList.add("a"); // Making the move to left
+                            
+                        }
+            
+                    }
+               
+                   // }
+              
+            }
+        
+        
         // If going up gets closer to 'purpose', then we go up
-        if (this.pos-this.amountCol-2 >= 0){
+        if (this.pos-(this.amountCol+2) >= 0){
            //if(!this.levelArr.get(this.pos-this.amountCol-2).getKey().equals("_") && !this.levelArr.get(this.pos-this.amountCol-2).getKey().equals("|")){
-                int possUp = this.pos-this.amountCol-2;
+                int possUp = this.pos-(this.amountCol+2);
                     // If the possible up value has less distance
                     System.out.println("The possUp diff: "+Math.abs(possUp-this.purpose));
                     if (Math.abs(possUp-this.purpose) <= Math.abs(this.pos-this.purpose)){
@@ -51,6 +96,7 @@ public class Enemies extends MovableBlock{
                 int possDown = this.pos+this.amountCol+2;
                 // If possible down value has less distance
                 if (Math.abs(possDown-this.purpose) <= Math.abs(this.pos-this.purpose)){
+                    
                         this.pos = possDown;
                         this.moveList.add("s"); // Making the move to down
                 }
@@ -58,30 +104,9 @@ public class Enemies extends MovableBlock{
              //   }
         }
         
-        // If going left gets closer to 'purpose', then we go left
-        if (this.pos-1 >= 0){
-               // if (!this.levelArr.get(this.pos-1).getKey().equals("_") && !this.levelArr.get(this.pos-1).getKey().equals("|")){
-                    int possLeft = this.pos-1;
-                    // If possible left value has less distance
-                    if (Math.abs(possLeft-this.purpose) <= Math.abs(this.pos-this.purpose)){
-                        this.pos = possLeft;
-                        this.moveList.add("a"); // Making the move to left
-            
-                    }
-                  //  }
-            }
         
-        // I going right gets closer to 'purpose', then we go right
-        if (this.pos+1 <= this.levelArr.size()-1){
-            //if (!this.levelArr.get(this.pos+1).getKey().equals("_") && !this.levelArr.get(this.pos+1).getKey().equals("|") && ((this.pos+1)%(this.amountCol)) != 0){
-                int possRight = this.pos+1;
-                // If possible left value has less distance
-                if (Math.abs(possRight-this.purpose) <= Math.abs(this.pos-this.purpose)){
-                    this.pos = possRight;
-                    this.moveList.add("d"); // Making the move to left
-                }
-            //}
-        }
+        
+     
         return this.pos; // Returning the modified position
         
     }// End of generate new pos

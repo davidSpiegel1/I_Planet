@@ -27,13 +27,19 @@
 		* IDEA: We probably would have way better performance if the character just moved
 			with the graphic on the board. This way everything is a 'seed'
 			
-			1.) Change every L-R-Up-Down movement
-			2.) Keep a pos variable that is changed over time
-			3.) Somehow have all the movements be the same
-			4.) Move left and right predicated on the next part
+			1.) Change every L-R-Up-Down movement (DONE)
+			2.) Keep a pos variable that is changed over time (DONE)
+			3.) Somehow have all the movements be the same 
+			4.) Move left and right predicated on the next part (DONE)
 
 			. Then, it should look prettier.
-			. We can also fix character movements while we are at it
+			. We can also fix character movements while we are at it 
+				* Need to make the grab function more robust
+		
+		* IDEA: Make a Clara  called the 'AnimateEngine' that makes:
+			1.) All character movements
+			2.) Micro Movements for procedural animations
+			3.) 
 
 
 	-- Issues --

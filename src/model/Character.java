@@ -17,6 +17,7 @@ public class Character extends Block {
 	private String name;
 	private ArrayList<Block> inventory;
     private int life;
+    private boolean hit;
 
 	// Another constructor for block form
 	public Character(int row, int col, String name) {
@@ -27,6 +28,7 @@ public class Character extends Block {
 		this.row = row;
 		this.col = col;
 		this.name = name;
+        this.hit = false;
 
 		inventory = new ArrayList<Block>();
 	}
@@ -37,7 +39,7 @@ public class Character extends Block {
         this.row = 0;
         this.col = 0;
         this.life = 10;
-        this.name = "Bill";
+        this.name = "Ivan";
         this.inventory = new ArrayList<Block>();
         
         
@@ -118,6 +120,13 @@ public class Character extends Block {
     // Setting inventory
     public void setInventory(ArrayList<Block>bl){
         this.inventory= bl;
+    }
+    
+    public void setGettingHit(boolean val){
+        this.hit = val;
+    }
+    public boolean getGettingHit(){
+        return this.hit;
     }
 
 	@Override

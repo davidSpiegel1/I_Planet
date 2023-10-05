@@ -66,6 +66,7 @@ public class Scan{
         int curIndex = 0;
         int row = 1;
         int col = 1;
+        int simIndex = 0;
         Block finalBlock = null;
         while (curIndex <= content.length()-1){
             
@@ -74,7 +75,7 @@ public class Scan{
             if (initText == '\n'){
                 row++;
                 col = 1;
-                curIndex += 1;
+               // curIndex++;
                 
             }
             // Allowing for comments in our game maps
@@ -99,32 +100,30 @@ public class Scan{
                     
                 }
                 else if (initText == 'd'){
-                    this.nodeList.add(new Animal(curIndex,"d",20));
+                    this.nodeList.add(new Animal(simIndex,"d",20));
                     
                 }
                 else if (initText == 'p'){
-                    this.nodeList.add(new People(curIndex,"p",20));
+                    this.nodeList.add(new People(simIndex,"p",20));
                 }
                 else if (initText == 'E'){
-                    this.nodeList.add(new Enemies(curIndex,"E",20)); // May need to fix amountCol now that it's used
+                    this.nodeList.add(new Enemies(simIndex,"E",20)); // May need to fix amountCol now that it's used
                 }
                 else{
                     this.nodeList.add(new Block(String.valueOf(initText)));
                     
                 }
                 
-                curIndex++;
+                simIndex++;
             }
             else{
-                curIndex++;
+               simIndex++;
             }
+            curIndex++;
+            
         }
         
-        // The final node list
-        for (int i = 0; i<= this.nodeList.size()-1;i++){
-            
-            //System.out.println("The node: "+this.nodeList.get(i));
-        }
+     
         
         
         return this.nodeList;
