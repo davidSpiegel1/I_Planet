@@ -47,7 +47,10 @@ import javafx.scene.shape.*;
 import javafx.util.Duration;
 import java.util.Random;
 import javafx.scene.layout.HBox;
-
+import javafx.animation.Timeline;
+//import javafx.scene.shape.*;
+import javafx.animation.ScaleTransition;
+import javafx.animation.ParallelTransition;
 
 // The class of the controller
 public class Controller2{
@@ -554,17 +557,18 @@ public class Controller2{
             else if (dir.equals("a")){
                 if (prevPos-1 <= this.levelArr.size()-1 && prevPos-1 >= 0){
                     if (!this.levelArr.get(prevPos-1).getKey().equals("_") && !this.levelArr.get(prevPos-1).getKey().equals("|")){
-                mb.get(i).moveLeft();
-                int newPos = mb.get(i).getPos();
+                        mb.get(i).moveLeft();
+                        int newPos = mb.get(i).getPos();
                
-                System.out.println("The newPos: "+newPos);
+                        System.out.println("The newPos: "+newPos);
                 
-                Node n = ml.get(i).getGraphic();
-                n = translateLeft(n);
-                n.setManaged(false);
-                n.toFront();
-                ml.get(i).toFront();
-                ml.get(i).setGraphic(n);
+                        Node n = ml.get(i).getGraphic();
+                        n = translateLeft(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        
                     }
                 } 
             }
@@ -631,6 +635,7 @@ public class Controller2{
                     // Translating the graphic
                     n = labelArr.get(this.ogCharPos).getGraphic();
                     n = translateDown(n);
+                    moveNatural(n);
                     n.setManaged(false);
                     n.toFront();
                     labelArr.get(this.ogCharPos).toFront();
@@ -657,6 +662,7 @@ public class Controller2{
                     
                     n = labelArr.get(this.ogCharPos).getGraphic();
                     n = translateRight(n);
+                    moveNatural(n);
                     n.setManaged(false);
                     n.toFront();
                     labelArr.get(this.ogCharPos).toFront();
@@ -690,6 +696,7 @@ public class Controller2{
                 
                 n = labelArr.get(this.ogCharPos).getGraphic();
                 n = translateUp(n);
+                moveNatural(n);
                 n.setManaged(false);
                 n.toFront();
                 labelArr.get(this.ogCharPos).toFront();
@@ -722,6 +729,7 @@ public class Controller2{
                 
                 n = labelArr.get(this.ogCharPos).getGraphic();
                 n = translateLeft(n);
+                moveNatural(n);
                 n.setManaged(false);
                 n.toFront();
                 labelArr.get(this.ogCharPos).toFront();
@@ -750,6 +758,62 @@ public class Controller2{
         
         
         return labelArr;
+        
+    }
+    
+    
+    public void moveNatural(Node n){
+        Path path = new Path();
+        path.getElements().add(new MoveTo(5,5));
+        //path.getElements().add(new CubicCurveTo(5,0,3,1,2,1));
+        QuadCurveTo qt = new QuadCurveTo();
+        qt.setX(20);
+        qt.setY(15);
+        qt.setControlX(15);
+        qt.setControlY(20);
+        
+        
+        
+        path.getElements().add(qt);
+        //path.getElements().add(st);
+        PathTransition pathT = new PathTransition();
+        pathT.setDuration(Duration.millis(250));
+        //pathT.setDuration(Duration.millis(250));
+        pathT.setPath(path);
+        pathT.setNode(n);
+        
+        // Would be infefinite if breathing or something
+        // pathT.setCycleCount(Timeline.INDEFINITE);
+        pathT.setCycleCount(1);
+        //pathT.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathT.setAutoReverse(true);
+   
+        
+        ScaleTransition st = new ScaleTransition(Duration.millis(250),n);
+        st.setFromX(.01);
+        st.setFromY(1);
+        st.setToX(1);
+        st.setToY(1);
+        st.setCycleCount(1);
+        
+        ScaleTransition st2 = new ScaleTransition(Duration.millis(300),n);
+        st2.setFromX(1.3f);
+        st2.setFromY(1);
+        st2.setToX(1);
+        st2.setToY(1);
+        st2.setCycleCount(1);
+        
+  
+        
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(pathT,st2);
+        //st2.play();
+        
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        //st2.play();
+        
         
     }
     
@@ -786,7 +850,7 @@ public class Controller2{
         double x = n.getLayoutX();
         System.out.println("what the layout was: "+ x);
         double y = n.getLayoutY();
-        // Used to be: 32
+    
         n.setLayoutY(y-40);
       
         double x2 = n.getLayoutY();
