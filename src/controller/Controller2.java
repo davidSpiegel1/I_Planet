@@ -97,6 +97,13 @@ public class Controller2{
         
         
     }
+
+    
+    //Retrieve where character is
+    public int getCurrentLevel()
+    {
+	return this.currentLevel;
+    }
    
     
     public ArrayList<String> populateLevelNames(ArrayList<String> arr){
