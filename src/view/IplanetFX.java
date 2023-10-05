@@ -785,7 +785,7 @@ public class IplanetFX extends Application{
             @Override
             public void handle(ActionEvent e) {
                 System.out.println("Map pressed!");
-                
+               	displayMap(); 
             }
         });
         
@@ -857,6 +857,16 @@ public class IplanetFX extends Application{
         return statButton;
         
         
+    }
+
+    public void displayMap()
+    {
+	MapGUI2 mapInfo = new MapGUI2();
+	Stage mapWindow = new Stage();
+
+	System.out.println("Current Character Position: " + c.getCharPos());
+	mapInfo.start(mapWindow, c.getCharPos(), c.getCurrentLevel());
+	//mapInfo.start(this.stage1);
     }
     
     

@@ -108,10 +108,20 @@ public class Controller2{
         
         
     }
+
+
+    
+    //Retrieve where character is
+    public int getCurrentLevel()
+    {
+	return this.currentLevel;
+    }
+
     
     public void setAnimateEngine(AnimateEngine ag){
         this.ag = ag;
         this.p.setAnimateEngine(ag);
+
     }
    
     
