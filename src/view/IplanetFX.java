@@ -6,7 +6,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import controller.Controller;
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
@@ -41,7 +40,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.layout.*;
 import java.awt.*;
-import java.awt.event.*;  
+import java.awt.event.*;
 import javafx.beans.binding.Bindings;
 
 import javafx.event.EventHandler;
@@ -68,10 +67,13 @@ import model.Character;
 import model.Enemy;
 import model.Environment;
 import model.Person;
+import model.Enemies;
 
 import model.Parse;
 import model.Scan;
 import controller.Controller2;
+
+
 
 public class IplanetFX extends Application{
 
@@ -92,6 +94,7 @@ public class IplanetFX extends Application{
     
     private ArrayList<Label> labelList;
     private Controller2 c;
+    private AnimateEngine ag;
     
     // Some constants
     private final int SCENE_SIZE_ROW = 715;
@@ -108,9 +111,12 @@ public class IplanetFX extends Application{
 	public void start(Stage stage){
         
         mainStage = stage;
+        // Animation Engine
+        ag = new AnimateEngine();
         
 		stage.setTitle("I Planet");
         c = new Controller2(); // Initalizing the controller
+        c.setAnimateEngine(ag);
         
         // Initalizing mainGame
         mainGame = new GridPane();
@@ -180,9 +186,9 @@ public class IplanetFX extends Application{
               Duration.millis(1000),
                   event -> {
                       
-                      c.moveBlocks(mainGame);
+                      c.moveBlocks(mainGame,labelList);
                       
-                      if (c.getPrevBlock().getKey().equals("W")){
+                      if (c.getPrevBlock().getKey().equals("W") || ((Character)c.getCurBlock()).getGettingHit()){
                           
                           Label l1 = labelList.get(0);
                           Node n = l1.getGraphic();
@@ -206,6 +212,10 @@ public class IplanetFX extends Application{
                           
                           Character c1 = (Character)c.getCurBlock();
                           c1.decrementLife();
+                      
+                          if (c1.getGettingHit()){
+                              c1.setGettingHit(false);
+                          }
                           c.setCurBlock(c1);
             
                           // Later stuff
@@ -251,7 +261,7 @@ public class IplanetFX extends Application{
                 ArrayList<Block> list = null;
                 Button b1 = new Button("");
                 b1.getStylesheets().add(CharStyle);
-                translateUp(b1, .2, 3, 1, 0, 0);
+                ag.translateUp2(b1, .2, 3, 1, 0, 0);
                 b1.setDisable(true);
                 
                 //Button b2 = new Button("");
@@ -261,7 +271,7 @@ public class IplanetFX extends Application{
                     String move = "s";
                     labelList = c.moveChar3(move,labelList); // Move char 3 will take a string for move and the list of blocks
                     int curPos = c.getCharPos();
-                    translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
+                    ag.translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
                     
                     
                     
@@ -324,7 +334,7 @@ public class IplanetFX extends Application{
                     String move = "d";
                     labelList = c.moveChar3(move,labelList);
                     int curPos = c.getCharPos();
-                    translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
+                    ag.translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
                     /*System.out.println("Here!");
                     int prevPos = c.getCharPos();
                     
@@ -376,7 +386,7 @@ public class IplanetFX extends Application{
                     String move = "w";
                     labelList = c.moveChar3(move,labelList);
                     int curPos = c.getCharPos();
-                    translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
+                    ag.translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
                     /*System.out.println("Here!");
                     int prevPos = c.getCharPos();
                     
@@ -432,7 +442,7 @@ public class IplanetFX extends Application{
                     String move = "a";
                     labelList = c.moveChar3(move,labelList);
                     int curPos = c.getCharPos();
-                    translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
+                    ag.translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
                     /*System.out.println("Here! left");
                     int prevPos = c.getCharPos();
                     if (prevPos != 0){
@@ -541,7 +551,7 @@ public class IplanetFX extends Application{
                     
                     //Node n = curLabel.getGraphic();
                     Node n = labelList.get(0).getGraphic();
-                    grabAnimation(n);
+                    ag.grabAnimation(n);
                     //translateLeftRight(n, .6, 0, 1, 1, 0);
                 
                     curLabel.setGraphic(null);
@@ -591,16 +601,9 @@ public class IplanetFX extends Application{
     
     public void grabAnimation(Node n){
         
-        
-        
         RotateTransition rt = new RotateTransition(Duration.millis(200), n);
         rt.setFromAngle(60);
         rt.setToAngle(0);
-        //rt.setCycleCount(2);
-        //rt.setAutoReverse(true);
-        
-       
-     
         
         ScaleTransition st = new ScaleTransition(Duration.millis(290),n);
         st.setFromX(.01);
@@ -615,30 +618,12 @@ public class IplanetFX extends Application{
         st2.setToX(1);
         st2.setToY(1);
         st2.setCycleCount(1);
-        
-  
-        
-        
+    
         ParallelTransition parallelTransition = new ParallelTransition();
         parallelTransition.getChildren().addAll(st2,rt);
-        //st2.play();
-        
         parallelTransition.setCycleCount(1);
-        /*parallelTransition.setOnFinished((e) -> {
-                             
-            //RotateTransition r3 = new RotateTransition(Duration.millis(50), n);
-            r3.setByAngle(-90);
-            r3.setCycleCount(1);
-            rt.setCycleCount(2);
-            rt.setAutoReverse(true);
-
-            });*/
-
         parallelTransition.play();
-        //st2.play();
-        
-        
-        
+
     }
     
     
@@ -893,87 +878,8 @@ public class IplanetFX extends Application{
     }
     
     
-    // Translate up to emulate movement
-    public void translateUp(Node n, double dur, double up, double down, double ogDown, double ogUp) {
-        Path path = new Path();
-        path.getElements().add(new MoveTo(up, down));
-        path.getElements().add(new CubicCurveTo(ogDown + 20, ogDown + 5, ogUp + 10, ogUp + 18, ogDown + 5, ogUp + 18));
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.seconds(dur));
-        pathTransition.setNode(n);
-        pathTransition.setPath(path);
-        pathTransition.play();
-    }
+   
     
-    public void translateLeftRight(Node n, double dur, double up, double down, double ogDown, double ogUp) {
-        
-        //int x = n.getX();
-        Path path = new Path();
-        
-        
-        
-        MoveTo moveTo = new MoveTo();
-        moveTo.setX(10.0);
-        moveTo.setY(10.0);
-    
-    
-        ArcTo arcTo = new ArcTo();
-        arcTo.setX(13.0);
-        arcTo.setY(15.0);
-        arcTo.setRadiusX(3.0);
-        arcTo.setRadiusY(1.0);
-        arcTo.setLargeArcFlag(true);
-        
-        path.getElements().add(moveTo);
-        path.getElements().add(arcTo);
-      
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.seconds(dur));
-        pathTransition.setNode(n);
-        pathTransition.setPath(path);
-        pathTransition.play();
-    }
-    
-    
-    
-    
-    
-    
-    // FOR GRABBING AND SHOOTING REALLY GOOD!!
-    /*
-     
-     public void translateLeftRight(Node n, double dur, double up, double down, double ogDown, double ogUp) {
-         
-         
-         Path path = new Path();
-         
-         MoveTo moveTo = new MoveTo();
-         moveTo.setX(0.0f);
-         moveTo.setY(50.0f);
-         path.getElements().add(moveTo);
-     
-         path.getElements().add(new QuadCurveTo(25.0f,0.0f,50.0f,50.0f));
-       
-         PathTransition pathTransition = new PathTransition();
-         pathTransition.setDuration(Duration.seconds(dur));
-         pathTransition.setNode(n);
-         pathTransition.setPath(path);
-         pathTransition.play();
-     }
-     
-     
-     */
-    // FOR SHOOTING!!
-    /*public void translateLeftRight(Node n, double dur, double up, double down, double ogDown, double ogUp) {
-        Path path = new Path();
-        path.getElements().add(new MoveTo(0.0f, 0.0f));
-        path.getElements().add(new HLineTo(80.0f));
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.seconds(dur));
-        pathTransition.setNode(n);
-        pathTransition.setPath(path);
-        pathTransition.play();
-    }*/
 
 }
 

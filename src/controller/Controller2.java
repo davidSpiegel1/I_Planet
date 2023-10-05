@@ -4,8 +4,12 @@ import java.util.*;
 import model.Block;
 import model.Character;
 import model.Enemy;
+
 import model.Environment;
 import model.Person;
+
+
+
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -41,6 +45,8 @@ import model.Scan;
 import model.Character;
 import model.MovableBlock;
 import model.Enemies;
+import view.AnimateEngine;
+
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.*;
@@ -77,6 +83,8 @@ public class Controller2{
     private Label curLabel;
     private Label prevLabel;
     
+    private AnimateEngine ag;
+    
     public Controller2(){
         // Us initializing everything
         this.currentLevel = 0; // The current level
@@ -99,6 +107,11 @@ public class Controller2{
         
         
         
+    }
+    
+    public void setAnimateEngine(AnimateEngine ag){
+        this.ag = ag;
+        this.p.setAnimateEngine(ag);
     }
    
     
@@ -428,39 +441,62 @@ public class Controller2{
     }
     
     // A method to move the blocks that are movable
-    public void moveBlocks(GridPane gp){
+    public void moveBlocks(GridPane gp, ArrayList<Label> labelList){
+        
         if (p.getUsedNode() != null){
+            
+            
+            
             System.out.println("Not null!!");
             //this.curLabel.getChildren().add(new Label("h"));
-            Button n = (Button)this.curLabel.getGraphic();
+            Node n1 = labelList.get(0).getGraphic();
             
             // Trying hbox
-            HBox hb = new HBox();
+            //TwoGraphics tg = new TwoGraphics(n1,n2);
   
-            Button b2 = new Button();
+            Button n2 = new Button();
             MenuButton p1 = (MenuButton)p.getUsedNode();
             if (p1.getText().equalsIgnoreCase("G")){
-                b2.getStylesheets().add("/utilities/grassCss.css");
+                n2.getStylesheets().add("/utilities/grassCss.css");
             }else if(p1.getText().equals("t")){
-            b2.getStylesheets().add("/utilities/myCss.css");
+                n2.getStylesheets().add("/utilities/myCss.css");
             }else{
-                b2.setText(".");
+                n2.getStylesheets().add("/utilities/brickCss.css");
             }
-            b2.setFocusTraversable(false);
-            b2.setMinWidth(5);
-            b2.setMaxWidth(9);
-            b2.setMinHeight(5);
-            b2.setMaxHeight(15);
-            hb.getChildren().addAll(n,b2);
             
+            n2.setFocusTraversable(false);
+            n2.setManaged(false);
+            
+            
+            n2.setLayoutX(n1.getLayoutX());
+            n2.setLayoutY(n1.getLayoutY());
+            //n2.setMinWidth(50);
+            //b2.toFront();
+            //b2.setMaxWidth(9);
+            //n2.setMinHeight(50);
+            
+            //b2.setMaxHeight(15);
+         
             
       
-            System.out.println(n.getStylesheets());
-            this.curLabel.setGraphic(hb);
+            //System.out.println(n.getStylesheets());
+            //this.curLabel.setGraphic(hb);
+            TwoGraphics tg = new TwoGraphics("",n1,n2);
+            tg.setFocusTraversable(false);
+            tg.setManaged(false);
+            tg.toFront();
+            
+            tg.setLayoutX(n1.getLayoutX());
+            tg.setLayoutY(n1.getLayoutY());
+            
+            labelList.get(0).setGraphic(tg);
+            labelList.get(0).toFront();
+            
             p.setUsedNode(null);
         }
         else{
             System.out.println("Null!");
+            
         }
         
    
@@ -483,29 +519,46 @@ public class Controller2{
                 //System.out.println("The new moveis: "+moves);
               
                 Node n = ml.get(i).getGraphic();
+                
+                
+                // If moves are not empty, we do this
+                if (moves.size() > 0){
+                    
                 for (int p = 0; p<= moves.size()-1;p++){
                     String curMove = moves.get(p);
                     
                     if (curMove.equals("s")){
 
-                    n = translateDown(n);
+                    n = ag.translateDown(n,labelList.get(0).getHeight());
        
                     }
                     else if (curMove.equals("d")){
 
-                        n = translateRight(n);
+                        n = ag.translateRight(n,labelList.get(0).getWidth());
       
                     }
                     else if (curMove.equals("w")){
 
-                        n = translateUp(n);
+                        n = ag.translateUp(n,labelList.get(0).getHeight());
 
                     }
                     else if (curMove.equals("a")){
-                        n = translateLeft(n);
+                        n = ag.translateLeft(n,labelList.get(0).getWidth());
     
                     }
                     
+                }
+                }
+                // Else, we will make bitting
+                else{
+                    
+                    
+                    ag.grabAnimation(n);
+                    
+                    // Then, the users life must go down
+                    Character c1 = (Character)this.getCurBlock();
+                    c1.setGettingHit(true);
+                    this.setCurBlock(c1);
                 }
                 //Node n = ml.get(i).getGraphic();
                 n.setManaged(false);
@@ -539,7 +592,7 @@ public class Controller2{
                     System.out.println("The newPos: "+newPos);
                     
                     Node n = ml.get(i).getGraphic();
-                    n = translateRight(n);
+                    n = ag.translateRight(n,labelList.get(0).getWidth());
                     n.setManaged(false);
                     n.toFront();
                     ml.get(i).toFront();
@@ -556,7 +609,7 @@ public class Controller2{
                         System.out.println("The newPos: "+newPos);
                 
                         Node n = ml.get(i).getGraphic();
-                        n = translateLeft(n);
+                        n = ag.translateLeft(n,labelList.get(0).getWidth());
                         n.setManaged(false);
                         n.toFront();
                         ml.get(i).toFront();
@@ -577,7 +630,7 @@ public class Controller2{
                     System.out.println("The newPos: "+newPos);
                     
                     Node n = ml.get(i).getGraphic();
-                    n = translateUp(n);
+                    n = ag.translateUp(n,labelList.get(0).getHeight());
                     n.setManaged(false);
                     n.toFront();
                     ml.get(i).toFront();
@@ -597,7 +650,7 @@ public class Controller2{
                     System.out.println("The newPos: "+newPos);
                     
                     Node n = ml.get(i).getGraphic();
-                    n = translateDown(n);
+                    n = ag.translateDown(n,labelList.get(0).getHeight());
                     n.setManaged(false);
                     n.toFront();
                     ml.get(i).toFront();
@@ -627,8 +680,8 @@ public class Controller2{
                      
                     // Translating the graphic
                     n = labelArr.get(this.ogCharPos).getGraphic();
-                    n = translateDown(n);
-                    moveNatural(n);
+                    n = ag.translateDown(n,labelArr.get(0).getHeight());
+                    ag.moveNatural(n);
                     n.setManaged(false);
                     n.toFront();
                     labelArr.get(this.ogCharPos).toFront();
@@ -654,8 +707,8 @@ public class Controller2{
                 if (!this.levelArr.get(this.charPos+1).getKey().equals("_") && !this.levelArr.get(this.charPos+1).getKey().equals("|")){
                     
                     n = labelArr.get(this.ogCharPos).getGraphic();
-                    n = translateRight(n);
-                    moveNatural(n);
+                    n = ag.translateRight(n,labelArr.get(0).getWidth());
+                    ag.moveNatural(n);
                     n.setManaged(false);
                     n.toFront();
                     labelArr.get(this.ogCharPos).toFront();
@@ -688,8 +741,8 @@ public class Controller2{
                     System.out.println("Got to w with;"+(this.charPos-this.amountCol-2));
                 
                 n = labelArr.get(this.ogCharPos).getGraphic();
-                n = translateUp(n);
-                moveNatural(n);
+                n = ag.translateUp(n,labelArr.get(0).getHeight());
+                ag.moveNatural(n);
                 n.setManaged(false);
                 n.toFront();
                 labelArr.get(this.ogCharPos).toFront();
@@ -721,8 +774,8 @@ public class Controller2{
                 if (!this.levelArr.get(this.charPos-1).getKey().equals("_") && !this.levelArr.get(this.charPos-1).getKey().equals("|")){
                 
                 n = labelArr.get(this.ogCharPos).getGraphic();
-                n = translateLeft(n);
-                moveNatural(n);
+                n = ag.translateLeft(n,labelArr.get(0).getWidth());
+                ag.moveNatural(n);
                 n.setManaged(false);
                 n.toFront();
                 labelArr.get(this.ogCharPos).toFront();
@@ -754,116 +807,14 @@ public class Controller2{
         
     }
     
+ 
     
-    public void moveNatural(Node n){
-        Path path = new Path();
-        path.getElements().add(new MoveTo(5,5));
-        //path.getElements().add(new CubicCurveTo(5,0,3,1,2,1));
-        QuadCurveTo qt = new QuadCurveTo();
-        qt.setX(20);
-        qt.setY(15);
-        qt.setControlX(15);
-        qt.setControlY(20);
-        
-        
-        
-        path.getElements().add(qt);
-        //path.getElements().add(st);
-        PathTransition pathT = new PathTransition();
-        pathT.setDuration(Duration.millis(250));
-        //pathT.setDuration(Duration.millis(250));
-        pathT.setPath(path);
-        pathT.setNode(n);
-        
-        // Would be infefinite if breathing or something
-        // pathT.setCycleCount(Timeline.INDEFINITE);
-        pathT.setCycleCount(1);
-        //pathT.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathT.setAutoReverse(true);
+    
+    
+    
+    
    
-        
-        ScaleTransition st = new ScaleTransition(Duration.millis(250),n);
-        st.setFromX(.01);
-        st.setFromY(1);
-        st.setToX(1);
-        st.setToY(1);
-        st.setCycleCount(1);
-        
-        ScaleTransition st2 = new ScaleTransition(Duration.millis(300),n);
-        st2.setFromX(1.3f);
-        st2.setFromY(1);
-        st2.setToX(1);
-        st2.setToY(1);
-        st2.setCycleCount(1);
-        
   
-        
-        
-        ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.getChildren().addAll(pathT,st2);
-        //st2.play();
-        
-        parallelTransition.setCycleCount(1);
-        parallelTransition.play();
-        //st2.play();
-        
-        
-    }
-    
-    
-    public Node translateRight(Node n) {
-
-        double x = n.getLayoutX();
-        System.out.println("what the layout was: "+ x);
-        double y = n.getLayoutY();
-    
-        n.setLayoutX(x+32);
-      
-        double x2 = n.getLayoutX();
-        System.out.println("what th layout is: "+x2);
-        
-        return n;
-    }
-    public Node translateLeft(Node n) {
-
-        double x = n.getLayoutX();
-        System.out.println("what the layout was: "+ x);
-        double y = n.getLayoutY();
-    
-        n.setLayoutX(x-32);
-      
-        double x2 = n.getLayoutX();
-        System.out.println("what th layout is: "+x2);
-        
-        return n;
-    }
-    
-    public Node translateUp(Node n) {
-
-        double x = n.getLayoutX();
-        System.out.println("what the layout was: "+ x);
-        double y = n.getLayoutY();
-    
-        n.setLayoutY(y-40);
-      
-        double x2 = n.getLayoutY();
-        System.out.println("what th layout is: "+x2);
-        
-        return n;
-    }
-    public Node translateDown(Node n) {
-
-        double x = n.getLayoutX();
-        System.out.println("what the layout was: "+ x);
-        double y = n.getLayoutY();
-        // Used to be: 32
-        n.setLayoutY(y+40);
-      
-        double x2 = n.getLayoutY();
-        System.out.println("what th layout is: "+x2);
-        
-        return n;
-    }
     
   
     
@@ -885,6 +836,28 @@ public class Controller2{
                 }
 
             }
+    
+        public class TwoGraphics extends Button{
+            private HBox hbox;
+            private Node n1;
+            private Node n2;
+            
+            public TwoGraphics(String name, Node n1, Node n2){
+                
+                super(name); //
+                // Adding more things here
+                this.setMaxWidth(Long.MAX_VALUE);
+                this.n1 = n1;
+                this.n2 = n2;
+                this.hbox = new HBox();
+                this.hbox.getChildren().addAll(n1,n2);
+                this.setGraphic(this.hbox);
+                this.setStyle("-fx-background-color: black;");
+                
+            }
+            
+            
+        }
 
         
     
