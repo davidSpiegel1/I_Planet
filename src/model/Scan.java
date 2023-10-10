@@ -11,6 +11,7 @@ public class Scan{
     private String content = "";
     private ArrayList<String> allowedChars;
     private ArrayList<Block> nodeList;// The needed node list
+    private ArrayList<Integer> healthStops;
     private Character c = new Character();// Neded character object (For live/ inventory)
     private int charPos;
     
@@ -20,15 +21,13 @@ public class Scan{
       
         
         nodeList = new ArrayList<Block>();
-        
+        healthStops = new ArrayList<Integer>();
         
         this.allowedChars = new ArrayList<String>();
         this.allowedChars = this.populateAllowedChars(allowedChars);
         
         try{
             this.content = new String(this.getFile(fileName));
-            //System.out.println("The content: "+this.content);
-            //this.scan(this.content);
             
             }catch(IOException e){
                 System.out.println("Error loading file: "+e); // Change to throw something
@@ -36,6 +35,7 @@ public class Scan{
     }
     public ArrayList<String> populateAllowedChars(ArrayList<String> al){
         al.add("A");
+        al.add("a");
         al.add("C");
         al.add("c");
         al.add(".");
@@ -54,6 +54,13 @@ public class Scan{
         al.add("O");
         al.add("E");
         al.add("d"); // d for dog (Or cow)
+        al.add("F");// For big fire
+        al.add("b");// For blackish grey background
+        al.add("B");// For black ground
+        al.add("f");// For a flower
+        al.add("w");// For a web
+        al.add("o"); // For a room
+        al.add("u"); // For spider
     
         
         return al;
@@ -109,7 +116,13 @@ public class Scan{
                 else if (initText == 'E'){
                     this.nodeList.add(new Enemies(simIndex,"E",20)); // May need to fix amountCol now that it's used
                 }
+                else if (initText == 'a'){
+                    this.nodeList.add(new Gabriel(simIndex,"a",20)); // May need to fix amountCol now that it's used
+                }
                 else{
+                    if (initText == 'f'){
+                        healthStops.add(simIndex);
+                    }
                     this.nodeList.add(new Block(String.valueOf(initText)));
                     
                 }
@@ -131,6 +144,10 @@ public class Scan{
     
     public ArrayList<Block> getNodeList(){
         return this.nodeList;
+    }
+    
+    public ArrayList<Integer>getHealthStops(){
+        return this.healthStops;
     }
     
     public String getFile(String fileName) throws IOException{

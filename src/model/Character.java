@@ -18,6 +18,7 @@ public class Character extends Block {
 	private ArrayList<Block> inventory;
     private int life;
     private boolean hit;
+    private boolean hasStick;
 
 	// Another constructor for block form
 	public Character(int row, int col, String name) {
@@ -29,6 +30,7 @@ public class Character extends Block {
 		this.col = col;
 		this.name = name;
         this.hit = false;
+        this.hasStick = false;
 
 		inventory = new ArrayList<Block>();
 	}
@@ -42,6 +44,14 @@ public class Character extends Block {
         this.name = "Ivan";
         this.inventory = new ArrayList<Block>();
         
+        
+    }
+    
+    public boolean hasStick(){
+        return hasStick;
+    }
+    public void setStick(boolean st){
+        hasStick =st;
         
     }
     

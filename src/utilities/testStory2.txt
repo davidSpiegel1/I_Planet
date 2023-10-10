@@ -1,0 +1,45 @@
+Hey, what's your name?
+Y My name is Ivan
+N I'm not telling you..
+-- Hi Ivan, I'm Joan.
+-- Fine! Wanna fight then?
+-- Y Nice to meet you Joan.
+-- N Did I ask you your name?
+-- Y Sure. Bring it on!
+-- N I-Im kinda tired rn..
+--- It's good meeting you too!
+--- Okay, looks like you wanna fight!
+--- Lets go!!
+--- Okay.. I guess your scared..
+--- Y Im going now..
+--- N Cool, later..
+--- Y Didn't say that either..
+--- N Okay!!
+--- Y Go where??
+--- N Hold up..
+--- Y Yea, I am
+--- N Im not scared.. just tired!
+---- Go ahead!
+---- Bye then..
+---- What did you say?
+---- Fine!
+---- My house!
+---- Hold up? You don't wanna fight!
+---- I know!
+---- Scared and tired!
+---- Y No you go ahead.
+---- N Okay sure..
+---- Y Dude, I just said bye..
+---- N Bye.
+---- Y Nothing!
+---- N A lot..
+---- Y Fine2
+---- N Not Fine!
+---- Y Ew!
+---- N Okay! Lets go!
+---- Y I do. I do!
+---- N Yea, I don't..
+---- Y You don't!
+---- N you do?!
+---- Y Only tired. Not scared.
+---- N Yes! Both!

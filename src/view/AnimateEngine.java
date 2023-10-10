@@ -35,7 +35,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.*;
+
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -61,6 +61,7 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.ParallelTransition;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.*;
 
 //import javafx.scene.layout.StackPane;
 import model.Block;
@@ -82,6 +83,30 @@ public class AnimateEngine {
     public AnimateEngine(){
         System.out.println("Starting the animation engine");
     }
+    
+    
+    public void hitAnimation(Node n){
+        FadeTransition ft = new FadeTransition(Duration.millis(3000), n);
+        ft.setFromValue(0.5);
+        ft.setToValue(1.0);
+        ft.setCycleCount(1);
+        //ft.setAutoReverse(true);
+        ft.setOnFinished((e) -> {
+            n.setStyle("-fx-background-color: #C7C7C7;");
+            
+
+                         });
+        ft.play();
+    }
+    public void deadAnimation(Node n){
+        RotateTransition rt = new RotateTransition(Duration.millis(300), n);
+        rt.setByAngle(90);
+        rt.setCycleCount(1);
+        rt.setAutoReverse(true);
+        rt.play();
+        
+    }
+    
     
     public void grabAnimation(Node n){
         
@@ -110,6 +135,81 @@ public class AnimateEngine {
 
     }
     
+    // An animation that makes the character drink
+    
+    public void drinkAnimation(Node n){
+        Button b = (Button)n;
+        // Will be mouth of animal
+        Ellipse el = new Ellipse();
+        //el.focusTraversable(false);
+        //el.setManaged(false);
+        el.setCenterX(7);
+        el.setCenterY(7);
+        el.setRadiusX(5.0f);
+        el.setRadiusY(3.0f);
+        
+        
+        //el.setLayoutX(20);
+        el.setTranslateX(-10);
+        el.setTranslateY(-4);
+        el.setFill(Color.rgb(74,74,74));
+        
+        // Scale transition
+        ScaleTransition st3 = new ScaleTransition(Duration.millis(900),el);
+        st3.setFromX(1.3f);
+        st3.setFromY(1);
+        st3.setToX(0);
+        st3.setToY(0);
+        st3.setCycleCount(1);
+        
+        b.setGraphic(el);
+        
+        
+        RotateTransition rt = new RotateTransition(Duration.millis(200), n);
+        rt.setFromAngle(-60);
+        rt.setToAngle(0);
+        
+      
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(rt,st3);
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        
+        
+        
+    }
+    
+    public Node translateEat(Node n){
+        
+        RotateTransition rt = new RotateTransition(Duration.millis(200), n);
+        rt.setFromAngle(-60);
+        rt.setToAngle(0);
+        
+        ScaleTransition st = new ScaleTransition(Duration.millis(290),n);
+        st.setFromX(.01);
+        st.setFromY(1);
+        st.setToX(1);
+        st.setToY(1);
+        st.setCycleCount(1);
+        
+        ScaleTransition st2 = new ScaleTransition(Duration.millis(200),n);
+        st2.setFromX(1.3f);
+        st2.setFromY(1);
+        st2.setToX(1);
+        st2.setToY(1);
+        st2.setCycleCount(1);
+    
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(st2,rt);
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        return n;
+
+    }
+    
+    
+    
     // Translate up to emulate movement
     public void translateUp2(Node n, double dur, double up, double down, double ogDown, double ogUp) {
         Path path = new Path();
@@ -124,10 +224,7 @@ public class AnimateEngine {
     
     public void translateLeftRight(Node n, double dur, double up, double down, double ogDown, double ogUp) {
         
-        //int x = n.getX();
         Path path = new Path();
-        
-        
         
         MoveTo moveTo = new MoveTo();
         moveTo.setX(10.0);
@@ -170,7 +267,7 @@ public class AnimateEngine {
         pathTransition.play();
     }
     
-    public void shootNode2(Node n, double dur, double up, double down, double ogDown, double ogUp) {
+    public void shootNode2(Node n, double dur) {
         Path path = new Path();
         path.getElements().add(new MoveTo(0.0f, 0.0f));
         path.getElements().add(new HLineTo(80.0f));

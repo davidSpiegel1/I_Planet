@@ -33,6 +33,7 @@ public class Enemies extends MovableBlock{
     
     public int generateNewPos(){
         // I going right gets closer to 'purpose', then we go right
+        // Maybe change condition of barriers to be modOfRight
         if (this.pos+1 <= this.levelArr.size()-1){
             //if (!this.levelArr.get(this.pos+1).getKey().equals("_") && !this.levelArr.get(this.pos+1).getKey().equals("|") && ((this.pos+1)%(this.amountCol)) != 0){
                 int possRight = this.pos+1;
@@ -45,13 +46,13 @@ public class Enemies extends MovableBlock{
                     this.moveList.add("d"); // Making the move to left
                     }
                 }
-            //}
+           // }
         }
         
         // If going left gets closer to 'purpose', then we go left
         //System.out.println("The mod of left: "+modOfLeft);
         if (this.pos-1 >= 0){
-               // if (!this.levelArr.get(this.pos-1).getKey().equals("_") && !this.levelArr.get(this.pos-1).getKey().equals("|")){
+              // if (!this.levelArr.get(this.pos-1).getKey().equals("_") && !this.levelArr.get(this.pos-1).getKey().equals("|")){
                     int possLeft = this.pos-1;
            
                     int modOfLeft = possLeft%(this.amountCol+2);// Mod of left will give a good spot
@@ -72,27 +73,27 @@ public class Enemies extends MovableBlock{
             
                     }
                
-                   // }
+               //     }
               
             }
         
         
         // If going up gets closer to 'purpose', then we go up
         if (this.pos-(this.amountCol+2) >= 0){
-           //if(!this.levelArr.get(this.pos-this.amountCol-2).getKey().equals("_") && !this.levelArr.get(this.pos-this.amountCol-2).getKey().equals("|")){
-                int possUp = this.pos-(this.amountCol+2);
+          // if(!this.levelArr.get(this.pos-this.amountCol-2).getKey().equals("_") && !this.levelArr.get(this.pos-this.amountCol-2).getKey().equals("|")){
+                int possUp = this.pos-this.amountCol-2;
                     // If the possible up value has less distance
                     System.out.println("The possUp diff: "+Math.abs(possUp-this.purpose));
                     if (Math.abs(possUp-this.purpose) <= Math.abs(this.pos-this.purpose)){
                             this.pos = possUp;
                             this.moveList.add("w"); // Making the move to up
                     }
-              //  }
+             //   }
         }
         
         // If going down gets closer to 'purpose', then we go down
         if (this.pos+this.amountCol+2 <= this.levelArr.size()-1){
-          //  if (!this.levelArr.get(this.pos+this.amountCol+2).getKey().equals("_") && !this.levelArr.get(this.pos+this.amountCol+2).getKey().equals("|")){
+         //   if (!this.levelArr.get(this.pos+this.amountCol+2).getKey().equals("_") && !this.levelArr.get(this.pos+this.amountCol+2).getKey().equals("|")){
                 int possDown = this.pos+this.amountCol+2;
                 // If possible down value has less distance
                 if (Math.abs(possDown-this.purpose) <= Math.abs(this.pos-this.purpose)){
@@ -110,6 +111,11 @@ public class Enemies extends MovableBlock{
         return this.pos; // Returning the modified position
         
     }// End of generate new pos
+    
+    @Override
+    public int getPos(){
+        return this.pos;
+    }
     
     // A getter to recieve the list of moves
     public ArrayList<String> getMoves(){

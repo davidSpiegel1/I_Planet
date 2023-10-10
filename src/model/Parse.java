@@ -55,6 +55,8 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.*;
 
 import view.AnimateEngine;
+import model.Animal;
+import model.Gabriel;
 
 public class Parse {
 
@@ -79,6 +81,11 @@ public class Parse {
     public static final String GunStyle = "/utilities/gunCss.css";
     public static final String cowStyle = "/utilities/cowCss.css";
     public static final String DoorStyle = "/utilities/doorCss.css";
+    public static final String FireStyle = "/utilities/fireCss.css";
+    public static final String BlackStyle = "/utilities/blackCss.css";
+    public static final String FlowerStyle = "/utilities/flowerCss.css";
+    public static final String WebStyle = "/utilities/webCss.css";
+    public static final String GabrielStyle = "/utilities/gabrielCss.css";
 
     // Making a character object
     private Character char1;
@@ -91,7 +98,7 @@ public class Parse {
     private Label curHeader;
     private ArrayList<MovableBlock> movingBlocks;
     private ArrayList<Label> movingLabels;
-    private Node usedNode = null;
+    private String usedNode = null;
     private AnimateEngine ag;
 
     public Parse() {
@@ -100,6 +107,10 @@ public class Parse {
         char1 = new Character();
         System.out.println("Parsing started..");
 
+    }
+    
+    public void setChar2(Character c){
+        char1 = c;
     }
 
     public ArrayList<Label> getList() {
@@ -141,7 +152,8 @@ public class Parse {
                 l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
             } else if (arr.get(i) instanceof MovableBlock) {
 
-                if (arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("p") || arr.get(i).getKey().equals("E")) {
+                if (arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("p") || arr.get(i).getKey().equals("E") ||
+                    arr.get(i).getKey().equals("a") ) {
 
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
                     l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
@@ -166,7 +178,10 @@ public class Parse {
             } else {
                 if (arr.get(i).getKey().equals("t") || arr.get(i).getKey().equalsIgnoreCase("G")
                         || arr.get(i).getKey().equals("_") ||
-                        arr.get(i).getKey().equals("|") || arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("W") || arr.get(i).getKey().equals("O")) {
+                        arr.get(i).getKey().equals("|") || arr.get(i).getKey().equals("W") || arr.get(i).getKey().equalsIgnoreCase("O") || arr.get(i).getKey().equals("K") || arr.get(i).getKey().equalsIgnoreCase("B") ||
+                    arr.get(i).getKey().equalsIgnoreCase("F") ||
+                    arr.get(i).getKey().equalsIgnoreCase("w") ||
+                    arr.get(i).getKey().equals("a")) {
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
                     l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
                 } else {
@@ -201,9 +216,26 @@ public class Parse {
             b = new Background(new BackgroundFill(Color.rgb(88, 103, 110), new CornerRadii(2.0), Insets.EMPTY));
         } else if (key.equals("W")) {
             b = new Background(new BackgroundFill(Color.rgb(0, 89, 160), CornerRadii.EMPTY, Insets.EMPTY));
-        } else {
+        }
+        else if (key.equals("B")){
+            b = new Background(new BackgroundFill(Color.rgb(54, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
+        }
+        else if (key.equals("b")){
+            b = new Background(new BackgroundFill(Color.rgb(64, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
+        }
+        else if (key.equals("F") || key.equals("w")){
+            b = new Background(new BackgroundFill(Color.rgb(64, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
+        }
+        else if (key.equals("f")){
+            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), new CornerRadii(2.0), Insets.EMPTY));
+        }
+        else if (key.equals("a")){
+            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), new CornerRadii(2.0), Insets.EMPTY));
+        }
+        else {
             b = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
         }
+        
         return b;
     }
     
@@ -242,10 +274,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
             // b.setBackground(findBackGround(blockArr.get(i).getKey()));
             String color1 = "";
             String fontCol = "";
-            if (blockArr.get(i).getKey().equals("t")) {
-                color1 = "green";
-                fontCol = "yellow";
-            }
+       
             if (blockArr.get(i).getKey().equals(".")) {
                 color1 = "#D08770";
                 fontCol = "#BF616A";
@@ -259,6 +288,31 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
                 fontCol = "#112D4E";
 
             }
+            if (blockArr.get(i).getKey().equals("K")){
+                color1 = "#776389";
+                fontCol = "#DDC5F2";
+            }
+            if (blockArr.get(i).getKey().equals("F")){
+                    color1 = "#E0813E";
+                    fontCol = "#E8A677";
+            }
+            if (blockArr.get(i).getKey().equals("f")){
+                        color1 = "#446B5D";
+                        fontCol = "#78C3A8";
+            }
+            if(blockArr.get(i).getKey().equalsIgnoreCase("B")){
+                            color1 = "black";
+                            fontCol = "grey";
+            }
+            if(blockArr.get(i).getKey().equals("w")){
+                            color1 = "red";
+                            fontCol = "black";
+            }
+            if(blockArr.get(i).getKey().equals("a")){
+                color1 = "red";
+                fontCol = "black";
+            }
+                
 
             b.setStyle("-fx-text-fill: " + fontCol + ";" +
                     "-fx-background-color: " + color1 + ";" +
@@ -276,23 +330,46 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
                 @Override
                 public void handle(ActionEvent e) {
                     System.out.println("Use pressed!");
-                    setUsedNode(curB);
+                    setUsedNode(((MenuItem) e.getSource()).getId());
+                    if (((MenuItem) e.getSource()).getId().equals("f")){
+                        try {
+                            for (int i = 0; i <= blockArr.size() - 1; i++) {
+                                if (((MenuItem) e.getSource()).getId().equals(blockArr.get(i).getKey())) {
+                                    char1.removeInventory(i);
+                                    break;
+                                }
+                            }
+                            System.out.println(((MenuItem) e.getSource()).getId());
+                            int val = 0;
+                            for (int i = 0; i <= menuArr.size() - 1; i++) {
+                                if (menuArr.get(i).getId().equals(((MenuItem) e.getSource()).getId())) {
+                                    System.out.println("Found the menu Item in menu Array");
+                                    menuArr.get(i).setVisible(false);
+                                    val = i;
+                                    break;
+                                }
+                            }
+                            menuArr.remove(val);
+                    }catch (Exception el) {
+                        System.err.println("Error! Could not remove inventory!" + el);
+                    }
+                
                     
                     
-                }
+                    }
+    
+                    }
 
             });
             m2.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent e) {
                     System.out.println("Remove pressed!");
-
                     // Must set the char and update it
                     try {
                         for (int i = 0; i <= blockArr.size() - 1; i++) {
                             if (((MenuItem) e.getSource()).getId().equals(blockArr.get(i).getKey())) {
                                 char1.removeInventory(i);
-                                
                                 break;
                             }
                         }
@@ -447,11 +524,11 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         return buttonArr;
     }
     
-    public void setUsedNode(Node n){
+    public void setUsedNode(String n){
         this.usedNode = n;
     }
     
-    public Node getUsedNode(){
+    public String getUsedNode(){
         return this.usedNode;
     }
 
@@ -482,7 +559,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         } else if (type.equals("E")) {
             b1.getStylesheets().add(BadStyle);
         
-        } else if (type.equals("O")){
+        } else if (type.equalsIgnoreCase("O")){
             b1.getStylesheets().add(DoorStyle);
         }else if (type.equals("|") || type.equals("_")) {
             b1.getStylesheets().add(BrickStyle);
@@ -503,6 +580,23 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
 
         } else if (type.equals("d")) {
             b1.getStylesheets().add(cowStyle);
+        }else if (type.equals("B")){
+            b1.getStylesheets().add(BlackStyle);
+        }
+        else if (type.equals("b")){
+            b1.getStylesheets().add(BlackStyle);
+        }
+        else if (type.equals("F")){
+            b1.getStylesheets().add(FireStyle);
+        }
+        else if (type.equals("f")){
+            b1.getStylesheets().add(FlowerStyle);
+        }
+        else if (type.equals("w")){
+            b1.getStylesheets().add(WebStyle);
+        }
+        else if (type.equals("a")){
+            b1.getStylesheets().add(GabrielStyle);
         }
         b1.setText("");
 

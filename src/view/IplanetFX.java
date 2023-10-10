@@ -68,6 +68,8 @@ import model.Enemy;
 import model.Environment;
 import model.Person;
 import model.Enemies;
+import model.Animal;
+import model.Gabriel;
 
 import model.Parse;
 import model.Scan;
@@ -186,9 +188,12 @@ public class IplanetFX extends Application{
               Duration.millis(1000),
                   event -> {
                       
-                      c.moveBlocks(mainGame,labelList);
-                      
-                      if (c.getPrevBlock().getKey().equals("W") || ((Character)c.getCurBlock()).getGettingHit()){
+                      c.moveBlocks(mainGame,labelList,infoDeck,statButton);
+                      // MOVING SORD!!
+                     // if (((Character)c.getCurBlock()).hasStick()){
+                       //   ag.grabAnimation(((Button)labelList.get(0).getGraphic()).getGraphic());
+                      //}
+                      if (c.getPrevBlock().getKey().equals("W") || ((Character)c.getCurBlock()).getGettingHit() || c.getPrevBlock().getKey().equals("F")  ){
                           
                           Label l1 = labelList.get(0);
                           Node n = l1.getGraphic();
@@ -203,7 +208,6 @@ public class IplanetFX extends Application{
                           ft.setOnFinished((e) -> {
                               n.setStyle("-fx-background-color: #C7C7C7;");
                               
-
                                            });
                           ft.play();
                           
@@ -239,11 +243,7 @@ public class IplanetFX extends Application{
 
                                            });
                           rt.play();
-                              
-                
-                      
                           }
-                      
                         }
                   ));
         tl.setCycleCount(Animation.INDEFINITE);
@@ -512,10 +512,28 @@ public class IplanetFX extends Application{
                         
                         System.out.println("Doing the next level!");
                         changeLevel();
+                    }
+                    else if (c.getCharPos()==0){
+                        
+                        
+                        changeLevel(-1);
+                        System.out.println("Back");
+                    
+                        //changeLevel();
+                        //changeLevelSpecific();
+                        
+                    }else if (deScript.equalsIgnoreCase("next levelz")){
+                            System.out.println("change levels (To room)");
+                            curDescription.setText("room--");
+                            changeLevel(5);//
+                            //System.out.println("Back");
+                            
                     }else{
-                    curDescription.setText(c.getDescription());
-                   
-                   
+                            curDescription.setText(c.getDescription());
+                            //Button b9 = (Button)n;
+                            //Node n5 = b9.getGraphic();
+                            //ag.grabAnimation(n5);
+                            c.determineTalk();
                     }
                     
                 }
@@ -551,7 +569,20 @@ public class IplanetFX extends Application{
                     
                     //Node n = curLabel.getGraphic();
                     Node n = labelList.get(0).getGraphic();
+                    
+                    
+                    if (((Character)c.getCurBlock()).hasStick()){
+                        Button b9 = (Button)n;
+                        Node n5 = b9.getGraphic();
+                        ag.grabAnimation(n5);
+                        c.decrementFound();
+                        
+                    }else{
+                        
+                        
                     ag.grabAnimation(n);
+                        
+                    }
                     //translateLeftRight(n, .6, 0, 1, 1, 0);
                 
                     curLabel.setGraphic(null);
@@ -593,38 +624,56 @@ public class IplanetFX extends Application{
                     
                     
                 }
+                if (e.getCode().equals(KeyCode.K)){
+                    
+                    // We want to set knife if it exists
+                 
+                    Block curB = c.getCurBlock();
+                    ArrayList<Block> inventory = c.getInventory(curB);
+                    boolean canHit = false;
+                    for (int i = 0; i<= inventory.size()-1;i++){
+                        if (inventory.get(i).getKey().equals("K")){
+                            canHit = true;
+                        }
+                    }
+                  
+                    if (canHit && !((Character)c.getCurBlock()).hasStick()){
+                        Character c3 = (Character)curB;
+                        c3.setStick(true);
+                        c.setCurBlock(c3);
+                        
+                        // Now, we must set the graphic
+                        
+                        //c3.setStick(true);
+                        //c.setCurBlock(c4);
+                        Button n2 = new Button("");
+                        n2.getStylesheets().add("/utilities/knifeCss.css");
+                        
+                   
+                        n2.setMinWidth(10);
+                        n2.setMinHeight(10);
+                        //n2.setManaged(false);
+                        n2.setLayoutY(50);
+                        Button n1 = (Button)labelList.get(0).getGraphic();
+                        n1.setGraphic(n2);
+                        
+                    }
+                    else if (canHit && ((Character)c.getCurBlock()).hasStick()){
+                        Button n1 = (Button)labelList.get(0).getGraphic();
+                        n1.setGraphic(null);
+                        Character c3 = (Character)curB;
+                        c3.setStick(false);
+                    }
+                    
+                    
+                    
+                }
             }
         });
         stage.setScene(scene);
         stage.show();
 	}
     
-    public void grabAnimation(Node n){
-        
-        RotateTransition rt = new RotateTransition(Duration.millis(200), n);
-        rt.setFromAngle(60);
-        rt.setToAngle(0);
-        
-        ScaleTransition st = new ScaleTransition(Duration.millis(290),n);
-        st.setFromX(.01);
-        st.setFromY(1);
-        st.setToX(1);
-        st.setToY(1);
-        st.setCycleCount(1);
-        
-        ScaleTransition st2 = new ScaleTransition(Duration.millis(200),n);
-        st2.setFromX(1.3f);
-        st2.setFromY(1);
-        st2.setToX(1);
-        st2.setToY(1);
-        st2.setCycleCount(1);
-    
-        ParallelTransition parallelTransition = new ParallelTransition();
-        parallelTransition.getChildren().addAll(st2,rt);
-        parallelTransition.setCycleCount(1);
-        parallelTransition.play();
-
-    }
     
     
     
@@ -635,7 +684,7 @@ public class IplanetFX extends Application{
      
      
      */
-    public Controller displayGameOver(Stage stage1) {
+    public Controller2 displayGameOver(Stage stage1) {
         stage1 = new Stage();
         mainStage = stage1;
         Label l2 = new Label("You Lost :(");
@@ -676,7 +725,9 @@ public class IplanetFX extends Application{
         stage1.setTitle("Game Over");
         stage1.show();
         
-        return null; // WIll return the controller value
+        
+        //c = new Controller2();
+        return c; // WIll return the controller value
     }
     
     public GridPane clearButtons(GridPane gp){
@@ -759,6 +810,71 @@ public class IplanetFX extends Application{
                 }
         }
         
+    }
+    
+    public void changeLevel(int vals){
+        ArrayList<Block> list = null;
+        if (vals == -1 && c.inRoom() == false){
+            c.changeLevel(vals);
+            list = c.constructMap(); // Consturcting the map
+        }else if (vals == -1 && c.inRoom() == true){
+            c.changeLevel(0);
+            list = c.constructMap(); // Consturcting the map
+        }
+        else{
+            c.changeToRoom();
+            list = c.constructMap2();
+            System.out.println("The list for map2: "+list);
+        }
+        mainGame.getChildren().clear();
+        labelList.clear();
+        labelList = c.parse(list);
+        int col = 0;
+        int row = 0;
+        int amountCol = c.getAmountCol();
+        System.out.println("The columns amount: "+amountCol);
+        
+        
+        // We will have a temp center pane
+        centerPane.getChildren().clear();
+        centerPane.getChildren().add(mainGame);
+        centerPane.setStyle("-fx-background-color:cyan");
+                    centerPane.setPrefSize(amountCol*50, labelList.size()*50);
+        
+        
+
+
+        // Getting the board
+        for (int j = 0; j<= labelList.size()-1;j++){
+                Label curLabel = labelList.get(j);
+            
+                curLabel.prefWidthProperty().bind(Bindings.min(centerPane.widthProperty().divide(amountCol),
+                                                                            centerPane.heightProperty().divide(labelList.size()/amountCol)));
+                curLabel.prefHeightProperty().bind(Bindings.min(centerPane.widthProperty().divide(amountCol),
+                                                                            centerPane.heightProperty().divide(labelList.size()/amountCol)));
+            
+            
+                mainGame.add(labelList.get(j),col,row);
+                
+                if (col > amountCol){
+                    col = 0;
+                    row++;
+                }else{
+                    col++;
+                }
+        }
+        //int pos = c.getCharPos();
+        
+    }
+    
+ 
+    
+    public void translateCharToPos(int pos, Node n){
+        double x = n.getLayoutX();
+       // System.out.println("what the layout was: "+ x);
+        double y = n.getLayoutY();
+        n.setLayoutY(y+pos);
+        n.setLayoutX(y+pos);
     }
     
     // To construct the proper stats for the game

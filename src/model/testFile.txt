@@ -1,20 +1,20 @@
-........E.|...........
-..........|..........d
 ..........|...........
-..........|..ttttttttt
-_________GtGWWWWGgggGG
-GGGtGGGGGGtGGGtGGggGGG
-GGGGGGtGtGtGGGtGGttttt
-GGGGGGGGGtGttGtGGttttt
+..........|...dW......
+..........|...df..K.W.
+..........|..tGGGGGGGG
+_________GtGWWffffffff
+GGGtGGGGGGtGGGWWWWWGdG
+GGGGGGtGtGtGGGGGGfffff
+GGGGGGGGGtGttGfffaffff
 GGGGGGGGtGtGGGtGGttttt
-GGGGGGGpGGGtGGGGGttttt
-tGGGtGtGGGGtGGtGGttttt
-GGGGGGEGtGGGGGGGGttttt
+GGGGfGGpGGGtGGGGGttttt
+tGGGtttGGGGtGGtGGttttt
+GGGGGGGGtGGGGGGGggtbtt
 GGGGGGGGGGGGGGGGWttttt
 GGGG_GGG_GGGGGGWWttttt
-GGGG|GGG|GGGGGGWWttttt
-GGGG|GOs|GGGGGWWWttttt
-GGGG|GGG|GGGGWWWWttttt
+GG_||gGg||_GfGGWWttttt
+GGG||gOG||GGGGWWWttttt
+GGG||Ggg||GGGWWWWttttt
 
 
 

@@ -3,7 +3,8 @@ package controller;
 import java.util.*;
 import model.Block;
 import model.Character;
-import model.Enemy;
+
+
 
 import model.Environment;
 import model.Person;
@@ -25,6 +26,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
@@ -45,6 +47,8 @@ import model.Scan;
 import model.Character;
 import model.MovableBlock;
 import model.Enemies;
+import model.Animal;
+import model.Gabriel;
 import view.AnimateEngine;
 
 import javafx.scene.shape.MoveTo;
@@ -57,24 +61,34 @@ import javafx.animation.Timeline;
 //import javafx.scene.shape.*;
 import javafx.animation.ScaleTransition;
 import javafx.animation.ParallelTransition;
+import javafx.scene.Group;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Tooltip;
+import javafx.geometry.Bounds;
+import javafx.scene.control.*;
+//import javafx.scene.TextInputDialog;
 
 // The class of the controller
 public class Controller2{
+    
     private int currentLevel;
     private int currentStoryBeat;
     private boolean isGameOver;
     private int charPos;
     private int amountCol;
     private int ogCharPos;
+    private Tooltip globalTool;
     private Block prevBlock = null;
-    
+    private Gabriel gabrielBlock = null;
     private boolean didMove = false;// An instance variable to check if the person moved or not
+    private boolean inRoom = false;
     
     
     private ArrayList<Block>levelArr; // list of blocks for the level we are on
     
     
     private ArrayList<String>levelNames; // List of level names
+    private ArrayList<String>levelR;
     
     private Scan sc; // Scanner object
     private Parse p; // Parse object
@@ -83,7 +97,13 @@ public class Controller2{
     private Label curLabel;
     private Label prevLabel;
     
-    private AnimateEngine ag;
+    // Labels for description and header
+    private Label curHeader;
+    private Label curDescription;
+    
+    private AnimateEngine ag; // Animate Engine instance variable
+    private GridPane gp2;
+    private MenuButton statButton;
     
     public Controller2(){
         // Us initializing everything
@@ -94,6 +114,8 @@ public class Controller2{
         this.amountCol = 20;
         this.isGameOver = false;
         this.levelNames = new ArrayList<String>();
+        
+        this.levelR = new ArrayList<String>();
         p = new Parse(); // parser object intiated
         
    
@@ -123,14 +145,34 @@ public class Controller2{
         this.p.setAnimateEngine(ag);
 
     }
-   
+    
+    
+   public ArrayList<String> getLevelNames(){
+       return null;
+   }
     
     public ArrayList<String> populateLevelNames(ArrayList<String> arr){
         arr.add("model/testFile.txt");
         arr.add("utilities/levelOne.txt");
         arr.add("utilities/levelTwo.txt");
         arr.add("utilities/levelThree.txt");
-        arr.add("utilities/levelFour.txt");
+        arr.add("utilities/levelFive.txt");
+        arr.add("utilities/levelSix.txt");
+        arr.add("utilities/levelSeven.txt");
+        arr.add("utilities/levelEight.txt");
+        
+        
+        this.levelR.add("..");
+        this.levelR.add("utilities/roomOneA.txt");
+        this.levelR.add("utilities/roomTwoA.txt");
+        this.levelR.add("utilities/roomThreeA.txt");
+        this.levelR.add("utilities/roomFourA.txt");
+        this.levelR.add("utilities/roomFiveA.txt");
+        this.levelR.add("utilities/roomSixA.txt");
+        this.levelR.add("utilities/roomSevenA.txt");
+        this.levelR.add("utilities/roomEightA.txt");
+        
+        
      
         
         return arr;
@@ -164,6 +206,37 @@ public class Controller2{
         }
         if (newC == null){
             this.levelArr = this.placeChar(levelArr,null);
+        }else{
+            this.levelArr = this.placeChar(levelArr,newC);
+        }
+        return this.levelArr;
+        
+    }
+    public ArrayList<Block> constructMap2(){
+        String levelName = this.levelR.get(this.currentLevel); // Getting our level name
+        System.out.println("The level name: "+levelName);
+        this.levelArr = new ArrayList<Block>();
+        Character newC = null;
+        try{
+            if (this.sc != null){
+                
+                newC = this.sc.getCharacter();
+                this.sc = new Scan(levelName);
+                this.sc.setCharacter(newC);
+                this.levelArr = sc.scan();
+                
+            }else{
+                
+                this.sc = new Scan(levelName);
+                this.levelArr = sc.scan();
+            
+            }
+        
+        } catch(Exception e){
+            System.err.println("Error!");
+        }
+        if (newC == null){
+           this.levelArr = this.placeChar(levelArr,null);
         }else{
             this.levelArr = this.placeChar(levelArr,newC);
         }
@@ -204,7 +277,7 @@ public class Controller2{
         levelArr.set(this.charPos,c);
         return levelArr;
     }
-    
+
     // Will have a new moveChar that moves the value to a new label list
     public int getCharPos(){
         return this.charPos;
@@ -390,13 +463,38 @@ public class Controller2{
         return this.didMove;
     }
     
+    public void setCharPos(int pos){
+        this.charPos = pos;
+    }
+    
     public ArrayList<Block> getBlockList(){
         return this.levelArr;
     }
     
     public void changeLevel(){
+        this.inRoom = false;
         if (this.currentLevel <= this.levelNames.size()-1){
         this.currentLevel++;
+        }else{
+            this.currentLevel = 0;
+        }
+        updateCharacter();
+        this.charPos = this.sc.getCharPosition();
+        
+    }
+    
+    public void changeToRoom(){
+        this.inRoom = true;
+        updateCharacter();
+        this.charPos = this.sc.getCharPosition();
+    }
+    public boolean inRoom(){
+        return this.inRoom;
+    }
+    
+    public void changeLevel(int valz){
+        if (this.currentLevel+valz <= this.levelNames.size()-1 && this.currentLevel+valz >= 0){
+        this.currentLevel= currentLevel+valz;
         }else{
             this.currentLevel = 0;
         }
@@ -429,6 +527,8 @@ public class Controller2{
     
     // A method to parse the inventory
     public ArrayList<MenuButton> parseInventory(ArrayList<Block> inventory,GridPane infoDeck, Label curDescription, Label curHeader){
+        this.curDescription = curDescription;
+        this.curHeader = curHeader;
         ArrayList<MenuButton> l = p.parseInventory(inventory,infoDeck,curDescription,curHeader);
         return l;
     }
@@ -450,59 +550,215 @@ public class Controller2{
         
     }
     
-    // A method to move the blocks that are movable
-    public void moveBlocks(GridPane gp, ArrayList<Label> labelList){
+    
+    public void decrementFound(){
+        ArrayList<MovableBlock> mb = this.p.getMovableBlocks();
+        ArrayList<Label> ml = this.p.getMovableLabels();
         
-        if (p.getUsedNode() != null){
-            
-            
-            
-            System.out.println("Not null!!");
-            //this.curLabel.getChildren().add(new Label("h"));
-            Node n1 = labelList.get(0).getGraphic();
-            
-            // Trying hbox
-            //TwoGraphics tg = new TwoGraphics(n1,n2);
-  
-            Button n2 = new Button();
-            MenuButton p1 = (MenuButton)p.getUsedNode();
-            if (p1.getText().equalsIgnoreCase("G")){
-                n2.getStylesheets().add("/utilities/grassCss.css");
-            }else if(p1.getText().equals("t")){
-                n2.getStylesheets().add("/utilities/myCss.css");
-            }else{
-                n2.getStylesheets().add("/utilities/brickCss.css");
+        // Lopping through movable objects to find one close
+        for (int i = 0; i<= mb.size()-1;i++){
+            System.out.println("The object: "+mb.get(i).getKey()+", The life: "+mb.get(i).getLife());
+            System.out.println("The object i: "+mb.get(i).getPos()+", The char i: "+this.charPos);
+            if (mb.get(i).getPos()==this.charPos){
+                System.out.println("The object: "+mb.get(i).getKey()+", The life: "+mb.get(i).getLife());
+                mb.get(i).decrementLife();
+                ag.hitAnimation(ml.get(i).getGraphic());
+                if (mb.get(i).getLife() <= 0){
+                    ag.deadAnimation(ml.get(i).getGraphic());
+                }
             }
             
-            n2.setFocusTraversable(false);
-            n2.setManaged(false);
+        }
+        
+    }
+    
+    public void determineTalk(){
+        ArrayList<MovableBlock> mb = this.p.getMovableBlocks();
+        ArrayList<Label> ml = this.p.getMovableLabels();
+        
+        // Lopping through movable objects to find one close
+        for (int i = 0; i<= mb.size()-1;i++){
+            //System.out.println("The object: "+mb.get(i).getKey()+", The life: "+mb.get(i).getLife());
+            //System.out.println("The object i: "+mb.get(i).getPos()+", The char i: "+this.charPos);
+            if (mb.get(i).getPos()==this.charPos && mb.get(i) instanceof Gabriel){
+                System.out.println("The object: "+mb.get(i).getKey()+", The life: "+mb.get(i).getLife());
+                System.out.println("Talking to gabriel!!");
+                //mb.get(i).decrementLife();
+                
+                gabrielBlock = (Gabriel)mb.get(i);
+                Button b9 = (Button)ml.get(i).getGraphic();
+                globalTool = new Tooltip(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                globalTool.setAutoHide(false);
+                //tp.show(b9,b9.getLayoutX(),b9.getLayoutY());
+                globalTool.setMinWidth(gabrielBlock.getComment().length()*7);
+                globalTool.setMaxWidth(gabrielBlock.getComment().length()*12);
+                globalTool.setMinHeight(gabrielBlock.getComment().length()*7);
+                globalTool.setMaxHeight(gabrielBlock.getComment().length()*12);
+                globalTool.setStyle("-fx-font: normal bold 20 Langdon; "
+                    + "-fx-base: #BDB4D0; "
+                    + "-fx-text-fill: white;");
+                
+           
+                    System.out.println(b9.getTooltip());
+                globalTool.setOnShowing(s->{
+                        Bounds bounds = b9.localToScreen(b9.getBoundsInLocal());
+                    globalTool.setX(bounds.getMaxX());
+                    globalTool.setY(bounds.getMinY());
+                        
+                    });
+                    
+                globalTool.show(b9,b9.getLayoutX(),b9.getLayoutY());
+                b9.setDisable(false);
+                b9.setFocusTraversable(true);
+                b9.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent e) {
+                        
+              
+                        if (e.getCode().equals(KeyCode.LEFT)) {
+                            
+                            gabrielBlock.goLeft();
+                            globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                       
+                        }
+                        else if (e.getCode().equals(KeyCode.RIGHT)){
+                            gabrielBlock.goRight();
+                            globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                        }
+                        else{
+                            System.out.println("Something!!");
+                            b9.setDisable(true);
+                            b9.setFocusTraversable(true);
+                            b9.setTooltip(null);
+                            globalTool.setOpacity(0.0);
+                        }
+                    }
+                });
+                
+                    //Bounds bounds = b9.localToScreen(b9.getBoundsInLocal());
+                    //tp.setX(bounds.getMaxX());
+                    //tp.setY(bounds.getMinY());
+                   // tp.setHideDelay(Duration.seconds(20));
+                   
+                    //b9.setTooltip(tp);
+   
+                    ag.hitAnimation(ml.get(i).getGraphic());
+                    
             
+   
+                
+                
+                
+            }
             
-            n2.setLayoutX(n1.getLayoutX());
-            n2.setLayoutY(n1.getLayoutY());
-            //n2.setMinWidth(50);
-            //b2.toFront();
-            //b2.setMaxWidth(9);
-            //n2.setMinHeight(50);
+        }
+        
+    }
+    
+    // A method to move the blocks that are movable
+    public void moveBlocks(GridPane gp, ArrayList<Label> labelList,GridPane gp2, MenuButton statButton){
+        this.gp2 = gp2;// Setting instance variable to that
+        this.statButton = statButton;
+        
+        
+        if (p.getUsedNode() != null){
+            System.out.println("Not null!!");
+            //this.curLabel.getChildren().add(new Label("h"));
+            Button n1 = (Button)labelList.get(0).getGraphic();
+            // Trying hbox
+            //TwoGraphics tg = new TwoGraphics(n1,n2);
+            Button n2 = new Button();
+            String p1 = p.getUsedNode();
+            System.out.println("What p1 is: "+p1);
+            if (p1.equalsIgnoreCase("G")){
+                Character c4 = (Character)this.getCurBlock();
+                c4.setStick(false);
+                this.setCurBlock(c4);
+                n2.getStylesheets().add("/utilities/grassCss.css");
+                
+            }else if(p1.equals("t")){
+                Character c4 = (Character)this.getCurBlock();
+                c4.setStick(false);
+                this.setCurBlock(c4);
+                n2.getStylesheets().add("/utilities/myCss.css");
+            }
             
-            //b2.setMaxHeight(15);
-         
+            else if (p1.equals("K")){
             
-      
-            //System.out.println(n.getStylesheets());
-            //this.curLabel.setGraphic(hb);
-            TwoGraphics tg = new TwoGraphics("",n1,n2);
-            tg.setFocusTraversable(false);
-            tg.setManaged(false);
-            tg.toFront();
-            
-            tg.setLayoutX(n1.getLayoutX());
-            tg.setLayoutY(n1.getLayoutY());
-            
-            labelList.get(0).setGraphic(tg);
-            labelList.get(0).toFront();
-            
+                Character c4 = (Character)this.getCurBlock();
+                c4.setStick(true);
+                this.setCurBlock(c4);
+                
+                n2.getStylesheets().add("/utilities/knifeCss.css");
+            }
+            else if (p1.equals("f")){
+                Character c4 = (Character)this.getCurBlock();
+                c4.setStick(false);
+                c4.incrementLife();
+                this.setCurBlock(c4);
+                p.setChar2(c4);
+                
+                
+                
+                ArrayList<MenuButton> bl = new ArrayList<MenuButton>();
+                
+                for (Node child: gp2.getChildren()){
+                if (child != null){
+                    if (child instanceof MenuButton){
+                        
+                        if (((MenuButton)child).getId()!= null){
+                            System.out.println("The id of child: "+((MenuButton)child).getId());
+                            if (!((MenuButton)child).getId().equals(((MenuButton)statButton).getId())){
+                                bl.add((MenuButton)child);
+                            }else{
+                                System.out.println("The id of statButton: "+child.getId());
+                                child.setId("important");
+                            }
+                            
+                        }else{
+                            System.out.println("The id of child: "+((MenuButton)child).getId());
+                            bl.add((MenuButton)child);
+                        }
+                    }
+                  }
+                }
+                
+                for (int i = 0; i<= bl.size()-1;i++){
+                    gp2.getChildren().remove(bl.get(i));
+                }
+                
+                String life = "";
+                for (int i = 0; i<=9;i++){
+                    if (i < c4.getLife()){
+                        life += ".";
+                    }else{
+                        life += "_";
+                    }
+                }
+                
+                curDescription.setText(c4.getName());
+                curDescription.setText(life);
+                
+                n2 = null;
+            }
+            else{
+                
+                Character c4 = (Character)this.getCurBlock();
+                c4.setStick(false);
+                this.setCurBlock(c4);
+                
+                n2.setText(".");
+            }
+            if (n2 != null){
+                n2.setMinWidth(10);
+                n2.setMinHeight(10);
+                //n2.setManaged(false);
+                n2.setLayoutY(50);
+            }
+            n1.setGraphic(n2);
+
             p.setUsedNode(null);
+            
         }
         else{
             System.out.println("Null!");
@@ -512,12 +768,16 @@ public class Controller2{
    
         ArrayList<MovableBlock> mb = this.p.getMovableBlocks();
         ArrayList<Label> ml = this.p.getMovableLabels();
-        String direction[] = {"a","s","d","w"};
+        String direction[] = {"a","s","d","w","e"};
         Random rand = new Random();
-        int upperBound = 4;
+        int upperBound = 5;
         for (int i = 0; i<= mb.size()-1;i++){
+            
             // Trying the enemies block
             if (mb.get(i) instanceof Enemies){
+                
+                if (!mb.get(i).isDead()){
+                
                 System.out.println("The enemies!!");
                 Enemies e1 = (Enemies)mb.get(i);
                 e1.setLevelArr(this.sc.getNodeList());
@@ -529,68 +789,68 @@ public class Controller2{
                 //System.out.println("The new moveis: "+moves);
               
                 Node n = ml.get(i).getGraphic();
-                
-                
+
                 // If moves are not empty, we do this
                 if (moves.size() > 0){
-                    
                 for (int p = 0; p<= moves.size()-1;p++){
                     String curMove = moves.get(p);
-                    
                     if (curMove.equals("s")){
-
                     n = ag.translateDown(n,labelList.get(0).getHeight());
-       
                     }
                     else if (curMove.equals("d")){
-
                         n = ag.translateRight(n,labelList.get(0).getWidth());
-      
                     }
                     else if (curMove.equals("w")){
 
                         n = ag.translateUp(n,labelList.get(0).getHeight());
-
                     }
                     else if (curMove.equals("a")){
                         n = ag.translateLeft(n,labelList.get(0).getWidth());
-    
                     }
-                    
                 }
                 }
                 // Else, we will make bitting
                 else{
+                    // If the current position and enemy is same
+                    System.out.println("The enemy position: "+e1.getPos()+" The char position: "+this.charPos);
+                    if (e1.getPos()==this.charPos){
+                        ag.grabAnimation(n);
                     
+                        // Then, the users life must go down
+                        Character c1 = (Character)this.getCurBlock();
+                        c1.setGettingHit(true);
+                        this.setCurBlock(c1);
+                    }
+                     
                     
-                    ag.grabAnimation(n);
-                    
-                    // Then, the users life must go down
-                    Character c1 = (Character)this.getCurBlock();
-                    c1.setGettingHit(true);
-                    this.setCurBlock(c1);
                 }
+      
+            
                 //Node n = ml.get(i).getGraphic();
                 n.setManaged(false);
-                n.toFront();
                 ml.get(i).toFront();
+                n.toFront();
+                labelList.get(0).toFront();
+                labelList.get(0).getGraphic().toFront();
+                //ml.get(i).toFront();
                 ml.get(i).setGraphic(n);
                 
                 
                 e1.clearMoves();
+                }
                 
-                
+                //}// End of is dead condition
             }else{
             
-            
+            if (!mb.get(i).isDead()){
             
             System.out.println("Moving Blocks!");
             int prevPos = mb.get(i).getPos();
-            System.out.println("The prevPos: "+prevPos);
+            //System.out.println("The prevPos: "+prevPos);
             
             
             String dir = direction[rand.nextInt(upperBound)];
-            System.out.println("The direction: "+dir);
+            //System.out.println("The direction: "+dir);
             
             if (dir.equals("d")){
             // Trying to move right
@@ -607,6 +867,8 @@ public class Controller2{
                     n.toFront();
                     ml.get(i).toFront();
                     ml.get(i).setGraphic(n);
+                    labelList.get(0).toFront();
+                    labelList.get(0).getGraphic().toFront();
                 }
             }
             }
@@ -616,7 +878,7 @@ public class Controller2{
                         mb.get(i).moveLeft();
                         int newPos = mb.get(i).getPos();
                
-                        System.out.println("The newPos: "+newPos);
+                       // System.out.println("The newPos: "+newPos);
                 
                         Node n = ml.get(i).getGraphic();
                         n = ag.translateLeft(n,labelList.get(0).getWidth());
@@ -624,6 +886,8 @@ public class Controller2{
                         n.toFront();
                         ml.get(i).toFront();
                         ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
                         
                     }
                 } 
@@ -637,7 +901,7 @@ public class Controller2{
                     mb.get(i).moveUp(this.amountCol);
                     int newPos = mb.get(i).getPos();
       
-                    System.out.println("The newPos: "+newPos);
+                    //System.out.println("The newPos: "+newPos);
                     
                     Node n = ml.get(i).getGraphic();
                     n = ag.translateUp(n,labelList.get(0).getHeight());
@@ -645,6 +909,8 @@ public class Controller2{
                     n.toFront();
                     ml.get(i).toFront();
                     ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
                     
                 }
                     }
@@ -665,10 +931,63 @@ public class Controller2{
                     n.toFront();
                     ml.get(i).toFront();
                     ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
                     
                 }
                     }
             }
+            else if (dir.equals("e")){
+                
+                int newV = mb.get(i).getPos();
+                System.out.println("The level arr value for e: "+this.levelArr.get(newV).getKey());
+                String newKey = this.levelArr.get(newV).getKey();
+                if (newKey.equals("G")){
+                    Node n = ml.get(i).getGraphic();
+                    n = ag.translateEat(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
+                    ml.get(i).setGraphic(n);
+                    labelList.get(0).toFront();
+                    labelList.get(0).getGraphic().toFront();
+                }
+                if (newKey.equals("W")){
+                    Node n = ml.get(i).getGraphic();
+                    ag.drinkAnimation(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
+                    ml.get(i).setGraphic(n);
+                    labelList.get(0).toFront();
+                    labelList.get(0).getGraphic().toFront();
+                    
+                }
+                if (newKey.equals("K")){
+                    Node n = ml.get(i).getGraphic();
+                    ag.moveNatural(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
+                    ml.get(i).setGraphic(n);
+                    labelList.get(0).toFront();
+                    labelList.get(0).getGraphic().toFront();
+                    
+                }
+                if (newKey.equals("E")){
+                    Node n = ml.get(i).getGraphic();
+                    ag.moveNatural(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
+                    ml.get(i).setGraphic(n);
+                    labelList.get(0).toFront();
+                    labelList.get(0).getGraphic().toFront();
+                    
+                }
+            }
+                
+                }// End of is Dead condition
                 }// End of enemy condition
             
         }
@@ -809,24 +1128,9 @@ public class Controller2{
                 }// End of condition of barriers
             }
         }
-        
-        
-        
-        
         return labelArr;
         
     }
-    
- 
-    
-    
-    
-    
-    
-   
-  
-    
-  
     
     public static class MoveToAbs extends MoveTo {
 
@@ -846,34 +1150,6 @@ public class Controller2{
                 }
 
             }
-    
-        public class TwoGraphics extends Button{
-            private HBox hbox;
-            private Node n1;
-            private Node n2;
-            
-            public TwoGraphics(String name, Node n1, Node n2){
-                
-                super(name); //
-                // Adding more things here
-                this.setMaxWidth(Long.MAX_VALUE);
-                this.n1 = n1;
-                this.n2 = n2;
-                this.hbox = new HBox();
-                this.hbox.getChildren().addAll(n1,n2);
-                this.setGraphic(this.hbox);
-                this.setStyle("-fx-background-color: black;");
-                
-            }
-            
-            
-        }
-
-        
-    
-    
-    
-    
 }
 
 

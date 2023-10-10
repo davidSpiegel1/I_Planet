@@ -1,0 +1,13 @@
+*{
+    -fx-base: #32EAFF;
+}
+
+.button{
+    -fx-font-size: 12pt;
+    -fx-text-fill: blue;
+    -fx-effect: dropshadow(three-pass-box,#606060,3,.5,2,2);
+    -fx-shape: "M 0 0 H 1 Q 0 -1 1 -2 Q 2 -3 2 -4 Q 2 -5 1 -5 A 1 1 0 0 0 2 -7 A 1 1 0 0 0 0 -8 A 1 1 0 0 0 -2 -7 A 1 1 0 0 0 -1 -5 A 1 1 0 0 0 1 -5 Q 2 -3 0 -2 Q -1 -1 0 0";
+    -fx-background-color: #78C3A8;
+    -fx-opacity: 0.8;
+    
+}

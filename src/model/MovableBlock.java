@@ -17,6 +17,7 @@ public class MovableBlock extends Block{
     private String key;
     private int animalLife;
     private int maxCol;
+  
     
     
     public MovableBlock(int pos, String key, int maxCol){
@@ -24,9 +25,23 @@ public class MovableBlock extends Block{
         this.pos = pos;
         this.key = key;
         this.maxCol = maxCol;
+        this.animalLife = 3;
         
     }
     
+    public boolean isDead(){
+        return this.animalLife <= 0;
+    }
+    
+    public int getLife(){
+        return this.animalLife;
+    }
+    public void decrementLife(){
+        this.animalLife--;
+    }
+    public void incrementLife(){
+        this.animalLife++;
+    }
   
     
     public void moveRight(){

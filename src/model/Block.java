@@ -16,23 +16,30 @@ public class Block {
 		}
 		else if (k.equalsIgnoreCase(".")) {
 			description = "A stone. Has no practical use.";
-		}else if (k.equalsIgnoreCase("W")) {
+		}else if (k.equals("W")) {
 			description = "Water. Has no practical use.";
 		}else if(k.equalsIgnoreCase("t")) {
 			description = "Tree. Look at this picture!";
-		}else if (k.equalsIgnoreCase("O")){
+		}else if (k.equals("O")){
 			description = "Next level";
 		}else if (k.equalsIgnoreCase("K")) {
 			description = "A Knife. Can kill enemies with.";
 		}else if (k.equalsIgnoreCase("B")) {
-			description = "Back to previous level..";
+			description = "Back stone..";
 		}else if (k.equalsIgnoreCase("X")) {
 			description = "Gun. Kills lots of enemies.";
 		}else if (k.equalsIgnoreCase("d")){
             description ="Animal. Should be moving.";
+        }else if (k.equals("F")){
+            description ="Fire!!";
+        }else if (k.equals("f")){
+            description ="A flower. What you can eat.";
+        }else if (k.equals("w")){
+            description ="A web. stay away";
         }
-		
-		
+        else if (k.equals("o")){
+            description = "next levelz";
+        }
 		else{
 			description = "Nothing.";
 		}

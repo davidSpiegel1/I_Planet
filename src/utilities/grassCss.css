@@ -6,8 +6,9 @@
     
 
 	-fx-font-size: 14pt;
+    -fx-text-fill: green;
 	-fx-effect: dropshadow(three-pass-box,black,1.0,1.0,1.2,1.0);
-	-fx-text-fill: black;
+	-fx-text-fill: green;
     
     -fx-content-display: graphic-only;
 	/*-fx-shape: "M 0 0 C 15 15 39 0 45 45 L 37 47 C 25 45 10 46 -15 48 L -42 48 L -32 46 H -61 C -29 50 -78 -48 -23 46 C 15 46 -59 -41 10 41 C 65 50 18 20 10 15";*/
