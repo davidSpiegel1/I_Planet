@@ -57,6 +57,12 @@ import javafx.scene.shape.*;
 import view.AnimateEngine;
 import model.Animal;
 import model.Gabriel;
+import model.Spider;
+import model.Devil;
+
+
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 
 public class Parse {
 
@@ -86,6 +92,10 @@ public class Parse {
     public static final String FlowerStyle = "/utilities/flowerCss.css";
     public static final String WebStyle = "/utilities/webCss.css";
     public static final String GabrielStyle = "/utilities/gabrielCss.css";
+    public static final String SpiderStyle = "/utilities/spiderCss.css";
+    public static final String DevilStyle = "/utilities/devilCss.css";
+    
+    public static final String GateStyle = "/utilities/gateCss.css";
 
     // Making a character object
     private Character char1;
@@ -100,6 +110,7 @@ public class Parse {
     private ArrayList<Label> movingLabels;
     private String usedNode = null;
     private AnimateEngine ag;
+    private Background prevBackground = null;
 
     public Parse() {
         labelList = new ArrayList<Label>();
@@ -132,8 +143,11 @@ public class Parse {
             }
 
             l1.setBackground(findBackGround(arr.get(i).getKey()));
-            l1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;" + "-fx-border-width: .3;");
+            l1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 0.0;" + "-fx-border-width: .1;");
             l1.setMinHeight(SET_MIN_HEIGHT);
+            
+            
+            
             this.labelList.add(l1);
         }
         return this.labelList;
@@ -150,13 +164,28 @@ public class Parse {
                 
                 l1.setBackground(findBackGround(prevBlock.getKey()));
                 l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
+                if (arr.get(i) instanceof Character){
+                    if (((Character)arr.get(i)).hasStick()){
+                        Button b = (Button)l1.getGraphic();
+    
+                        ((Character)arr.get(i)).setStick(false);
+             
+                    }
+                }
             } else if (arr.get(i) instanceof MovableBlock) {
 
                 if (arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("p") || arr.get(i).getKey().equals("E") ||
-                    arr.get(i).getKey().equals("a") ) {
+                    arr.get(i).getKey().equals("a") || arr.get(i).getKey().equals("u") ||
+                    arr.get(i).getKey().equals("X")) {
+                    
+           
 
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
                     l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
+                    if (arr.get(i).getKey().equals("u")){
+                        
+                        l1.getGraphic().setStyle("-fx-rotate: 90;");
+                    }
 
                     Timeline tl = new Timeline(
                             new KeyFrame(
@@ -164,7 +193,7 @@ public class Parse {
                                     event -> {
                                         
                                         Node n = l1.getGraphic();
-                                        ag.translateUp2(n, .2, 3, 1, 0, 0);
+                                        ag.moveNaturalAnimals(n);
                                         l1.setGraphic(n);
 
                                     }));
@@ -181,8 +210,12 @@ public class Parse {
                         arr.get(i).getKey().equals("|") || arr.get(i).getKey().equals("W") || arr.get(i).getKey().equalsIgnoreCase("O") || arr.get(i).getKey().equals("K") || arr.get(i).getKey().equalsIgnoreCase("B") ||
                     arr.get(i).getKey().equalsIgnoreCase("F") ||
                     arr.get(i).getKey().equalsIgnoreCase("w") ||
-                    arr.get(i).getKey().equals("a")) {
+                    arr.get(i).getKey().equals("a") ||
+                    arr.get(i).getKey().equals("u") ||
+                    arr.get(i).getKey().equals("X") ||
+                    arr.get(i).getKey().equals(">")) {
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
+                   // l1.setBackground()
                     l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
                 } else {
 
@@ -191,7 +224,7 @@ public class Parse {
                 }
             }
       
-            l1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;" + "-fx-border-width: .3;");
+            l1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 0.0;" + "-fx-border-width: .1;");
             l1.setMaxWidth(Double.MAX_VALUE);
             l1.setAlignment(Pos.CENTER);
             l1.setFont(new Font("Arial", 30));
@@ -205,32 +238,50 @@ public class Parse {
     public Background findBackGround(String key) {
         Background b;
         if (key.equals("G")) {
-            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), new CornerRadii(2.0), Insets.EMPTY));
-        } else if (key.equals("s")) {
-            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), new CornerRadii(2.0), Insets.EMPTY));
-        } else if (key.equals("X")) {
-            b = new Background(new BackgroundFill(Color.rgb(137, 110, 77), new CornerRadii(2.0), Insets.EMPTY));
-        } else if (key.equals("t")) {
-            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), new CornerRadii(2.0), Insets.EMPTY));
+            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
+            prevBackground = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
+        }
+        else if (key.equals(".") || key.equals("g")){
+            b = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
+            
+            prevBackground = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
+        }
+        else if (key.equals("s")) {
+            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
+        }
+        else if (key.equals("t")) {
+            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
+            prevBackground = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
         } else if (key.equals("_") || key.equals("|")) {
-            b = new Background(new BackgroundFill(Color.rgb(88, 103, 110), new CornerRadii(2.0), Insets.EMPTY));
+            b = new Background(new BackgroundFill(Color.rgb(88, 103, 110), CornerRadii.EMPTY, Insets.EMPTY));
         } else if (key.equals("W")) {
             b = new Background(new BackgroundFill(Color.rgb(0, 89, 160), CornerRadii.EMPTY, Insets.EMPTY));
         }
         else if (key.equals("B")){
             b = new Background(new BackgroundFill(Color.rgb(54, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
+            prevBackground = new Background(new BackgroundFill(Color.rgb(54, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
         }
         else if (key.equals("b")){
             b = new Background(new BackgroundFill(Color.rgb(64, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
+            prevBackground = new Background(new BackgroundFill(Color.rgb(64, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
         }
         else if (key.equals("F") || key.equals("w")){
             b = new Background(new BackgroundFill(Color.rgb(64, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
+            prevBackground = new Background(new BackgroundFill(Color.rgb(64, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
+            
         }
-        else if (key.equals("f")){
-            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), new CornerRadii(2.0), Insets.EMPTY));
-        }
+     
         else if (key.equals("a")){
-            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), new CornerRadii(2.0), Insets.EMPTY));
+            b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
+        }
+        else if (key.equals("d") || key.equals("p") || key.equals("E") ||
+                 key.equals("a") || key.equals("u") || key.equals("f") || key.equalsIgnoreCase("o") || key.equalsIgnoreCase("X")||
+                 key.equals("K") || key.equals(">")) {
+            if (prevBackground != null){
+                b = new Background(prevBackground.getFills().get(0));
+            }else{
+                b = new Background(new BackgroundFill(Color.rgb(64, 66, 66), CornerRadii.EMPTY, Insets.EMPTY));
+            }
         }
         else {
             b = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
@@ -312,6 +363,10 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
                 color1 = "red";
                 fontCol = "black";
             }
+            if(blockArr.get(i).getKey().equals("<")){
+                    color1 = "white";
+                    fontCol = "black";
+                }
                 
 
             b.setStyle("-fx-text-fill: " + fontCol + ";" +
@@ -439,7 +494,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
                         if (style.contains("-fx-background-color")) {
                             backColor = style.split(":")[1]; // the color of the button
                             System.out.println("The Back color: " + backColor);
-                            // b.setStyle("-fx-background-color:"+color+";");
+                   
                         }
                         if (style.contains("-fx-text-fill:")) {
                             fontColor = style.split(":")[1]; // the color of the button
@@ -455,7 +510,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
 
                     // Gonna try and set up a stage
 
-                    // options.show();
+          
                 }
             });
 
@@ -554,6 +609,9 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
             b1.getStylesheets().add(smallGrassStyle);
         } else if (type.equalsIgnoreCase("P")) {
             b1.getStylesheets().add(AshStyle);
+            // Trying to implement initial lighting!
+            //lighting
+            
         } else if (type.equals("s")) {
             b1.getStylesheets().add(JackStyle);
         } else if (type.equals("E")) {
@@ -575,7 +633,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
             // this.curHeader.setText("Use G to hit!");
             // translateUp(b1, .2, 3, 1, 0, 0);
         } else if (type.equals("X")) {
-            b1.getStylesheets().add(GunStyle);
+            b1.getStylesheets().add(DevilStyle);
             // translateUp(b1, .2, 3, 1, 0, 0);
 
         } else if (type.equals("d")) {
@@ -597,6 +655,11 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         }
         else if (type.equals("a")){
             b1.getStylesheets().add(GabrielStyle);
+        }
+        else if (type.equals("u")){
+            b1.getStylesheets().add(SpiderStyle);
+        }else if (type.equals(">")){
+            b1.getStylesheets().add(GateStyle);
         }
         b1.setText("");
 

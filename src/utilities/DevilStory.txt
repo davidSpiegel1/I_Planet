@@ -1,0 +1,45 @@
+How are you liking your stay, Ivan?
+Y Let me out of here!
+N Where am I?
+-- I cannot do that, sir.
+-- Can't remember... Its been too long
+-- Y What if I fought you!?
+-- N Why not?
+-- Y How long have you been here?
+-- N Hmm.. your the devil right?
+--- I wouldn't do that..
+--- IT keeps me here. Watching over you guys.
+--- Can't remember that either. If you want to escape, you have to fight me, I think..
+--- Yea.. I'm like the boss here :/
+--- Y I think it's the only way to open the gate. I'm sorry..
+--- N Too bad!
+--- Y You don't seem evil. You seem trapped.
+--- N it? You mean god?
+--- Y You don't seem evil. You seem trapped.
+--- N Okay.. lets go!
+--- Y Do you want to be the boss?
+--- N Help me escape!
+---- It's Okay. Lets get this over with..
+---- Fine then..
+---- I think I might BE evil. Like the concept..
+---- I- I can't say any more..
+---- Yea! I- I am trapped! Kill me and get free!
+---- Okay. Beware of the one that truly placed you here. It was not me, Ivan.
+---- Not really.. But the only way for you to leave is to finish me off..
+---- I can't. I can only fight you, Ivan.
+---- Y Okay..
+---- N FINE!
+---- Y Right. 
+---- N Okay. 
+---- Y Whatever
+---- N Cool..
+---- Y Fine!
+---- N Okay..
+---- Y Sure..
+---- N You suck!
+---- Y Okay
+---- N Bye..
+---- Y Goodbye looser!
+---- N Later.
+---- Y Whatever!
+---- N Cool..

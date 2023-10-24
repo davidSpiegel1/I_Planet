@@ -40,6 +40,9 @@ public class Block {
         else if (k.equals("o")){
             description = "next levelz";
         }
+        else if (k.equals(">")){
+            description = "Gate. Must complete task.";
+        }
 		else{
 			description = "Nothing.";
 		}

@@ -1,20 +1,20 @@
 ..........|...........
-..........|...dW......
-..........|...df..K.W.
-..........|..tGGGGGGGG
-_________GtGWWffffffff
-GGGtGGGGGGtGGGWWWWWGdG
-GGGGGGtGtGtGGGGGGfffff
-GGGGGGGGGtGttGfffaffff
+..........|....W......
+..........|.tttttttttt
+..........|ttttttttttt
+_________GtGWWtttdtttt
+GGGtGGGGGGtWWttttdtdtt
+GGGGGGtGtGtWWttttttttt
+GGGGGGGGGtGttttttttttt
 GGGGGGGGtGtGGGtGGttttt
-GGGGfGGpGGGtGGGGGttttt
+GGGGfGGpGKGtGGGGXttttt
 tGGGtttGGGGtGGtGGttttt
-GGGGGGGGtGGGGGGGggtbtt
-GGGGGGGGGGGGGGGGWttttt
-GGGG_GGG_GGGGGGWWttttt
-GG_||gGg||_GfGGWWttttt
+GGGGGGGGtffffGGGggtttt
+GGGGGGGGGGfffGGGWttttt
+GGGG_GGGf_fffGGWWttttt
+GG_||ggg||_GfGGWWttttt
 GGG||gOG||GGGGWWWttttt
-GGG||Ggg||GGGWWWWttttt
+GGG||GgG||GGGWWWWttttt
 
 
 

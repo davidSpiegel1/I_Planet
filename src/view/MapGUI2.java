@@ -170,7 +170,7 @@ public class MapGUI2
 		scroll.setFitToWidth(true);
 		
 		//I can't test this in a vm, so I don't know if it works
-/*	
+	
 		scroll.setOnZoom(new EventHandler<ZoomEvent>() {
 			@Override public void handle(ZoomEvent event) {
 			    scroll.setScaleX(scroll.getScaleX() * event.getZoomFactor());
@@ -198,7 +198,7 @@ public class MapGUI2
 			    event.consume();
 			}
 		});
-*/
+
 
 		//Populate vbox
 		mapLayout.getChildren().add(levelOne);

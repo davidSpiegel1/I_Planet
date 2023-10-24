@@ -1,45 +1,45 @@
-Hey, what's your name?
-Y My name is Ivan
-N I'm not telling you..
--- Hi Ivan, I'm Gabriel.
--- Fine! Wanna fight then?
--- Y Nice to meet you Gabriel.
--- N Did I ask you your name?
--- Y Sure. Bring it on!
--- N I-Im kinda tired rn..
---- It's good meeting you too!
---- Okay, looks like you wanna fight!
---- Lets go!!
---- Okay.. I guess your scared..
---- Y Im going now..
---- N Cool, later..
---- Y Didn't say that either..
---- N Okay!!
---- Y Go where??
---- N Hold up..
---- Y Yea, I am
---- N Im not scared.. just tired!
----- Go ahead!
----- Bye then..
----- What did you say?
----- Fine!
----- My house!
----- Hold up? You don't wanna fight!
----- I know!
----- Scared and tired!
----- Y No you go ahead.
----- N Okay sure..
----- Y Dude, I just said bye..
----- N Bye.
----- Y Nothing!
----- N A lot..
----- Y Fine2
----- N Not Fine!
----- Y Ew!
----- N Okay! Lets go!
----- Y I do. I do!
----- N Yea, I don't..
----- Y You don't!
----- N you do?!
----- Y Only tired. Not scared.
----- N Yes! Both!
+...
+Y Hey! Is this hell?!
+N What's happening? Where am I?
+-- Yes.
+-- Your in I-Null. A wasteland.
+-- Y Let me out of here! I was a good person!
+-- N Who are you?!
+-- Y A wasteland? That makes sense..
+-- N How do I get out?
+--- ...
+--- Many have called me Gabriel
+--- ...
+--- Follow the path, Ivan.
+--- Y I was a scientist! A writer! What was evil about that?
+--- N I shouldn't be doomed because I did not believe!
+--- Y Sounds religious. Why are you here?
+--- N An angel, so what?! Get me out of here!
+--- Y So.. How do I get out!
+--- N Not very talkative are you?
+--- Y Okay.. Where am I going?
+--- N No!
+---- Take it up with HIM. Go through the door.
+---- HE wants to see you. For that very reason.
+---- There is trouble above. You must come.
+---- Follow the path.
+---- Follow the path. Someone important wants to speak to you.
+---- Go through the door. Someone important wants to speak to you.
+---- To argue I would assume.
+---- Stay or go. It is your choice.
+---- Y Okay..
+---- N FINE!
+---- Y Bye!
+---- N Okay. 
+---- Y Whatever
+---- N Cool..
+---- Y Fine!
+---- N Okay..
+---- Y Sure..
+---- N You suck!
+---- Y Okay
+---- N Bye..
+---- Y Goodbye looser!
+---- N Later.
+---- Y Whatever!
+---- N Cool..

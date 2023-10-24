@@ -1,0 +1,14 @@
+*{
+    -fx-base: #32EAFF;
+}
+
+.button{
+    -fx-font-size: 16pt;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box,#DB8D5D,3,.5,2,2);
+    -fx-shape: "M 0 0 Q 2 1 2 2 Q 2 0 0 0 Q -1 0 -2 2 Q -2 0 0 0 C -1 0 -1 -2 0 -2 Q 2 -2 3 -1 Q 2 -3 0 -2 Q -3 -3 -3 -1 Q -2 -2 0 -2 C 1 -2 1 0 0 0 C -2 2 -2 3 0 4 C 2 3 2 2 0 0";
+    -fx-background-color: #E0CAAA;
+    -fx-opacity: 0.8;
+    
+}
+

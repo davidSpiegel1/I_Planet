@@ -43,7 +43,7 @@ public class Scan{
         al.add("t");
         al.add("K");
         al.add("W");
-        al.add("X");
+        al.add("X"); // For the 'Devil'
         al.add("K");
         al.add("G");
         al.add("g");
@@ -51,8 +51,8 @@ public class Scan{
         al.add("_");
         al.add("p");
         al.add("s");
-        al.add("O");
-        al.add("E");
+        al.add("O"); // For door
+        al.add("E"); // For enemies
         al.add("d"); // d for dog (Or cow)
         al.add("F");// For big fire
         al.add("b");// For blackish grey background
@@ -61,6 +61,7 @@ public class Scan{
         al.add("w");// For a web
         al.add("o"); // For a room
         al.add("u"); // For spider
+        al.add(">");// For a gate
     
         
         return al;
@@ -118,6 +119,12 @@ public class Scan{
                 }
                 else if (initText == 'a'){
                     this.nodeList.add(new Gabriel(simIndex,"a",20)); // May need to fix amountCol now that it's used
+                }
+                else if (initText == 'u'){
+                    this.nodeList.add(new Spider(simIndex,"u",20));
+                }
+                else if (initText == 'X'){
+                    this.nodeList.add(new Devil(simIndex,"X",20));
                 }
                 else{
                     if (initText == 'f'){

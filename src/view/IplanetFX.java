@@ -70,11 +70,25 @@ import model.Person;
 import model.Enemies;
 import model.Animal;
 import model.Gabriel;
+import model.MovableBlock;
+import model.Spider;
 
 import model.Parse;
 import model.Scan;
 import controller.Controller2;
+import javafx.scene.PointLight;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
+/*import javafx.scene.PerspectiveCamera;
+import javafx.scene.Group;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Bloom;*/
 
+import javafx.scene.effect.Reflection;
+import javafx.scene.effect.BoxBlur;
+import java.lang.Thread;
 
 
 public class IplanetFX extends Application{
@@ -97,6 +111,8 @@ public class IplanetFX extends Application{
     private ArrayList<Label> labelList;
     private Controller2 c;
     private AnimateEngine ag;
+    private Stage s1;
+    private Stage s2;
     
     // Some constants
     private final int SCENE_SIZE_ROW = 715;
@@ -104,15 +120,51 @@ public class IplanetFX extends Application{
     public static final String CharStyle = "/utilities/charCss.css";
     
 	public static void main(String args[]){
-
-		launch(args);
+        //Stage st = new Stage();
+       // mainStage = stage;
+        launch(args);
+        
 	}
 
+    @Override
+    public void start(Stage st){
+        //mp.start(new Stage());
+        s1 = new Stage();
+        s2 = new Stage();
+        //Button b1 = new Button("Hey");
+        //s1.setScene(new Scene(b1));
+        //Button b1 = mp.getButton();
+        //prevStage = mp.getStage();
+        /*mainPage mp = new mainPage();
+        Button startButton = mp.getStartButton();
+        Button credits = mp.getCreditButton();
+        Label title = mp.getTitleLabel();
+        startButton.setOnAction((e)->{
+            //prevStage.close();
+            s1.close();
+           this.start1(s2);
+        });
+        VBox vb = new VBox();
+        vb.getChildren().addAll(title,startButton,credits);
+        vb.setStyle("-fx-background-color: black");
+        vb.setAlignment(Pos.CENTER);
+        //mainPage mp = new mainPage();
+        Scene mainScene = new Scene(vb,SCENE_SIZE_COL,SCENE_SIZE_ROW);
+        s1.setScene(mainScene);
+        s1.setTitle("I Planet");
+        s1.show();*/
+        this.start1(s2);
+        //mp.start(new Stage());
+        //launch(args);
+    }
+    
 
-	@Override
-	public void start(Stage stage){
+	public void start1(Stage stage){
+       
         
         mainStage = stage;
+    
+    
         // Animation Engine
         ag = new AnimateEngine();
         
@@ -123,7 +175,9 @@ public class IplanetFX extends Application{
         // Initalizing mainGame
         mainGame = new GridPane();
         mainGame.setBackground((new Background( new BackgroundFill(Color.rgb(42, 0, 67), CornerRadii.EMPTY, Insets.EMPTY))));
-        mainGame.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;");
+        mainGame.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 0.0; -fx-border-width: .1;");
+        
+        
         infoDeck = new GridPane();
         curDescription = new Label("Description");
         curDescription.setFont(new Font("Arial", 20));
@@ -172,6 +226,31 @@ public class IplanetFX extends Application{
     
         mainGame.setAlignment(Pos.BOTTOM_CENTER);
         
+        /*Lighting light = new Lighting();
+        Light.Point l = new Light.Point();
+        l.xProperty().set(0);
+        l.yProperty().set(0);
+        l.setZ(1000);
+        l.setColor(Color.WHITE);
+        light.setLight(l);
+
+       
+        
+        Blend blend = new Blend(BlendMode.ADD);
+        blend.setTopInput(light);
+        //blend.setBottomInput(light2);*/
+        //ColorAdjust setBrightness = new ColorAdjust();
+        //setBrightness.setBrightness(-0.1);
+        //setBrightness.setHue(0.01);
+        //setBrightness.setSaturation(.09);
+        //mainGame.setEffect(setBrightness);
+        
+       // Bloom bloom = new Bloom();
+       /// bloom.setThreshold(0.78);
+
+       //mainGame.setEffect(bloom);
+        
+        
         infoDeck.setAlignment(Pos.BOTTOM_CENTER);
         infoDeck.setBackground(
                 new Background(new BackgroundFill(Color.rgb(42, 0, 67), new CornerRadii(2.0), Insets.EMPTY)));
@@ -179,7 +258,7 @@ public class IplanetFX extends Application{
         infoDeck.setHgap(10);
         
         VBox vb = new VBox(infoDeck,centerPane);
-        vb.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 6.0;");
+        vb.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 0.0;");
         vb.setSpacing(0);
         vb.setFillWidth(true);
     
@@ -197,6 +276,19 @@ public class IplanetFX extends Application{
                           
                           Label l1 = labelList.get(0);
                           Node n = l1.getGraphic();
+                          if (c.getPrevBlock().getKey().equals("W")){
+                             // Label l1 = labelList.get(0);
+                              Button n1 = (Button)l1.getGraphic();
+                              //Reflection reflection = new Reflection();
+                              //reflection.setFraction(0.7);
+                              
+                              BoxBlur boxBlur = new BoxBlur();
+                              boxBlur.setWidth(5);
+                              boxBlur.setHeight(5);
+                              boxBlur.setIterations(1);
+                              n1.setEffect(boxBlur);
+                              
+                          }
                           //l1.setStyle("-fx-background-color: black;");
                           // Manipulate node
                           n.setStyle("-fx-background-color: #E9927E;");
@@ -249,9 +341,12 @@ public class IplanetFX extends Application{
         tl.setCycleCount(Animation.INDEFINITE);
         tl.play();
         
-        
-        // We will now try and have something move
+
         Scene scene = new Scene(vb,SCENE_SIZE_ROW,SCENE_SIZE_COL);
+  
+        
+        
+        
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
             @Override
@@ -261,7 +356,7 @@ public class IplanetFX extends Application{
                 ArrayList<Block> list = null;
                 Button b1 = new Button("");
                 b1.getStylesheets().add(CharStyle);
-                ag.translateUp2(b1, .2, 3, 1, 0, 0);
+                //ag.translateUp2(b1, .2, 3, 1, 0, 0);
                 b1.setDisable(true);
                 
                 //Button b2 = new Button("");
@@ -513,6 +608,35 @@ public class IplanetFX extends Application{
                         System.out.println("Doing the next level!");
                         changeLevel();
                     }
+                    else if (c.getPrevBlock().getKey().equals(">")){
+                        
+                        boolean taskDone = c.checkTask();
+                        
+                        if (taskDone){
+                            c.incrementTask();
+                            int charPosA = c.getCharPos();
+                         
+                            Timeline timeline = new Timeline();
+                            timeline.setCycleCount(2);
+                            timeline.getKeyFrames().add(new KeyFrame(
+                                Duration.millis(1500),
+                                    event -> {
+                                        Node door = labelList.get(charPosA).getGraphic();
+                                        ag.animateDoorOpen(door);
+                                    }));
+                            timeline.play();
+                        
+                            timeline.setOnFinished((en)->{
+                                changeLevel();
+                            });
+                            
+                           
+                        }else{
+                            c.getPrevBlock().setDescription(c.getCurrentTask());
+                            curDescription.setText(c.getDescription());
+                            
+                        }
+                    }
                     else if (c.getCharPos()==0){
                         
                         
@@ -530,73 +654,109 @@ public class IplanetFX extends Application{
                             
                     }else{
                             curDescription.setText(c.getDescription());
-                            //Button b9 = (Button)n;
-                            //Node n5 = b9.getGraphic();
-                            //ag.grabAnimation(n5);
+                  
                             c.determineTalk();
                     }
                     
                 }
                 if(e.getCode().equals(KeyCode.M) ) {
                     
+ 
+                }
+                if(e.getCode().equals(KeyCode.F) ) {
+                    System.out.println("The flower gathering");
+                    Character c4 = (Character)c.getCurBlock();
+                    ((Button)labelList.get(0).getGraphic()).setGraphic(null);
+                    boolean canRemove = false;
                     
+                    // Trying to decrease inventory
+                    ArrayList<Block> al = c4.getInventory();
+                    for (int i = 0; i <= al.size() - 1; i++) {
+                        if (al.get(i).getKey().equals("f")) {
+                            c4.removeInventory(i);
+                            canRemove = true;
+                            break;
+                        }
+                    }
+                    if (canRemove){
+                        
+                        clearButtons(infoDeck);
+                        c4.setStick(false);
                     
+                        c4.incrementLife();
+                        c.setCurBlock(c4);
+   
+            
                     
+                        String life = "";
+                        for (int i = 0; i<= 9;i++){
+                            if (i < c4.getLife()){
+                                life += ".";
+                            }else{
+                                life += "-";
+                            }
+                        }
+                        curHeader.setText(c4.getName());
+                        curDescription.setText(life);
+                        
+                    }
                     
-                    
-                    
-                    
+ 
                 }
                 if (e.getCode().equals(KeyCode.G)) {
-                    // Get inventory and grab object
-                    infoDeck = clearButtons(infoDeck);
-                    Block prevB = c.getPrevBlock();
-                    Block curB = c.getCurBlock();
                     
                     // Going to try and place dirt after grabing
                     // Could try to set prevBlock and prevLabel
-                    
-                    Block b = new Block(".");
 
-                    Background br = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
-                    
-                    
-                    c.setPrevBlock(b);
-                    c.setPrevLabelBackground(br);
-                    
-                    int curPos = c.getCharPos();
-                    Label curLabel = labelList.get(curPos);
-                    
-                    //Node n = curLabel.getGraphic();
-                    Node n = labelList.get(0).getGraphic();
-                    
-                    
                     if (((Character)c.getCurBlock()).hasStick()){
+                        //Node n = curLabel.getGraphic();
+                        Node n = labelList.get(0).getGraphic();
                         Button b9 = (Button)n;
                         Node n5 = b9.getGraphic();
                         ag.grabAnimation(n5);
                         c.decrementFound();
                         
                     }else{
+                       // infoDeck = clearButtons(infoDeck);
+                        Block prevB = c.getPrevBlock();
+                        if (!(prevB instanceof MovableBlock)){
+                        Block curB = c.getCurBlock();
+                        infoDeck = clearButtons(infoDeck);
+                        
+                        Block b = new Block(".");
+
+                        Background br = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
                         
                         
-                    ag.grabAnimation(n);
+                        c.setPrevBlock(b);
+                        c.setPrevLabelBackground(br);
+                        
+                        int curPos = c.getCharPos();
+                        Label curLabel = labelList.get(curPos);
+              
+                        curLabel.setGraphic(null);
+                        ArrayList<Block> inventory = c.putInInventory(curB,prevB);
+                        System.out.println(inventory);
+        
+                        
+                        //Node n = curLabel.getGraphic();
+                        Node n = labelList.get(0).getGraphic();
+                        
+                        ag.grabAnimation(n);
+                        
+                        // Doing display stuff
+                        curHeader.setText("Inventory: ");
+                        curDescription.setText("");
+                        ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
+                        System.out.println("The button list; "+inventoryButtons.toString());
+                        for (int i = 0; i<= inventoryButtons.size()-1;i++){
+                            infoDeck.add(inventoryButtons.get(i),i+2,0);
+                        }
+                    }
                         
                     }
-                    //translateLeftRight(n, .6, 0, 1, 1, 0);
-                
-                    curLabel.setGraphic(null);
-                    ArrayList<Block> inventory = c.putInInventory(curB,prevB);
-                    System.out.println(inventory);
-                    
-                    // Doing display stuff
-                    curHeader.setText("Inventory: ");
-                    curDescription.setText("");
-                    ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
-                    System.out.println("The button list; "+inventoryButtons.toString());
-                    for (int i = 0; i<= inventoryButtons.size()-1;i++){
-                        infoDeck.add(inventoryButtons.get(i),i+2,0);
-                    }
+              
+               
                     // Will display inventory
                     //displayInventory();
                 }
@@ -653,7 +813,7 @@ public class IplanetFX extends Application{
                         n2.setMinWidth(10);
                         n2.setMinHeight(10);
                         //n2.setManaged(false);
-                        n2.setLayoutY(50);
+                        //n2.setLayoutY(50);
                         Button n1 = (Button)labelList.get(0).getGraphic();
                         n1.setGraphic(n2);
                         
@@ -685,8 +845,8 @@ public class IplanetFX extends Application{
      
      */
     public Controller2 displayGameOver(Stage stage1) {
-        stage1 = new Stage();
-        mainStage = stage1;
+        //stage1 = new Stage();
+        
         Label l2 = new Label("You Lost :(");
         Button b1 = new Button("Play again?");
 
@@ -713,6 +873,8 @@ public class IplanetFX extends Application{
         b1.setOnAction((e) -> {
             
             mainStage.close();
+      
+       
 
         });
 
@@ -721,9 +883,9 @@ public class IplanetFX extends Application{
         vbox2.setAlignment(Pos.CENTER);
         Scene sc1 = new Scene(vbox2, SCENE_SIZE_ROW, SCENE_SIZE_COL);
 
-        stage1.setScene(sc1);
-        stage1.setTitle("Game Over");
-        stage1.show();
+        mainStage.setScene(sc1);
+        mainStage.setTitle("Game Over");
+        mainStage.show();
         
         
         //c = new Controller2();
@@ -974,6 +1136,8 @@ public class IplanetFX extends Application{
         
         
     }
+    
+ 
 
     public void displayMap()
     {

@@ -10,7 +10,7 @@ public class Spider extends Enemies{
     private int amountCol;
     private int pos;
     private ArrayList<String> moveList;
-    private int newLfe;
+    private int newLife;
     public Spider(int pos, String key, int amountCol){
         super(pos,key,amountCol);
         this.description = "A spider!";
@@ -28,10 +28,25 @@ public class Spider extends Enemies{
         return this.newLife;
     }
     
+    @Override
+    public void decrementLife(){
+        this.newLife--;
+    }
+    
+    @Override
+    public void incrementLife(){
+        this.newLife++;
+    }
+    
     
     @Override
     public String getDescription(){
         return this.description;
+    }
+    
+    @Override
+    public boolean isDead(){
+        return this.newLife<=0;
     }
     
 

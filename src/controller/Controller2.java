@@ -49,6 +49,7 @@ import model.MovableBlock;
 import model.Enemies;
 import model.Animal;
 import model.Gabriel;
+import model.Devil;
 import view.AnimateEngine;
 
 import javafx.scene.shape.MoveTo;
@@ -57,6 +58,7 @@ import javafx.scene.shape.*;
 import javafx.util.Duration;
 import java.util.Random;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.animation.Timeline;
 //import javafx.scene.shape.*;
 import javafx.animation.ScaleTransition;
@@ -66,6 +68,8 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Tooltip;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import javafx.scene.text.*;
+import javafx.scene.layout.Region;
 //import javafx.scene.TextInputDialog;
 
 // The class of the controller
@@ -80,6 +84,7 @@ public class Controller2{
     private Tooltip globalTool;
     private Block prevBlock = null;
     private Gabriel gabrielBlock = null;
+    private Devil devilBlock = null;
     private boolean didMove = false;// An instance variable to check if the person moved or not
     private boolean inRoom = false;
     
@@ -105,6 +110,14 @@ public class Controller2{
     private GridPane gp2;
     private MenuButton statButton;
     
+    // Maybe have a boolean for each task
+    private boolean taskOne = false;
+    private boolean taskTwo = false;
+    private boolean taskThree = false;
+    private int taskNum = 1;
+    private ArrayList<String>currentTask;
+    
+    
     public Controller2(){
         // Us initializing everything
         this.currentLevel = 0; // The current level
@@ -117,11 +130,9 @@ public class Controller2{
         
         this.levelR = new ArrayList<String>();
         p = new Parse(); // parser object intiated
-        
-   
-        
-        
+    
         this.levelNames = this.populateLevelNames(this.levelNames);
+        this.currentTask = this.populateCurrentTask();
         
         // Initalizing the current label and the previous label
         this.curLabel = null;
@@ -129,6 +140,19 @@ public class Controller2{
         
         
         
+    }
+    
+    public ArrayList<String> populateCurrentTask(){
+        ArrayList<String> curT = new ArrayList<String>();
+        
+        curT.add("Must defeat the devil. Then you can escape.");
+        curT.add("Must fight jesus, idk..");
+        
+        return curT;
+    }
+    
+    public String getCurrentTask(){
+        return currentTask.get(taskNum-1);
     }
 
 
@@ -152,25 +176,35 @@ public class Controller2{
    }
     
     public ArrayList<String> populateLevelNames(ArrayList<String> arr){
-        arr.add("model/testFile.txt");
+        /*arr.add("model/testFile.txt");
         arr.add("utilities/levelOne.txt");
         arr.add("utilities/levelTwo.txt");
         arr.add("utilities/levelThree.txt");
+        arr.add("utilities/levelFour.txt");
         arr.add("utilities/levelFive.txt");
-        arr.add("utilities/levelSix.txt");
+        arr.add("utilities/levelSix.txt");*/
         arr.add("utilities/levelSeven.txt");
         arr.add("utilities/levelEight.txt");
+        arr.add("utilities/levelNine.txt");
+        arr.add("utilities/levelTen.txt");
+        arr.add("utilities/levelEleven.txt");
+        arr.add("utilities/levelTwelve.txt");
         
         
-        this.levelR.add("..");
+        /*this.levelR.add("..");
         this.levelR.add("utilities/roomOneA.txt");
         this.levelR.add("utilities/roomTwoA.txt");
         this.levelR.add("utilities/roomThreeA.txt");
         this.levelR.add("utilities/roomFourA.txt");
         this.levelR.add("utilities/roomFiveA.txt");
-        this.levelR.add("utilities/roomSixA.txt");
+        this.levelR.add("utilities/roomSixA.txt");*/
         this.levelR.add("utilities/roomSevenA.txt");
         this.levelR.add("utilities/roomEightA.txt");
+        this.levelR.add("utilities/roomNineA.txt");
+        this.levelR.add("utilities/roomTenA.txt");
+        this.levelR.add("utilities/roomElevenA.txt");
+        this.levelR.add("utilities/roomTwelveA.txt");
+        
         
         
      
@@ -509,6 +543,8 @@ public class Controller2{
         return this.prevBlock.getDescription();
     }
     
+    
+    
     public String getKey(){
         return this.prevBlock.getKey();
     }
@@ -578,8 +614,8 @@ public class Controller2{
         
         // Lopping through movable objects to find one close
         for (int i = 0; i<= mb.size()-1;i++){
-            //System.out.println("The object: "+mb.get(i).getKey()+", The life: "+mb.get(i).getLife());
-            //System.out.println("The object i: "+mb.get(i).getPos()+", The char i: "+this.charPos);
+            
+            // For Gabriel
             if (mb.get(i).getPos()==this.charPos && mb.get(i) instanceof Gabriel){
                 System.out.println("The object: "+mb.get(i).getKey()+", The life: "+mb.get(i).getLife());
                 System.out.println("Talking to gabriel!!");
@@ -587,13 +623,31 @@ public class Controller2{
                 
                 gabrielBlock = (Gabriel)mb.get(i);
                 Button b9 = (Button)ml.get(i).getGraphic();
-                globalTool = new Tooltip(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                //Text t = new Text();
+                //t.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                
+                globalTool = new Tooltip("");
+                VBox hb = new VBox();
+                Label comment = new Label(gabrielBlock.getComment().strip());
+                Label response1 = new Label(gabrielBlock.getOptionOne().strip());
+                Label response2 = new Label(gabrielBlock.getOptionTwo().strip());
+                comment.setStyle("-fx-text-fill: red;");
+                response1.setStyle("-fx-text-fill: blue;");
+                response2.setStyle("-fx-text-fill: blue;");
+                
+                response1.setMinWidth(Region.USE_PREF_SIZE);
+                response2.setMinWidth(Region.USE_PREF_SIZE);
+                comment.setMinWidth(Region.USE_PREF_SIZE);
+                hb.getChildren().addAll(comment,response1,response2);
+                
                 globalTool.setAutoHide(false);
+                globalTool.setGraphic(hb);
                 //tp.show(b9,b9.getLayoutX(),b9.getLayoutY());
-                globalTool.setMinWidth(gabrielBlock.getComment().length()*7);
-                globalTool.setMaxWidth(gabrielBlock.getComment().length()*12);
-                globalTool.setMinHeight(gabrielBlock.getComment().length()*7);
-                globalTool.setMaxHeight(gabrielBlock.getComment().length()*12);
+                globalTool.setMinWidth(Region.USE_PREF_SIZE);
+                globalTool.setMinHeight(Region.USE_PREF_SIZE);
+                //globalTool.setMaxWidth((gabrielBlock.getComment().length()*12)+200);
+                //globalTool.setMinHeight(gabrielBlock.getComment().length()*7);
+                //globalTool.setMaxHeight(gabrielBlock.getComment().length()*12);
                 globalTool.setStyle("-fx-font: normal bold 20 Langdon; "
                     + "-fx-base: #BDB4D0; "
                     + "-fx-text-fill: white;");
@@ -618,12 +672,48 @@ public class Controller2{
                         if (e.getCode().equals(KeyCode.LEFT)) {
                             
                             gabrielBlock.goLeft();
-                            globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                            //globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                            VBox hb = new VBox();
+                            Label comment = new Label(gabrielBlock.getComment().strip());
+                            Label response1 = new Label(gabrielBlock.getOptionOne().strip());
+                            Label response2 = new Label(gabrielBlock.getOptionTwo().strip());
+                            
+                            comment.setStyle("-fx-text-fill: red;");
+                            response1.setStyle("-fx-text-fill: blue;");
+                            response2.setStyle("-fx-text-fill: blue;");
+                            
+                            response1.setMinWidth(Region.USE_PREF_SIZE);
+                            response2.setMinWidth(Region.USE_PREF_SIZE);
+                            comment.setMinWidth(Region.USE_PREF_SIZE);
+                            hb.getChildren().addAll(comment,response1,response2);
+                            globalTool.setGraphic(hb);
+                            globalTool.setMinWidth(Region.USE_PREF_SIZE);
+                            globalTool.setMinHeight(Region.USE_PREF_SIZE);
+                            
                        
                         }
                         else if (e.getCode().equals(KeyCode.RIGHT)){
                             gabrielBlock.goRight();
-                            globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                            
+                            
+                            //globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                            VBox hb = new VBox();
+                            System.out.println("The comment: "+gabrielBlock.getComment());
+                            Label comment = new Label(gabrielBlock.getComment().strip());
+                            Label response1 = new Label(gabrielBlock.getOptionOne().strip());
+                            Label response2 = new Label(gabrielBlock.getOptionTwo().strip());
+                            
+                            comment.setStyle("-fx-text-fill: red;");
+                            response1.setStyle("-fx-text-fill: blue;");
+                            response2.setStyle("-fx-text-fill: blue;");
+                            
+                            response1.setMinWidth(Region.USE_PREF_SIZE);
+                            response2.setMinWidth(Region.USE_PREF_SIZE);
+                            comment.setMinWidth(Region.USE_PREF_SIZE);
+                            hb.getChildren().addAll(comment,response1,response2);
+                            globalTool.setGraphic(hb);
+                            globalTool.setMinWidth(Region.USE_PREF_SIZE);
+                            globalTool.setMinHeight(Region.USE_PREF_SIZE);
                         }
                         else{
                             System.out.println("Something!!");
@@ -631,17 +721,12 @@ public class Controller2{
                             b9.setFocusTraversable(true);
                             b9.setTooltip(null);
                             globalTool.setOpacity(0.0);
+                
+                            //globalTool.setGraphic(null);
                         }
                     }
                 });
                 
-                    //Bounds bounds = b9.localToScreen(b9.getBoundsInLocal());
-                    //tp.setX(bounds.getMaxX());
-                    //tp.setY(bounds.getMinY());
-                   // tp.setHideDelay(Duration.seconds(20));
-                   
-                    //b9.setTooltip(tp);
-   
                     ag.hitAnimation(ml.get(i).getGraphic());
                     
             
@@ -649,6 +734,117 @@ public class Controller2{
                 
                 
                 
+            }else if (mb.get(i).getPos()==this.charPos && mb.get(i) instanceof Devil){
+                System.out.println("The object: "+mb.get(i).getKey()+", The life: "+mb.get(i).getLife());
+                System.out.println("Talking to Devil!!");
+                //mb.get(i).decrementLife();
+                
+                devilBlock = (Devil)mb.get(i);
+                Button b9 = (Button)ml.get(i).getGraphic();
+                //Text t = new Text();
+                //t.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                
+                globalTool = new Tooltip("");
+                VBox hb = new VBox();
+                Label comment = new Label(devilBlock.getComment().strip());
+                Label response1 = new Label(devilBlock.getOptionOne().strip());
+                Label response2 = new Label(devilBlock.getOptionTwo().strip());
+                comment.setStyle("-fx-text-fill: red;");
+                response1.setStyle("-fx-text-fill: blue;");
+                response2.setStyle("-fx-text-fill: blue;");
+                
+                response1.setMinWidth(Region.USE_PREF_SIZE);
+                response2.setMinWidth(Region.USE_PREF_SIZE);
+                comment.setMinWidth(Region.USE_PREF_SIZE);
+                hb.getChildren().addAll(comment,response1,response2);
+                
+                globalTool.setAutoHide(false);
+                globalTool.setGraphic(hb);
+                //tp.show(b9,b9.getLayoutX(),b9.getLayoutY());
+                globalTool.setMinWidth(Region.USE_PREF_SIZE);
+                globalTool.setMinHeight(Region.USE_PREF_SIZE);
+                //globalTool.setMaxWidth((gabrielBlock.getComment().length()*12)+200);
+                //globalTool.setMinHeight(gabrielBlock.getComment().length()*7);
+                //globalTool.setMaxHeight(gabrielBlock.getComment().length()*12);
+                globalTool.setStyle("-fx-font: normal bold 20 Langdon; "
+                    + "-fx-base: #BDB4D0; "
+                    + "-fx-text-fill: white;");
+                
+           
+                    System.out.println(b9.getTooltip());
+                globalTool.setOnShowing(s->{
+                        Bounds bounds = b9.localToScreen(b9.getBoundsInLocal());
+                    globalTool.setX(bounds.getMaxX());
+                    globalTool.setY(bounds.getMinY());
+                        
+                    });
+                    
+                globalTool.show(b9,b9.getLayoutX(),b9.getLayoutY());
+                b9.setDisable(false);
+                b9.setFocusTraversable(true);
+                b9.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent e) {
+                        
+              
+                        if (e.getCode().equals(KeyCode.LEFT)) {
+                            
+                            devilBlock.goLeft();
+                            //globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                            VBox hb = new VBox();
+                            Label comment = new Label(devilBlock.getComment().strip());
+                            Label response1 = new Label(devilBlock.getOptionOne().strip());
+                            Label response2 = new Label(devilBlock.getOptionTwo().strip());
+                            
+                            comment.setStyle("-fx-text-fill: red;");
+                            response1.setStyle("-fx-text-fill: blue;");
+                            response2.setStyle("-fx-text-fill: blue;");
+                            
+                            response1.setMinWidth(Region.USE_PREF_SIZE);
+                            response2.setMinWidth(Region.USE_PREF_SIZE);
+                            comment.setMinWidth(Region.USE_PREF_SIZE);
+                            hb.getChildren().addAll(comment,response1,response2);
+                            globalTool.setGraphic(hb);
+                            globalTool.setMinWidth(Region.USE_PREF_SIZE);
+                            globalTool.setMinHeight(Region.USE_PREF_SIZE);
+                            
+                       
+                        }
+                        else if (e.getCode().equals(KeyCode.RIGHT)){
+                            devilBlock.goRight();
+                            
+                            
+                            //globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
+                            VBox hb = new VBox();
+                            System.out.println("The comment: "+devilBlock.getComment());
+                            Label comment = new Label(devilBlock.getComment().strip());
+                            Label response1 = new Label(devilBlock.getOptionOne().strip());
+                            Label response2 = new Label(devilBlock.getOptionTwo().strip());
+                            
+                            comment.setStyle("-fx-text-fill: red;");
+                            response1.setStyle("-fx-text-fill: blue;");
+                            response2.setStyle("-fx-text-fill: blue;");
+                            
+                            response1.setMinWidth(Region.USE_PREF_SIZE);
+                            response2.setMinWidth(Region.USE_PREF_SIZE);
+                            comment.setMinWidth(Region.USE_PREF_SIZE);
+                            hb.getChildren().addAll(comment,response1,response2);
+                            globalTool.setGraphic(hb);
+                            globalTool.setMinWidth(Region.USE_PREF_SIZE);
+                            globalTool.setMinHeight(Region.USE_PREF_SIZE);
+                        }
+                        else{
+                            System.out.println("Something!!");
+                            b9.setDisable(true);
+                            b9.setFocusTraversable(true);
+                            b9.setTooltip(null);
+                            globalTool.setOpacity(0.0);
+
+                        }
+                    }
+                });
+                
+                    ag.hitAnimation(ml.get(i).getGraphic());
             }
             
         }
@@ -736,7 +932,7 @@ public class Controller2{
                     }
                 }
                 
-                curDescription.setText(c4.getName());
+                curHeader.setText(c4.getName());
                 curDescription.setText(life);
                 
                 n2 = null;
@@ -768,15 +964,25 @@ public class Controller2{
    
         ArrayList<MovableBlock> mb = this.p.getMovableBlocks();
         ArrayList<Label> ml = this.p.getMovableLabels();
-        String direction[] = {"a","s","d","w","e"};
+        String direction[] = {"a","s","d","w","e","r","g"};
         Random rand = new Random();
-        int upperBound = 5;
+        int upperBound = 7;
         for (int i = 0; i<= mb.size()-1;i++){
             
             // Trying the enemies block
             if (mb.get(i) instanceof Enemies){
                 
-                if (!mb.get(i).isDead()){
+                boolean canHit = true;
+                if (mb.get(i) instanceof Devil){
+                        canHit = ((Devil)mb.get(i)).getIsAngry();
+                        if (mb.get(i).isDead()){
+                            taskOne = true;
+                        }
+                
+                }
+                
+                
+                if (!mb.get(i).isDead() && canHit){
                 
                 System.out.println("The enemies!!");
                 Enemies e1 = (Enemies)mb.get(i);
@@ -798,6 +1004,7 @@ public class Controller2{
                     n = ag.translateDown(n,labelList.get(0).getHeight());
                     }
                     else if (curMove.equals("d")){
+                        ag.translateBack2(n);
                         n = ag.translateRight(n,labelList.get(0).getWidth());
                     }
                     else if (curMove.equals("w")){
@@ -805,6 +1012,7 @@ public class Controller2{
                         n = ag.translateUp(n,labelList.get(0).getHeight());
                     }
                     else if (curMove.equals("a")){
+                        ag.translateBack(n);
                         n = ag.translateLeft(n,labelList.get(0).getWidth());
                     }
                 }
@@ -814,7 +1022,12 @@ public class Controller2{
                     // If the current position and enemy is same
                     System.out.println("The enemy position: "+e1.getPos()+" The char position: "+this.charPos);
                     if (e1.getPos()==this.charPos){
+                        if (!e1.getKey().equals("u")){
                         ag.grabAnimation(n);
+                        }else{
+                            System.out.println("Spider animation!");
+                            ag.translateArmsSpider(n);
+                        }
                     
                         // Then, the users life must go down
                         Character c1 = (Character)this.getCurBlock();
@@ -848,7 +1061,8 @@ public class Controller2{
             int prevPos = mb.get(i).getPos();
             //System.out.println("The prevPos: "+prevPos);
             
-            
+            int newV2 = mb.get(i).getPos();
+            boolean isTouching = (newV2==this.getCharPos());
             String dir = direction[rand.nextInt(upperBound)];
             //System.out.println("The direction: "+dir);
             
@@ -862,6 +1076,7 @@ public class Controller2{
                     System.out.println("The newPos: "+newPos);
                     
                     Node n = ml.get(i).getGraphic();
+                    ag.translateBack(n);
                     n = ag.translateRight(n,labelList.get(0).getWidth());
                     n.setManaged(false);
                     n.toFront();
@@ -869,6 +1084,7 @@ public class Controller2{
                     ml.get(i).setGraphic(n);
                     labelList.get(0).toFront();
                     labelList.get(0).getGraphic().toFront();
+                    dir = "e";
                 }
             }
             }
@@ -881,6 +1097,7 @@ public class Controller2{
                        // System.out.println("The newPos: "+newPos);
                 
                         Node n = ml.get(i).getGraphic();
+                        ag.translateBack2(n);
                         n = ag.translateLeft(n,labelList.get(0).getWidth());
                         n.setManaged(false);
                         n.toFront();
@@ -888,6 +1105,7 @@ public class Controller2{
                         ml.get(i).setGraphic(n);
                         labelList.get(0).toFront();
                         labelList.get(0).getGraphic().toFront();
+                        dir = "e";
                         
                     }
                 } 
@@ -911,6 +1129,7 @@ public class Controller2{
                     ml.get(i).setGraphic(n);
                         labelList.get(0).toFront();
                         labelList.get(0).getGraphic().toFront();
+                        dir = "e";
                     
                 }
                     }
@@ -933,67 +1152,129 @@ public class Controller2{
                     ml.get(i).setGraphic(n);
                         labelList.get(0).toFront();
                         labelList.get(0).getGraphic().toFront();
+                        dir = "e";
                     
                 }
                     }
             }
-            else if (dir.equals("e")){
-                
-                int newV = mb.get(i).getPos();
-                System.out.println("The level arr value for e: "+this.levelArr.get(newV).getKey());
-                String newKey = this.levelArr.get(newV).getKey();
-                if (newKey.equals("G")){
-                    Node n = ml.get(i).getGraphic();
-                    n = ag.translateEat(n);
-                    n.setManaged(false);
-                    n.toFront();
-                    ml.get(i).toFront();
-                    ml.get(i).setGraphic(n);
-                    labelList.get(0).toFront();
-                    labelList.get(0).getGraphic().toFront();
-                }
-                if (newKey.equals("W")){
-                    Node n = ml.get(i).getGraphic();
-                    ag.drinkAnimation(n);
-                    n.setManaged(false);
-                    n.toFront();
-                    ml.get(i).toFront();
-                    ml.get(i).setGraphic(n);
-                    labelList.get(0).toFront();
-                    labelList.get(0).getGraphic().toFront();
-                    
-                }
-                if (newKey.equals("K")){
-                    Node n = ml.get(i).getGraphic();
-                    ag.moveNatural(n);
-                    n.setManaged(false);
-                    n.toFront();
-                    ml.get(i).toFront();
-                    ml.get(i).setGraphic(n);
-                    labelList.get(0).toFront();
-                    labelList.get(0).getGraphic().toFront();
-                    
-                }
-                if (newKey.equals("E")){
-                    Node n = ml.get(i).getGraphic();
-                    ag.moveNatural(n);
-                    n.setManaged(false);
-                    n.toFront();
-                    ml.get(i).toFront();
-                    ml.get(i).setGraphic(n);
-                    labelList.get(0).toFront();
-                    labelList.get(0).getGraphic().toFront();
-                    
-                }
-            }
-                
-                }// End of is Dead condition
-                }// End of enemy condition
+        if (dir.equals("e")){
+                    // 'e' for eating
+                    int newV = mb.get(i).getPos();
             
+                    //System.out.println("The level arr value for e: "+this.levelArr.get(newV).getKey());
+                    String newKey = "";
+                   if (newV >= 0 && newV <= this.levelArr.size()-1){
+                        newKey = this.levelArr.get(newV).getKey();
+                   }else{
+                       newKey = ".";
+                   }
+                    if (newKey.equals("G")){
+                        Node n = ml.get(i).getGraphic();
+                        n = ag.translateEat(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
+                    }
+                    if (newKey.equals("W")){
+                        Node n = ml.get(i).getGraphic();
+                        ag.drinkAnimation(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
+                    
+                    }
+                    if (newKey.equals("t")){
+                        Node n = ml.get(i).getGraphic();
+                        ag.lookUpEat(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
+                    }
+                    if (newKey.equalsIgnoreCase("g")){
+                        Node n = ml.get(i).getGraphic();
+                        ag.drinkAnimation(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
+                    }
+                    if (newKey.equals("K")){
+                        Node n = ml.get(i).getGraphic();
+                        ag.moveNatural(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
+                    
+                    }
+                    if (newKey.equals("E")){
+                        Node n = ml.get(i).getGraphic();
+                        ag.moveNatural(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
+                    
+                    }
+                    
+                }else if (dir.equals("r")){
+                    Node n = ml.get(i).getGraphic();
+                    ag.moveNormalEye(n);
+                    n.setManaged(false);
+                    n.toFront();
+                    ml.get(i).toFront();
+                    ml.get(i).setGraphic(n);
+                    labelList.get(0).toFront();
+                    labelList.get(0).getGraphic().toFront();
+                
+                //ag.translateBack(n);
+                }else if (dir.equals("g")){
+                // Maybe have just have 'g' be the 'I don't like you' movement
+                
+                
+                
+                }
+                if (isTouching){
+                        System.out.println("IS touching!!");
+                        Node n = ml.get(i).getGraphic();
+                        ag.moveUpset(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
+                    }else{
+                   
+                        Node n = ml.get(i).getGraphic();
+                        ag.moveNormalEye(n);
+                        n.setManaged(false);
+                        n.toFront();
+                        ml.get(i).toFront();
+                        ml.get(i).setGraphic(n);
+                        labelList.get(0).toFront();
+                        labelList.get(0).getGraphic().toFront();
+                    }
+                }// End of is Dead condition
+            }// End of enemy condition
         }
         this.p.setMovableBlocks(mb);
         this.p.setMovableLabels(ml);
-        
     }
     
     
@@ -1130,6 +1411,24 @@ public class Controller2{
         }
         return labelArr;
         
+    }
+    
+    
+    // Checking the task by number
+    public boolean checkTask(){
+        boolean isDone = false;
+        if (this.taskNum == 1){
+            isDone = this.taskOne;
+        }else if (this.taskNum == 2){
+            isDone = this.taskTwo;
+        }else if (this.taskNum == 3){
+            isDone = this.taskThree;
+        }
+        return isDone;
+    }
+    
+    public void incrementTask(){
+        this.taskNum++;
     }
     
     public static class MoveToAbs extends MoveTo {

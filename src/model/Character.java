@@ -57,10 +57,15 @@ public class Character extends Block {
     
     // A way to decrease life
     public void decrementLife(){
-        this.life--;
+        if (this.life-1 >= 0){
+            this.life--;
+        }
+
     }
     public void incrementLife(){
+        if (this.life+1 <= 10 ){
         this.life++;
+        }
     }
     public int getLife(){
         return this.life;

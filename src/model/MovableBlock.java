@@ -25,7 +25,7 @@ public class MovableBlock extends Block{
         this.pos = pos;
         this.key = key;
         this.maxCol = maxCol;
-        this.animalLife = 3;
+        this.animalLife = 5;
         
     }
     
