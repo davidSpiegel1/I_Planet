@@ -50,6 +50,7 @@ import model.Enemies;
 import model.Animal;
 import model.Gabriel;
 import model.Devil;
+import model.Edog;
 import view.AnimateEngine;
 
 import javafx.scene.shape.MoveTo;
@@ -856,6 +857,18 @@ public class Controller2{
         this.gp2 = gp2;// Setting instance variable to that
         this.statButton = statButton;
         
+        if (p.getPlaced()){
+            Block b = p.getPlacedBlock();
+            String key = b.getKey();
+            System.out.println("THE KEY OF THE PLACED BLOCK: "+key);
+            //Background background = p.findBackGround(key);
+            
+            Button graphic = p.buttonBuilder(key);
+            labelList.get(this.charPos).setGraphic(graphic);
+            this.prevBlock = b;
+            p.placeBlockControl(null,false);
+            
+        }
         
         if (p.getUsedNode() != null){
             System.out.println("Not null!!");
@@ -1000,6 +1013,22 @@ public class Controller2{
                 if (moves.size() > 0){
                 for (int p = 0; p<= moves.size()-1;p++){
                     String curMove = moves.get(p);
+                    int curP1 = mb.get(i).getPos();
+                    if (curP1 <= this.levelArr.size()-1){
+                    n = ag.moveDueToEnv(n,/* Current Block*/ this.levelArr.get(curP1).getKey());
+                    }
+                    // This is kind of like looking ahead
+                    if (curP1+1 <= this.levelArr.size()-1){
+                        n = ag.moveDueToEnv(n,/* Current Block*/ this.levelArr.get(curP1+1).getKey());
+                    }
+                    if (curP1+2 <= this.levelArr.size()-1){
+                        n = ag.moveDueToEnv(n,/* Current Block*/ this.levelArr.get(curP1+2).getKey());
+                    }
+                    if (curP1-1 >= 0){
+                        n = ag.moveDueToEnv(n,/* Current Block*/ this.levelArr.get(curP1-1).getKey());
+                    }
+                    
+                    
                     if (curMove.equals("s")){
                     n = ag.translateDown(n,labelList.get(0).getHeight());
                     }
@@ -1244,8 +1273,8 @@ public class Controller2{
                 
                 //ag.translateBack(n);
                 }else if (dir.equals("g")){
-                // Maybe have just have 'g' be the 'I don't like you' movement
-                
+                    // Maybe have just have 'g' be the 'I don't like you' movement
+                    
                 
                 
                 }

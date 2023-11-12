@@ -30,6 +30,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
@@ -39,10 +40,10 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.layout.*;
-import java.awt.*;
-import java.awt.event.*;
+//import java.awt.*;
+//import java.awt.event.*;
 import javafx.beans.binding.Bindings;
-
+import javafx.scene.canvas.*;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
@@ -72,9 +73,13 @@ import model.Animal;
 import model.Gabriel;
 import model.MovableBlock;
 import model.Spider;
+import model.Edog;
 
 import model.Parse;
 import model.Scan;
+import model.MusicPlay;
+
+import view.AnimateEngine;
 import controller.Controller2;
 import javafx.scene.PointLight;
 import javafx.scene.effect.Blend;
@@ -89,6 +94,14 @@ import javafx.scene.effect.Bloom;*/
 import javafx.scene.effect.Reflection;
 import javafx.scene.effect.BoxBlur;
 import java.lang.Thread;
+import javafx.scene.shape.*;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
+
+import javafx.application.Application;
+import javafx.application.HostServices;
 
 
 public class IplanetFX extends Application{
@@ -104,6 +117,7 @@ public class IplanetFX extends Application{
     private MenuItem statChar;
     private MenuItem statMap;
     private MenuItem statInventory;
+    private MenuItem sounds;
     
     private Label curDescription = new Label("Description"); // Description for object we hav
     private Label curHeader = new Label("Header"); // Header for what we have
@@ -113,6 +127,7 @@ public class IplanetFX extends Application{
     private AnimateEngine ag;
     private Stage s1;
     private Stage s2;
+    private MusicPlay mp;
     
     // Some constants
     private final int SCENE_SIZE_ROW = 715;
@@ -128,6 +143,10 @@ public class IplanetFX extends Application{
 
     @Override
     public void start(Stage st){
+        
+        ag = new AnimateEngine();
+        
+        
         //mp.start(new Stage());
         s1 = new Stage();
         s2 = new Stage();
@@ -135,7 +154,7 @@ public class IplanetFX extends Application{
         //s1.setScene(new Scene(b1));
         //Button b1 = mp.getButton();
         //prevStage = mp.getStage();
-        /*mainPage mp = new mainPage();
+        mainPage mp = new mainPage();
         Button startButton = mp.getStartButton();
         Button credits = mp.getCreditButton();
         Label title = mp.getTitleLabel();
@@ -144,18 +163,32 @@ public class IplanetFX extends Application{
             s1.close();
            this.start1(s2);
         });
-        VBox vb = new VBox();
-        vb.getChildren().addAll(title,startButton,credits);
-        vb.setStyle("-fx-background-color: black");
+        
+        // Finaly, an immage that may be nice
+        
+        
+        VBox image = mp.getImage();
+        
+        
+        VBox vb = new VBox(2);
+        //vb.setVgrow(image,Priority.ALWAYS);
+        vb.setVgrow(title,Priority.ALWAYS);
+        vb.setMargin(title,new Insets(80,0,10,0));
+        vb.setMargin(credits,new Insets(0,0,50,0));
+        vb.getChildren().addAll(title,startButton,credits,image);
+        
+        vb.setStyle("-fx-background-color: #484646");
         vb.setAlignment(Pos.CENTER);
+        
+        
         //mainPage mp = new mainPage();
         Scene mainScene = new Scene(vb,SCENE_SIZE_COL,SCENE_SIZE_ROW);
         s1.setScene(mainScene);
         s1.setTitle("I Planet");
-        s1.show();*/
-        this.start1(s2);
-        //mp.start(new Stage());
-        //launch(args);
+        s1.show();
+        // Below for simply playing game
+        //this.start1(s2);
+      
     }
     
 
@@ -164,9 +197,18 @@ public class IplanetFX extends Application{
         
         mainStage = stage;
     
-    
-        // Animation Engine
-        ag = new AnimateEngine();
+        // Trying to see if we can play a song
+        try{
+            
+            mp = new MusicPlay();
+            
+            mp.play();
+            
+            
+            }catch(Exception e){
+                System.err.println(e);
+            }
+ 
         
 		stage.setTitle("I Planet");
         c = new Controller2(); // Initalizing the controller
@@ -873,6 +915,8 @@ public class IplanetFX extends Application{
         b1.setOnAction((e) -> {
             
             mainStage.close();
+            String args[] = new String[0];
+            launch(args);
       
        
 
@@ -1068,6 +1112,8 @@ public class IplanetFX extends Application{
         });
         
         
+        
+        
         statChar = new MenuItem("Char info");
         statChar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -1077,6 +1123,18 @@ public class IplanetFX extends Application{
                 
             }
         });
+        
+        sounds = new MenuItem("sounds");
+        //statMap.setId("important");
+    
+        sounds.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println("Sounds Pressed!");
+                   mp.displaySounds();
+            }
+        });
+        
         statInventory = new MenuItem("Inventory");
         statInventory.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -1098,6 +1156,8 @@ public class IplanetFX extends Application{
                 
             }
         });
+        
+        
         
         
         
@@ -1131,13 +1191,14 @@ public class IplanetFX extends Application{
         statButton.getItems().add(statMap);
         statButton.getItems().add(statChar);
         statButton.getItems().add(statInventory);
+        statButton.getItems().add(sounds);
         
         return statButton;
         
         
     }
     
- 
+    
 
     public void displayMap()
     {

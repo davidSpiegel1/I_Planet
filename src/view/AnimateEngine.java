@@ -35,13 +35,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.canvas.*;
 
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.layout.*;
-import java.awt.*;
-import java.awt.event.*;
+//import java.awt.*;
+//import java.awt.event.*;
 import javafx.beans.binding.Bindings;
 
 import javafx.event.EventHandler;
@@ -62,6 +63,7 @@ import javafx.animation.ParallelTransition;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
 
 //import javafx.scene.layout.StackPane;
 import model.Block;
@@ -82,6 +84,110 @@ public class AnimateEngine {
     // Constructor for the animation engine
     public AnimateEngine(){
         System.out.println("Starting the animation engine");
+    }
+    
+    
+    
+    public Node moveDueToEnv(Node n, String env){
+        System.out.println("The ENV: "+env);
+        if (env.equals("E")){
+            
+            //hitAnimation(n);
+            slightMove0(n);
+        }
+        if (env.equals("G")){
+            //drinkAnimation(n);
+            slightMove1(n);
+        }
+        if (env.equals("g")){
+            slightMove2(n);
+        }
+        if (env.equals("t")){
+            slightMove3(n);
+        }
+        if (env.equals("|") || env.equals("_")){
+            slightMove4(n);
+            //n = translateUp(n);
+        }
+        return n;
+    }
+    
+    public void slightMove4(Node n){
+        double x = n.getLayoutX();
+        System.out.println("what the layout was: "+ x);
+        double y = n.getLayoutY();
+    
+        n.setLayoutX(x+1);
+        slightMove1(n);
+        
+        
+        
+    }
+    public void slightMove1(Node n){
+        //Button b = (Button)n;
+        RotateTransition rt = new RotateTransition(Duration.millis(100), n);
+        rt.setFromAngle(5);
+        rt.setToAngle(1);
+        
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(rt/*,st3*/);
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        
+    }
+    // Make diffrent
+    public void slightMove0(Node n){
+        //Button b = (Button)n;
+        double x = n.getLayoutX();
+        System.out.println("what the layout was: "+ x);
+        double y = n.getLayoutY();
+    
+        n.setLayoutY(y+1);
+        slightMove1(n);
+        
+    }
+    
+    public void slightMove2(Node n){
+        //Button b = (Button)n;
+        RotateTransition rt = new RotateTransition(Duration.millis(100), n);
+        rt.setFromAngle(-5);
+        rt.setToAngle(1);
+        
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(rt/*,st3*/);
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        
+    }
+    
+    public void slightMove3(Node n){
+        //Button b = (Button)n;
+        Path path = new Path();
+        path.getElements().add(new MoveTo(5,5));
+        QuadCurveTo qt = new QuadCurveTo();
+        qt.setX(2);
+        qt.setY(5);
+        qt.setControlX(5);
+        qt.setControlY(6);
+        
+        
+        
+        path.getElements().add(qt);
+        //path.getElements().add(st);
+        PathTransition pathT = new PathTransition();
+        pathT.setDuration(Duration.millis(100));
+        //pathT.setDuration(Duration.millis(250));
+        pathT.setPath(path);
+        pathT.setNode(n);
+        
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(pathT/*,st3*/);
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        
     }
     
     
@@ -228,6 +334,56 @@ public class AnimateEngine {
         parallelTransition.getChildren().addAll(rt,st3);
         parallelTransition.setCycleCount(1);
         parallelTransition.play();
+    }
+    
+    
+    public VBox getCoverImage(Node n){
+        
+        VBox vb = new VBox();
+        
+        // The top
+        HBox hb = new HBox(120);
+        
+        
+        Polygon poly = new Polygon();
+        poly.getPoints().addAll(new Double[]{
+            0.0, 0.0,
+            20.0, 10.0,
+            10.0, 20.0 });
+        
+        Button dog = new Button();
+        dog.getStylesheets().add("/utilities/cowCss.css");
+        
+        Button flower = new Button();
+        flower.getStylesheets().add("/utilities/flowerCss.css");
+        
+        Button grass = new Button();
+        grass.getStylesheets().add("/utilities/gabrielCss.css");
+        
+        Button fire = new Button();
+        fire.getStylesheets().add("/utilities/fireCss.css");
+        
+        
+        
+        hb.getChildren().addAll(poly,n,flower,dog,fire,grass);
+        
+        
+        
+        // The floor
+        Rectangle floor = new Rectangle();
+        floor.setX(5);
+        floor.setY(-5);
+        floor.setWidth(850);
+        floor.setHeight(500);
+        floor.setArcWidth(20);
+        floor.setArcHeight(20);
+        floor.setFill(Color.rgb(110, 151, 125));
+        
+        vb.getChildren().addAll(hb,floor);
+        
+        
+        return vb;
+        
     }
     
     public void moveUpset(Node n){

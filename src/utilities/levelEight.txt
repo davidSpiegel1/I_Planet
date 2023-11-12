@@ -1,11 +1,12 @@
-GGtottttGGGttGGtGttGgW
-tGGGGGGGGGGtttGGGtGgWW
+GGtotttKGGGttGGtGttGgW
+tGGGGGGEGGGtttGGGtGgWW
 tGGGGGGGGGGGttGGGtgWWW
-||||GGGGGGttGGtGtgWWWW
+||||GGeGGGttGGtGtgWWWW
 ...|GGGGGGGtGGttggWWWW
 ...|tGGGtGGGGGtGgggWWW
-....gggggggGGGGGgggggg
-...|ttGGggggtGGGGGGttG
+....ggggggg
+GGGGGgggggg
+...|ttGGggugtGGGGGGttG
 ||||GGGGGggggt________
 GtttGGGGGggggg.......|
 |||||GGGgggggt||||||||

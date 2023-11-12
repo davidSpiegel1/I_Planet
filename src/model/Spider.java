@@ -18,7 +18,7 @@ public class Spider extends Enemies{
 
         this.amountCol = amountCol;
         this.pos = pos;
-        this.newLife = 10;
+        this.newLife = 100;
         this.moveList = new ArrayList<String>();
     }
     

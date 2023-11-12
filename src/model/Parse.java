@@ -59,6 +59,7 @@ import model.Animal;
 import model.Gabriel;
 import model.Spider;
 import model.Devil;
+import model.Edog;
 
 
 import javafx.scene.effect.Light;
@@ -96,6 +97,7 @@ public class Parse {
     public static final String DevilStyle = "/utilities/devilCss.css";
     
     public static final String GateStyle = "/utilities/gateCss.css";
+    public static final String evilDogStyle = "/utilities/evilDogCss.css";
 
     // Making a character object
     private Character char1;
@@ -111,6 +113,8 @@ public class Parse {
     private String usedNode = null;
     private AnimateEngine ag;
     private Background prevBackground = null;
+    private Block placedBlock = null;
+    private boolean isPlaced = false;
 
     public Parse() {
         labelList = new ArrayList<Label>();
@@ -174,7 +178,7 @@ public class Parse {
                 }
             } else if (arr.get(i) instanceof MovableBlock) {
 
-                if (arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("p") || arr.get(i).getKey().equals("E") ||
+                if (arr.get(i).getKey().equals("d") || arr.get(i).getKey().equals("p") || arr.get(i).getKey().equalsIgnoreCase("E") ||
                     arr.get(i).getKey().equals("a") || arr.get(i).getKey().equals("u") ||
                     arr.get(i).getKey().equals("X")) {
                     
@@ -274,7 +278,7 @@ public class Parse {
         else if (key.equals("a")){
             b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
         }
-        else if (key.equals("d") || key.equals("p") || key.equals("E") ||
+        else if (key.equals("d") || key.equals("p") || key.equalsIgnoreCase("E") ||
                  key.equals("a") || key.equals("u") || key.equals("f") || key.equalsIgnoreCase("o") || key.equalsIgnoreCase("X")||
                  key.equals("K") || key.equals(">")) {
             if (prevBackground != null){
@@ -315,7 +319,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
             if (!foundTypes.contains(blockArr.get(i).getKey())){
             
             MenuItem m1 = new MenuItem("Use");
-            MenuItem m2 = new MenuItem("Remove");
+            MenuItem m2 = new MenuItem("Place");
             MenuButton b = new MenuButton(blockArr.get(i).getKey());
             curB = b;
             b.setId(blockArr.get(i).getKey());
@@ -424,7 +428,9 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
                     try {
                         for (int i = 0; i <= blockArr.size() - 1; i++) {
                             if (((MenuItem) e.getSource()).getId().equals(blockArr.get(i).getKey())) {
+                                placeBlockControl(blockArr.get(i),true);
                                 char1.removeInventory(i);
+                         
                                 break;
                             }
                         }
@@ -579,6 +585,24 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         return buttonArr;
     }
     
+    public void placeBlockControl(Block b, boolean isPlaced){
+        setPlaced(isPlaced);
+        setPlacedBlock(b);
+    }
+    
+    public void setPlaced(boolean placed){
+        this.isPlaced = placed;
+    }
+    public void setPlacedBlock(Block b){
+        this.placedBlock = b;
+    }
+    public boolean getPlaced(){
+        return this.isPlaced;
+    }
+    public Block getPlacedBlock(){
+        return this.placedBlock;
+    }
+    
     public void setUsedNode(String n){
         this.usedNode = n;
     }
@@ -630,11 +654,9 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
             b1.getStylesheets().add(BlockStyle);
         } else if (type.equals("CK")) {
             b1.getStylesheets().add(CharKnifeStyle);
-            // this.curHeader.setText("Use G to hit!");
-            // translateUp(b1, .2, 3, 1, 0, 0);
+
         } else if (type.equals("X")) {
             b1.getStylesheets().add(DevilStyle);
-            // translateUp(b1, .2, 3, 1, 0, 0);
 
         } else if (type.equals("d")) {
             b1.getStylesheets().add(cowStyle);
@@ -660,6 +682,8 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
             b1.getStylesheets().add(SpiderStyle);
         }else if (type.equals(">")){
             b1.getStylesheets().add(GateStyle);
+        }else if (type.equals("e")){
+            b1.getStylesheets().add(evilDogStyle);
         }
         b1.setText("");
 
@@ -669,31 +693,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
     }
 
     // Main function to test
-    /*
-     * public static void main(String args[]){
-     * 
-     * System.out.println("Testing ...");
-     * Parse p = new Parse();
-     * ArrayList<JLabel>rj = p.getList();
-     * JFrame frame = new JFrame("i planet");
-     * frame.setSize(600,800);
-     * frame.setLayout(new GridLayout(3,1));
-     * 
-     * 
-     * for (int i = 0; i<= rj.size()-1;i++){
-     * frame.add(rj.get(i));
-     * }
-     * frame.addWindowListener(new WindowAdapter() {
-     * public void windowClosing(WindowEvent windowEvent){
-     * System.exit(0);
-     * }
-     * });
-     * frame.setVisible(true);
-     * 
-     * 
-     * 
-     * }
-     */
+
 
     // Translate up to emulate movement
     public void translateUp(Node n, double dur, double up, double down, double ogDown, double ogUp) {

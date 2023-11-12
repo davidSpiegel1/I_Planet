@@ -4,6 +4,7 @@ package model;
 
 import java.util.*;
 import java.io.*;
+import model.Edog;
 
 
 public class Scan{
@@ -62,6 +63,7 @@ public class Scan{
         al.add("o"); // For a room
         al.add("u"); // For spider
         al.add(">");// For a gate
+        al.add("e"); // For evil dog
     
         
         return al;
@@ -116,6 +118,9 @@ public class Scan{
                 }
                 else if (initText == 'E'){
                     this.nodeList.add(new Enemies(simIndex,"E",20)); // May need to fix amountCol now that it's used
+                }
+                else if (initText == 'e'){
+                    this.nodeList.add(new Edog(simIndex,"e",20));
                 }
                 else if (initText == 'a'){
                     this.nodeList.add(new Gabriel(simIndex,"a",20)); // May need to fix amountCol now that it's used
