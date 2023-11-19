@@ -59,6 +59,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.ParallelTransition;
+import javafx.scene.control.ScrollPane;
 
 import javafx.scene.input.MouseEvent;
 
@@ -128,11 +129,12 @@ public class IplanetFX extends Application{
     private Stage s1;
     private Stage s2;
     private MusicPlay mp;
+    private PauseMenu pm;
     
     // Some constants
     private final int SCENE_SIZE_ROW = 715;
     private final int SCENE_SIZE_COL = 810;
-    public static final String CharStyle = "/utilities/charCss.css";
+    public static final String CharStyle = "/utilities/skins/charCss.css";
     
 	public static void main(String args[]){
         //Stage st = new Stage();
@@ -200,8 +202,8 @@ public class IplanetFX extends Application{
         // Trying to see if we can play a song
         try{
             
-            mp = new MusicPlay();
-            
+            mp = new MusicPlay(); // Music player
+            pm = new PauseMenu(); // Pause menu
             mp.play();
             
             
@@ -310,6 +312,10 @@ public class IplanetFX extends Application{
                   event -> {
                       
                       c.moveBlocks(mainGame,labelList,infoDeck,statButton);
+                      Character c2 = (Character)c.getCurBlock();
+                      if (c2.isJumping()){
+                          c2.setJumping(false);
+                      }
                       // MOVING SORD!!
                      // if (((Character)c.getCurBlock()).hasStick()){
                        //   ag.grabAnimation(((Button)labelList.get(0).getGraphic()).getGraphic());
@@ -318,46 +324,58 @@ public class IplanetFX extends Application{
                           
                           Label l1 = labelList.get(0);
                           Node n = l1.getGraphic();
-                          if (c.getPrevBlock().getKey().equals("W")){
-                             // Label l1 = labelList.get(0);
-                              Button n1 = (Button)l1.getGraphic();
-                              //Reflection reflection = new Reflection();
-                              //reflection.setFraction(0.7);
-                              
-                              BoxBlur boxBlur = new BoxBlur();
-                              boxBlur.setWidth(5);
-                              boxBlur.setHeight(5);
-                              boxBlur.setIterations(1);
-                              n1.setEffect(boxBlur);
-                              
-                          }
-                          //l1.setStyle("-fx-background-color: black;");
-                          // Manipulate node
+                          
                           n.setStyle("-fx-background-color: #E9927E;");
                           FadeTransition ft = new FadeTransition(Duration.millis(3000), n);
                           ft.setFromValue(0.5);
                           ft.setToValue(1.0);
                           ft.setCycleCount(1);
+                          
+                          if (c.getPrevBlock().getKey().equals("W")){
+                             // Label l1 = labelList.get(0);
+                              Button n1 = (Button)l1.getGraphic();
+                              
+                              // Might delete if I can find a better animation
+                              BoxBlur boxBlur = new BoxBlur();
+                              boxBlur.setWidth(5);
+                              boxBlur.setHeight(5);
+                              boxBlur.setIterations(1);
+                              n1.setEffect(boxBlur);
+                              n1.setStyle("-fx-background-color: #4C9DDC");
+                              
+                              c2.setSwimming(true);
+                              
+                          }else{
+                          
                           //ft.setAutoReverse(true);
                           ft.setOnFinished((e) -> {
                               n.setStyle("-fx-background-color: #C7C7C7;");
                               
                                            });
+                              
+                              }
                           ft.play();
                           
                           
                           
                           
-                          Character c1 = (Character)c.getCurBlock();
-                          c1.decrementLife();
+                          //Character c1 = (Character)c.getCurBlock();
+                          c2.decrementLife();
                       
-                          if (c1.getGettingHit()){
-                              c1.setGettingHit(false);
+                          if (c2.getGettingHit()){
+                              c2.setGettingHit(false);
                           }
-                          c.setCurBlock(c1);
+                          //M 0 0 L 4 0 L 6 -2 L 6 -6 L 4 -4 L 0 -4 L 0 0 L 4 0 L 6 -2 L 6 -6
+                          c.setCurBlock(c2);
             
                           // Later stuff
                           displayCharInfo();
+                      }else{
+                        //((Character)c.getCurBlock()).setSwimming(false);
+                          //Character c2 = (Character)c.getCurBlock();
+                          ((Button)labelList.get(0).getGraphic()).setStyle("-fx-background-color: #C7C7C7;");
+                          c2.setSwimming(false);// Or else, we are not swimming
+                          c.setCurBlock(c2);
                       }
                       if (((Character)c.getCurBlock()).getLife() == 0){
                           System.out.println("Game Over!!!");
@@ -409,60 +427,11 @@ public class IplanetFX extends Application{
                     labelList = c.moveChar3(move,labelList); // Move char 3 will take a string for move and the list of blocks
                     int curPos = c.getCharPos();
                     ag.translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
-                    
-                    
-                    
-                    /*System.out.println("Here!");
-                    int prevPos = c.getCharPos();
-                    
-                    //labelList.clear();
-                    Label prevLabel = c.getPrevLabel();
-                    labelList = c.moveChar2("s",labelList);
-                    // Did move condition
-                    if (c.didMove()){
-                    list = c.getBlockList();
-                    int charPos = c.getCharPos();
-                    int amountCol = c.getAmountCol();
-                    
-                    
-                    System.out.println("The character position: "+charPos);
-                    //int r1 = (amountCol)/(charPos+1);
-                    int r1 = (charPos)/(amountCol+2);
-                    int c1 = charPos%(amountCol+2);
-                   
-                    
-                    //int r2 = (amountCol)/(prevPos+1);
-                    int r2 = (prevPos)/(amountCol+2);
-                    int c2 = prevPos%(amountCol+2);
-                    
-                    System.out.println("The row new should be on: "+(r1));
-                    System.out.println("The col new should be on: "+(c1));
-                    
-               
-                    
-                    mainGame.getChildren().remove(c.getCurLabel());
-                    mainGame.getChildren().remove(c.getPrevLabel());
-                    
-                    
-                    // Making an animation for the previous place
-                    Node n = prevLabel.getGraphic();
-                    translateLeftRight(n, .6, 0, 1, 1, 0);
-                    prevLabel.setGraphic(n);
-                    
-                    
-                    mainGame.add(prevLabel,c2,r2);
-                    Label newLabel = c.getCurLabel();
-                    
-                    newLabel.setBackground(c.getPrevLabel().getBackground());
-                    newLabel.setGraphic(b1);
-                    
-                    mainGame.add(c.getCurLabel(),c1,r1);
-                        }else{
-                            
-                            Label curLabel = c.getCurLabel();
-                            curLabel.setGraphic(b1);
-                            
-                        }*/
+                    // Hopefully, we can just have an animation here
+                    if (((Character)c.getCurBlock()).isSwimming()){
+                        // Going to do some swimming animation
+                        ag.swimmingDown(labelList.get(0).getGraphic());
+                    }
                         
                     
                 }
@@ -472,50 +441,10 @@ public class IplanetFX extends Application{
                     labelList = c.moveChar3(move,labelList);
                     int curPos = c.getCharPos();
                     ag.translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
-                    /*System.out.println("Here!");
-                    int prevPos = c.getCharPos();
-                    
-                    //labelList.clear();
-                    Label prevLabel = c.getPrevLabel();
-                    labelList = c.moveChar2("d",labelList);
-                    if (c.didMove()){
-                    list = c.getBlockList();
-                    int charPos = c.getCharPos();
-                    int amountCol = c.getAmountCol();
-                    
-                    
-                    System.out.println("The character position: "+charPos);
-                    //int r1 = (amountCol)/(charPos+1);
-                    int r1 = (charPos)/(amountCol+2);
-                    int c1 = charPos%(amountCol+2);
-                   
-                    
-                    //int r2 = (amountCol)/(prevPos+1);
-                    int r2 = (prevPos)/(amountCol+2);
-                    int c2 = prevPos%(amountCol+2);
-                    
-                    //System.out.println("The row new should be on: "+(r1));
-                    //System.out.println("The col new should be on: "+(c1));
-                    
-                    mainGame.getChildren().remove(c.getCurLabel());
-                    
-                    mainGame.getChildren().remove(c.getPrevLabel());
-                        
-                        // Making an animation for the previous place
-                        Node n = prevLabel.getGraphic();
-                        translateLeftRight(n, .6, 0, 1, 1, 0);
-                        prevLabel.setGraphic(n);
-                        
-                    mainGame.add(prevLabel,c2,r2);
-                    Label newLabel = c.getCurLabel();
-                    newLabel.setGraphic(b1);
-                    newLabel.setBackground(c.getPrevLabel().getBackground());
-                    mainGame.add(c.getCurLabel(),c1,r1);
-                        }// End of did move condition
-                    else{
-                        Label curLabel = c.getCurLabel();
-                        curLabel.setGraphic(b1);
-                    }*/
+                    if (((Character)c.getCurBlock()).isSwimming()){
+                        // Going to do some swimming animation
+                        ag.swimmingDown(labelList.get(0).getGraphic());
+                    }
                     
                 }
                 if (e.getCode().equals(KeyCode.UP)) {
@@ -524,54 +453,10 @@ public class IplanetFX extends Application{
                     labelList = c.moveChar3(move,labelList);
                     int curPos = c.getCharPos();
                     ag.translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
-                    /*System.out.println("Here!");
-                    int prevPos = c.getCharPos();
-                    
-                    //labelList.clear();
-                    Label prevLabel = c.getPrevLabel();
-                    labelList = c.moveChar2("w",labelList);
-                    if (c.didMove()){
-                    list = c.getBlockList();
-                    int charPos = c.getCharPos();
-                    int amountCol = c.getAmountCol();
-                    
-                    
-                    System.out.println("The character position: "+charPos);
-                    //int r1 = (amountCol)/(charPos+1);
-                    int r1 = (charPos)/(amountCol+2);
-                    int c1 = charPos%(amountCol+2);
-                   
-                    
-                    //int r2 = (amountCol)/(prevPos+1);
-                    int r2 = (prevPos)/(amountCol+2);
-                    int c2 = prevPos%(amountCol+2);
-                    
-                    System.out.println("The row new should be on: "+(r1));
-                    System.out.println("The col new should be on: "+(c1));
-                    
-                    mainGame.getChildren().remove(c.getCurLabel());
-                    
-                    mainGame.getChildren().remove(c.getPrevLabel());
-                        
-                        // Making an animation for the previous place
-                        Node n = prevLabel.getGraphic();
-                        translateLeftRight(n, .6, 0, 1, 1, 0);
-                        prevLabel.setGraphic(n);
-                        
-                        
-                    mainGame.add(prevLabel,c2,r2);
-                    Label newLabel = c.getCurLabel();
-                    
-                    newLabel.setGraphic(b1);
-                    
-                    newLabel.setBackground(c.getPrevLabel().getBackground());
-                    mainGame.add(newLabel,c1,r1);
-                        
-                        
-                        }else{
-                            Label curLabel = c.getCurLabel();
-                            curLabel.setGraphic(b1);
-                        }*/
+                    if (((Character)c.getCurBlock()).isSwimming()){
+                        // Going to do some swimming animation
+                        ag.swimmingUp(labelList.get(0).getGraphic());
+                    }
                 }
                 if (e.getCode().equals(KeyCode.LEFT)) {
                     
@@ -580,64 +465,10 @@ public class IplanetFX extends Application{
                     labelList = c.moveChar3(move,labelList);
                     int curPos = c.getCharPos();
                     ag.translateLeftRight(labelList.get(curPos).getGraphic(), .6, 0, 1, 1, 0);
-                    /*System.out.println("Here! left");
-                    int prevPos = c.getCharPos();
-                    if (prevPos != 0){
-                    
-                    //labelList.clear();
-                    Label prevLabel = c.getPrevLabel();
-                    labelList = c.moveChar2("a",labelList);
-                    // Did move condition
-                    if (c.didMove()){
-                    list = c.getBlockList();
-                    int charPos = c.getCharPos();
-                    int amountCol = c.getAmountCol();
-                    
-                    
-                    System.out.println("The character position: "+charPos);
-                    //int r1 = (amountCol)/(charPos+1);
-                    int r1 = (charPos)/(amountCol+2);
-                    int c1 = charPos%(amountCol+2);
-                   
-                    
-                    //int r2 = (amountCol)/(prevPos+1);
-                    int r2 = (prevPos)/(amountCol+2);
-                    int c2 = prevPos%(amountCol+2);
-                    
-                    
-                    
-                    System.out.println("The row new should be on: "+(r1));
-                    System.out.println("The col new should be on: "+(c1));
-                        
-                    if (r2 >= 0 && r1 >= 0 && c1 >= 0 && c2 >= 0){
-                    
-                    mainGame.getChildren().remove(c.getCurLabel());
-                    
-                    mainGame.getChildren().remove(c.getPrevLabel());
-                        
-                    // Making an animation for the previous place
-                    Node n = prevLabel.getGraphic();
-                    translateLeftRight(n, .6, 0, 1, 1, 0);
-                    prevLabel.setGraphic(n);
-                        
-                        
-                    mainGame.add(prevLabel,c2,r2);
-                    Label newLabel = c.getCurLabel();
-                
-                    newLabel.setGraphic(b1);
-                    newLabel.setBackground(c.getPrevLabel().getBackground());
-                    
-                    
-                    
-                    mainGame.add(c.getCurLabel(),c1,r1);
-                        
-                        }
-                        }else{
-                            Label curLabel = c.getCurLabel();
-                            curLabel.setGraphic(b1);
-                            
-                        }
-                }*/
+                    if (((Character)c.getCurBlock()).isSwimming()){
+                        // Going to do some swimming animation
+                        ag.swimmingUp(labelList.get(0).getGraphic());
+                    }
                      
                      }
                 if (e.getCode().equals(KeyCode.SPACE)) {
@@ -849,7 +680,7 @@ public class IplanetFX extends Application{
                         //c3.setStick(true);
                         //c.setCurBlock(c4);
                         Button n2 = new Button("");
-                        n2.getStylesheets().add("/utilities/knifeCss.css");
+                        n2.getStylesheets().add("/utilities/skins/knifeCss.css");
                         
                    
                         n2.setMinWidth(10);
@@ -869,6 +700,28 @@ public class IplanetFX extends Application{
                     
                     
                     
+                }
+                // Jump situation
+                if (e.getCode().equals(KeyCode.J)){
+                    
+                    // We want to set knife if it exists
+                 
+                    Block curB = c.getCurBlock();
+                    Character c3 = (Character)curB;
+                    c3.setJumping(true);
+                    ag.jumpNatural(labelList.get(0).getGraphic());
+                    
+                    
+                    
+                    
+                }
+                
+                // Maybe we could have a pause menu (That doesn't pause like fallout 3)
+                if (e.getCode().equals(KeyCode.P)){
+                    // We will simply call the menu
+        
+                    displayPauseMenu();
+                 
                 }
             }
         });
@@ -890,40 +743,176 @@ public class IplanetFX extends Application{
         //stage1 = new Stage();
         
         Label l2 = new Label("You Lost :(");
+        //Label l1 = new Label("I Planet");
+        
+        l2.setStyle("-fx-border-radius: 3.0;"+
+                              "-fx-border-width: 0.0;"+
+                    "-fx-font-size: 50;" +
+                              "-fx-text-fill: white;"+
+                              "-fx-border-color: GREY;"+
+                              "-fx-font-weight: bold;"+
+                              "-fx-font-family: Courier New;"
+                              );
+
+
+
+        //Button startButton = new Button("Start game");
+        String startColor = "#484646";
+        String fontColor = "white";
+        
         Button b1 = new Button("Play again?");
+        b1.setStyle("-fx-background-color: "+startColor+"; "+"-fx-font-family: Courier New; " + "-fx-font-weight: bold; " +
+                                "-fx-font-size: 15; "+
+                                "-fx-text-fill: "+fontColor+";");
+        
+        b1.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            
+            @Override
+            public void handle(MouseEvent t) {
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = b1.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Back color: " + backColor);
+               
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Font color: " + fontColor);
+                    }
+                }
+                b1.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");}});
+        
+        b1.setOnMouseExited(new EventHandler<MouseEvent>() {
 
+            @Override
+            public void handle(MouseEvent t) {
 
-        l2.setFont(new Font("ariel", 50));
-        l2.setStyle(
-                "-fx-border-color: GREY;" +
-                    "-fx-border-radius: 10.0;" +
-                    "-fx-border-width: 5;" +
-                    "-fx-text-fill: red;"+
-                    "-fx-background-color: grey;");
+                // Setting color to this
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = b1.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + backColor);
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + fontColor);
+                    }
+                }
 
-        l2.setBackground(new Background(new BackgroundFill(Color.rgb(42, 0, 67), new CornerRadii(6.0), Insets.EMPTY)));
-
-        // l2.setMaxWidth(Double.MAX_VALUE);
-        l2.setAlignment(Pos.BASELINE_LEFT);
-
-        b1.setFont(new Font("ariel", 50));
-        b1.setStyle("-fx-border-color: GREY;" + "-fx-border-radius: 10.0;" + "-fx-border-width: 5;"
-                + "-fx-text-fill: green");
-        b1.setBackground(new Background(new BackgroundFill(Color.rgb(42, 0, 67), new CornerRadii(6.0), Insets.EMPTY)));
+                b1.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");
+            }
+        });
+        
+        
+        
+        
+        
         b1.setAlignment(Pos.BASELINE_RIGHT);
         // What happends if you start the game over
         b1.setOnAction((e) -> {
-            
+            //stage1.close();
             mainStage.close();
-            String args[] = new String[0];
-            launch(args);
-      
+            mainStage = new Stage();
+            //String args[] = new String[0];
+            //launch(args);
+            c = new Controller2();
+            this.start1(mainStage);
+       
+
+        });
+        
+        Button b2 = new Button("Main Menu");
+        b2.setStyle("-fx-background-color: "+startColor+"; "+"-fx-font-family: Courier New; " + "-fx-font-weight: bold; " +
+                                "-fx-font-size: 15; "+
+                                "-fx-text-fill: "+fontColor+";");
+        
+        b2.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            
+            @Override
+            public void handle(MouseEvent t) {
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = b2.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Back color: " + backColor);
+               
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Font color: " + fontColor);
+                    }
+                }
+                b2.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");}});
+        
+        b2.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+
+                // Setting color to this
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = b1.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + backColor);
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + fontColor);
+                    }
+                }
+
+                b2.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");
+            }
+        });
+        b2.setAlignment(Pos.BASELINE_RIGHT);
+        // What happends if you start the game over
+        b2.setOnAction((e) -> {
+            //stage1.close();
+            s1.close();
+            s2.close();
+            //mainStage = new Stage();
+            //String args[] = new String[0];
+            //launch(args);
+            c = new Controller2();
+            this.start(new Stage());
        
 
         });
 
-        VBox vbox2 = new VBox(3, l2, b1);
-        vbox2.setBackground(new Background(new BackgroundFill(Color.rgb(42, 0, 67), CornerRadii.EMPTY, Insets.EMPTY)));
+        VBox vbox2 = new VBox(100, l2, b2, b1);
+        //vbox2.setBackground(new Background(new BackgroundFill(Color.rgb(42, 0, 67), CornerRadii.EMPTY, Insets.EMPTY)));
+        vbox2.setStyle("-fx-background-color: #484646;");
         vbox2.setAlignment(Pos.CENTER);
         Scene sc1 = new Scene(vbox2, SCENE_SIZE_ROW, SCENE_SIZE_COL);
 
@@ -1208,6 +1197,19 @@ public class IplanetFX extends Application{
 	System.out.println("Current Character Position: " + c.getCharPos());
 	mapInfo.start(mapWindow, c.getCharPos(), c.getCurrentLevel());
 	//mapInfo.start(this.stage1);
+    }
+    
+    
+    public void displayPauseMenu(){
+        
+        pm = new PauseMenu();
+        MapGUI2 mapInfo = new MapGUI2();
+        ScrollPane scroll = mapInfo.getMap(c.getCharPos(),c.getCurrentLevel());
+        Character c2 = (Character)c.getCurBlock();
+        pm.setPane(c2,scroll,mp);
+        Stage st9 = pm.getStage(SCENE_SIZE_ROW,SCENE_SIZE_COL);
+        st9.show();
+        
     }
     
     

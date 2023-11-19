@@ -28,7 +28,7 @@ public class Devil extends Enemies{
         this.newLife = 150;
         this.moveList = new ArrayList<String>();
         
-        Story sl = new Story("utilities/DevilStory.txt");
+        Story sl = new Story("utilities/story/DevilStory.txt");
         st = sl.getTree();
         isAngry = false;
     }

@@ -64,6 +64,7 @@ public class Scan{
         al.add("u"); // For spider
         al.add(">");// For a gate
         al.add("e"); // For evil dog
+        al.add("-"); // For a three d block
     
         
         return al;

@@ -259,6 +259,204 @@ public class MusicPlay extends Application{
         
     }
     
+    // Just to get the graphic needed
+    
+    public VBox displaySoundsVB(){
+        Slider sl = new Slider(0.0,1.0,volume);
+        sl.setStyle("-fx-border-radius: 3.0;"+
+                     "-fx-border-width: 0.0;"+
+           "-fx-font-size: 20;" +
+                     "-fx-text-fill: white;"+
+                     "-fx-border-color: GREY;"+
+                     "-fx-font-weight: bold;"+
+                     "-fx-font-family: Courier New;"
+                     );
+        sl.setValueChanging(true);
+        sl.setBlockIncrement(0.1f);
+        
+        //Button higher = new Button(">");
+        
+        //hb.getChildren().addAll(sl);
+        sl.valueChangingProperty().addListener(
+                            (obs,wasChanging,isChanging)->{
+                               if (!isChanging){
+                                   player.setVolume(sl.getValue());
+                                   volume = sl.getValue();
+                               }
+                            
+                            });
+        
+        Label soundChange = new Label("Volume: ");
+        soundChange.setStyle("-fx-border-radius: 3.0;"+
+                              "-fx-border-width: 0.0;"+
+                    "-fx-font-size: 20;" +
+                              "-fx-text-fill: white;"+
+                              "-fx-border-color: GREY;"+
+                              "-fx-font-weight: bold;"+
+                              "-fx-font-family: Courier New;"
+                              );
+        
+        
+        
+        // For the song change
+        Label songChange = new Label("Song: ");
+        songChange.setStyle("-fx-border-radius: 3.0;"+
+                              "-fx-border-width: 0.0;"+
+                    "-fx-font-size: 20;" +
+                              "-fx-text-fill: white;"+
+                              "-fx-border-color: GREY;"+
+                              "-fx-font-weight: bold;"+
+                              "-fx-font-family: Courier New;"
+                              );
+        
+        HBox hb2 = new HBox(10);
+        
+        // Lower song button
+        Button lowerSong = new Button("<");
+        lowerSong.setStyle("-fx-background-color: "+creditColor+"; "+"-fx-font-family: Courier New; " + "-fx-font-weight: bold; " +
+                           "-fx-font-size: 15; "+
+                           "-fx-text-fill: "+fontColor+";");
+        songTitle = new Label(songs.get(index));
+        songTitle.setStyle("-fx-border-radius: 3.0;"+
+                           "-fx-border-width: 3.0;"+
+                 "-fx-font-size: 15;" +
+                           "-fx-text-fill: white;"+
+                           "-fx-border-color: GREY;"+
+                           "-fx-font-weight: bold;"+
+                           "-fx-font-family: Courier New;"
+                           );
+        lowerSong.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            
+            @Override
+            public void handle(MouseEvent t) {
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = lowerSong.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Back color: " + backColor);
+               
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Font color: " + fontColor);
+                    }
+                }
+                lowerSong.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");}});
+        lowerSong.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+
+                // Setting color to this
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = lowerSong.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + backColor);
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + fontColor);
+                    }
+                }
+
+                lowerSong.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");
+            }
+        });
+        
+        // Next song button
+        Button higherSong = new Button(">");
+        higherSong.setStyle("-fx-background-color: "+creditColor+"; "+"-fx-font-family: Courier New; " + "-fx-font-weight: bold; " +
+                            "-fx-font-size: 15; "+
+                            "-fx-text-fill: "+fontColor+";");
+        
+        higherSong.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            
+            @Override
+            public void handle(MouseEvent t) {
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = higherSong.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Back color: " + backColor);
+               
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Font color: " + fontColor);
+                    }
+                }
+                higherSong.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");}});
+        
+        higherSong.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+
+                // Setting color to this
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = higherSong.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + backColor);
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + fontColor);
+                    }
+                }
+
+                higherSong.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");
+            }
+        });
+        
+        higherSong.setOnAction((e)->{
+           System.out.println("Next song!");
+            this.changeSong();
+            if (player != null){
+                player.stop();
+                songTitle.setText(songs.get(index));
+            }
+            
+            this.play();
+        });
+        
+        hb2.getChildren().addAll(lowerSong,songTitle,higherSong);
+        
+        VBox vb = new VBox(40);
+        vb.getChildren().addAll(soundChange,sl,songChange,hb2);
+        vb.setStyle("-fx-background-color: #484646");
+        return vb;
+    }
+    
     
     public void play(){
         

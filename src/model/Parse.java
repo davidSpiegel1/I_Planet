@@ -73,31 +73,32 @@ public class Parse {
     private ArrayList<Label> labelList = null;
     // Constants
     private final double SET_MIN_HEIGHT = 36.5;
-    public static final String MainStyle = "/utilities/myCss.css";
-    public static final String CharStyle = "/utilities/charCss.css";
-    public static final String GrassStyle = "/utilities/grassCss.css";
-    public static final String smallGrassStyle = "/utilities/smallGrass.css";
-    public static final String AshStyle = "/utilities/ashPerson.css";
-    public static final String JackStyle = "/utilities/jackPerson.css";
-    public static final String BadStyle = "/utilities/badGuys.css";
-    public static final String BrickStyle = "/utilities/brickCss.css";
-    public static final String KnifeStyle = "/utilities/knifeCss.css";
-    public static final String WaterStyle = "/utilities/waterCss.css";
-    public static final String BlockStyle = "/utilities/blockCss.css";
-    public static final String CharKnifeStyle = "/utilities/charWithKnifeCss.css";
-    public static final String GunStyle = "/utilities/gunCss.css";
-    public static final String cowStyle = "/utilities/cowCss.css";
-    public static final String DoorStyle = "/utilities/doorCss.css";
-    public static final String FireStyle = "/utilities/fireCss.css";
-    public static final String BlackStyle = "/utilities/blackCss.css";
-    public static final String FlowerStyle = "/utilities/flowerCss.css";
-    public static final String WebStyle = "/utilities/webCss.css";
-    public static final String GabrielStyle = "/utilities/gabrielCss.css";
-    public static final String SpiderStyle = "/utilities/spiderCss.css";
-    public static final String DevilStyle = "/utilities/devilCss.css";
+    public static final String MainStyle = "/utilities/skins/myCss.css";
+    public static final String CharStyle = "/utilities/skins/charCss.css";
+    public static final String GrassStyle = "/utilities/skins/grassCss.css";
+    public static final String smallGrassStyle = "/utilities/skins/smallGrass.css";
+    public static final String AshStyle = "/utilities/skins/ashPerson.css";
+    public static final String JackStyle = "/utilities/skins/jackPerson.css";
+    public static final String BadStyle = "/utilities/skins/badGuys.css";
+    public static final String BrickStyle = "/utilities/skins/brickCss.css";
+    public static final String KnifeStyle = "/utilities/skins/knifeCss.css";
+    public static final String WaterStyle = "/utilities/skins/waterCss.css";
+    public static final String BlockStyle = "/utilities/skins/blockCss.css";
+    public static final String CharKnifeStyle = "/utilities/skins/charWithKnifeCss.css";
+    public static final String GunStyle = "/utilities/skins/gunCss.css";
+    public static final String cowStyle = "/utilities/skins/cowCss.css";
+    public static final String DoorStyle = "/utilities/skins/doorCss.css";
+    public static final String FireStyle = "/utilities/skins/fireCss.css";
+    public static final String BlackStyle = "/utilities/skins/blackCss.css";
+    public static final String FlowerStyle = "/utilities/skins/flowerCss.css";
+    public static final String WebStyle = "/utilities/skins/webCss.css";
+    public static final String GabrielStyle = "/utilities/skins/gabrielCss.css";
+    public static final String SpiderStyle = "/utilities/skins/spiderCss.css";
+    public static final String DevilStyle = "/utilities/skins/devilCss.css";
     
-    public static final String GateStyle = "/utilities/gateCss.css";
-    public static final String evilDogStyle = "/utilities/evilDogCss.css";
+    public static final String GateStyle = "/utilities/skins/gateCss.css";
+    public static final String evilDogStyle = "/utilities/skins/evilDogCss.css";
+    public static final String block3DStyle = "/utilities/skins/block3DCss.css";
 
     // Making a character object
     private Character char1;
@@ -217,7 +218,8 @@ public class Parse {
                     arr.get(i).getKey().equals("a") ||
                     arr.get(i).getKey().equals("u") ||
                     arr.get(i).getKey().equals("X") ||
-                    arr.get(i).getKey().equals(">")) {
+                    arr.get(i).getKey().equals(">") ||
+                    arr.get(i).getKey().equals("-")) {
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
                    // l1.setBackground()
                     l1.setGraphic(buttonBuilder(arr.get(i).getKey()));
@@ -280,7 +282,7 @@ public class Parse {
         }
         else if (key.equals("d") || key.equals("p") || key.equalsIgnoreCase("E") ||
                  key.equals("a") || key.equals("u") || key.equals("f") || key.equalsIgnoreCase("o") || key.equalsIgnoreCase("X")||
-                 key.equals("K") || key.equals(">")) {
+                 key.equals("K") || key.equals(">") || key.equals("-")) {
             if (prevBackground != null){
                 b = new Background(prevBackground.getFills().get(0));
             }else{
@@ -684,7 +686,11 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
             b1.getStylesheets().add(GateStyle);
         }else if (type.equals("e")){
             b1.getStylesheets().add(evilDogStyle);
-        }
+        }else if(type.equals("-")){
+            b1.getStylesheets().add(block3DStyle);
+            b1.setTranslateY(10);
+            //b1.setLayoutY(b1.getLayoutY());
+            }
         b1.setText("");
 
         b1.setBackground(new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY)));

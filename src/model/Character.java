@@ -19,7 +19,8 @@ public class Character extends Block {
     private int life;
     private boolean hit;
     private boolean hasStick;
-
+    private boolean isJumping;
+    private boolean isSwimming;
 	// Another constructor for block form
 	public Character(int row, int col, String name) {
 		// Must call this so block can also use this
@@ -31,7 +32,7 @@ public class Character extends Block {
 		this.name = name;
         this.hit = false;
         this.hasStick = false;
-
+        this.isSwimming = false;
 		inventory = new ArrayList<Block>();
 	}
     
@@ -47,9 +48,29 @@ public class Character extends Block {
         
     }
     
+    // We are going to try and make a state of being in water
+    public void setSwimming(boolean swiming){
+        
+        this.isSwimming=swiming;
+    }
+    
+    public boolean isSwimming(){
+        
+        return this.isSwimming;
+    }
+    public void setJumping(boolean jump){
+        this.isJumping=jump;
+    }
+    public boolean isJumping(){
+        return this.isJumping;
+    }
+    
     public boolean hasStick(){
         return hasStick;
     }
+    
+    
+    
     public void setStick(boolean st){
         hasStick =st;
         

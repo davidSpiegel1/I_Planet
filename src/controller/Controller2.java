@@ -184,12 +184,18 @@ public class Controller2{
         arr.add("utilities/levelFour.txt");
         arr.add("utilities/levelFive.txt");
         arr.add("utilities/levelSix.txt");*/
-        arr.add("utilities/levelSeven.txt");
-        arr.add("utilities/levelEight.txt");
-        arr.add("utilities/levelNine.txt");
-        arr.add("utilities/levelTen.txt");
-        arr.add("utilities/levelEleven.txt");
-        arr.add("utilities/levelTwelve.txt");
+        arr.add("utilities/levels/levelSeven.txt");
+        arr.add("utilities/levels/levelEight.txt");
+        arr.add("utilities/levels/levelNine.txt");
+        arr.add("utilities/levels/levelTen.txt");
+        arr.add("utilities/levels/levelEleven.txt");
+        arr.add("utilities/levels/levelTwelve.txt");
+        arr.add("utilities/levels/levelThirteen.txt");
+        arr.add("utilities/levels/levelFourteen.txt");
+        arr.add("utilities/levels/levelFifteen.txt");
+        arr.add("utilities/levels/levelSixteen.txt");
+        arr.add("utilities/levels/levelSeventeen.txt");
+        arr.add("utilities/levels/levelEighteen.txt");
         
         
         /*this.levelR.add("..");
@@ -199,12 +205,18 @@ public class Controller2{
         this.levelR.add("utilities/roomFourA.txt");
         this.levelR.add("utilities/roomFiveA.txt");
         this.levelR.add("utilities/roomSixA.txt");*/
-        this.levelR.add("utilities/roomSevenA.txt");
-        this.levelR.add("utilities/roomEightA.txt");
-        this.levelR.add("utilities/roomNineA.txt");
-        this.levelR.add("utilities/roomTenA.txt");
-        this.levelR.add("utilities/roomElevenA.txt");
-        this.levelR.add("utilities/roomTwelveA.txt");
+        this.levelR.add("utilities/rooms/roomSevenA.txt");
+        this.levelR.add("utilities/rooms/roomEightA.txt");
+        this.levelR.add("utilities/rooms/roomNineA.txt");
+        this.levelR.add("utilities/rooms/roomTenA.txt");
+        this.levelR.add("utilities/rooms/roomElevenA.txt");
+        this.levelR.add("utilities/rooms/roomTwelveA.txt");
+        this.levelR.add("utilities/rooms/roomThirteenA.txt");
+        this.levelR.add("utilities/rooms/roomFourteenA.txt");
+        this.levelR.add("utilities/rooms/roomFifteenA.txt");
+        this.levelR.add("utilities/rooms/roomSixteenA.txt");
+        this.levelR.add("utilities/rooms/roomSeventeenA.txt");
+        this.levelR.add("utilities/rooms/roomEighteenA.txt");
         
         
         
@@ -883,13 +895,13 @@ public class Controller2{
                 Character c4 = (Character)this.getCurBlock();
                 c4.setStick(false);
                 this.setCurBlock(c4);
-                n2.getStylesheets().add("/utilities/grassCss.css");
+                n2.getStylesheets().add("/utilities/skins/grassCss.css");
                 
             }else if(p1.equals("t")){
                 Character c4 = (Character)this.getCurBlock();
                 c4.setStick(false);
                 this.setCurBlock(c4);
-                n2.getStylesheets().add("/utilities/myCss.css");
+                n2.getStylesheets().add("/utilities/skins/myCss.css");
             }
             
             else if (p1.equals("K")){
@@ -898,7 +910,7 @@ public class Controller2{
                 c4.setStick(true);
                 this.setCurBlock(c4);
                 
-                n2.getStylesheets().add("/utilities/knifeCss.css");
+                n2.getStylesheets().add("/utilities/skins/knifeCss.css");
             }
             else if (p1.equals("f")){
                 Character c4 = (Character)this.getCurBlock();
@@ -1345,6 +1357,7 @@ public class Controller2{
                 // The condition for barriers
                 if (!this.levelArr.get(this.charPos+1).getKey().equals("_") && !this.levelArr.get(this.charPos+1).getKey().equals("|")){
                     
+                    if (!this.levelArr.get(this.charPos+1).getKey().equals("-") || ((Character)this.levelArr.get(this.charPos)).isJumping()){
                     n = labelArr.get(this.ogCharPos).getGraphic();
                     n = ag.translateRight(n,labelArr.get(0).getWidth());
                     ag.moveNatural(n);
@@ -1368,6 +1381,8 @@ public class Controller2{
                     //this.prevLabel = labelArr.get(this.charPos);
                     //labelArr.set(this.charPos,this.curLabel);
                     this.didMove = true;
+                        
+                        }
                     
                 }// End of condition of barriers
             }

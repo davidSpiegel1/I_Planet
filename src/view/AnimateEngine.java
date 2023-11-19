@@ -80,7 +80,8 @@ import controller.Controller2;
 
 public class AnimateEngine {
     
-    
+    private Button curButton;
+    private Node oldGraphic;
     // Constructor for the animation engine
     public AnimateEngine(){
         System.out.println("Starting the animation engine");
@@ -352,16 +353,16 @@ public class AnimateEngine {
             10.0, 20.0 });
         
         Button dog = new Button();
-        dog.getStylesheets().add("/utilities/cowCss.css");
+        dog.getStylesheets().add("/utilities/skins/cowCss.css");
         
         Button flower = new Button();
-        flower.getStylesheets().add("/utilities/flowerCss.css");
+        flower.getStylesheets().add("/utilities/skins/flowerCss.css");
         
         Button grass = new Button();
-        grass.getStylesheets().add("/utilities/gabrielCss.css");
+        grass.getStylesheets().add("/utilities/skins/gabrielCss.css");
         
         Button fire = new Button();
-        fire.getStylesheets().add("/utilities/fireCss.css");
+        fire.getStylesheets().add("/utilities/skins/fireCss.css");
         
         
         
@@ -769,6 +770,8 @@ public class AnimateEngine {
         pathTransition.play();
     }
     
+   
+    
     public void shootNode(Node n, double dur, double up, double down, double ogDown, double ogUp) {
         
         
@@ -855,6 +858,71 @@ public class AnimateEngine {
         return n;
     }
     
+    public void swimmingDown(Node n){
+        
+        
+        
+        Path path = new Path();
+        path.getElements().add(new MoveTo(5,5));
+        QuadCurveTo qt = new QuadCurveTo();
+        qt.setX(20);
+        qt.setY(15);
+        qt.setControlX(15);
+        qt.setControlY(20);
+        path.getElements().add(qt);
+        PathTransition pathT = new PathTransition();
+        pathT.setDuration(Duration.millis(800));
+        pathT.setPath(path);
+        pathT.setNode(n);
+        pathT.setCycleCount(1);
+        pathT.setAutoReverse(true);
+        
+        
+        RotateTransition rt = new RotateTransition(Duration.millis(800), n);
+        rt.setFromAngle(-15);
+        rt.setToAngle(2);
+        
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(rt,pathT);
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        //return n;
+        
+    }
+    
+    public void swimmingUp(Node n){
+        
+        
+        Path path = new Path();
+        path.getElements().add(new MoveTo(5,5));
+        QuadCurveTo qt = new QuadCurveTo();
+        qt.setX(20);
+        qt.setY(15);
+        qt.setControlX(15);
+        qt.setControlY(20);
+        path.getElements().add(qt);
+        PathTransition pathT = new PathTransition();
+        pathT.setDuration(Duration.millis(800));
+        pathT.setPath(path);
+        pathT.setNode(n);
+        pathT.setCycleCount(1);
+        pathT.setAutoReverse(true);
+        
+        RotateTransition rt = new RotateTransition(Duration.millis(800), n);
+        rt.setFromAngle(15);
+        rt.setToAngle(-2);
+        
+        
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(rt,pathT);
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        //return n;
+        
+    }
+    
     public void moveNatural(Node n){
         Path path = new Path();
         path.getElements().add(new MoveTo(5,5));
@@ -905,6 +973,90 @@ public class AnimateEngine {
         
         parallelTransition.setCycleCount(1);
         parallelTransition.play();
+        //st2.play();
+        
+        
+    }
+    
+    public void jumpNatural(Node n){
+        Path path = new Path();
+        path.getElements().add(new MoveTo(5,5));
+        //path.getElements().add(new CubicCurveTo(5,0,3,1,2,1));
+        QuadCurveTo qt = new QuadCurveTo();
+        qt.setX(15);
+        qt.setY(10);
+        qt.setControlX(15);
+        qt.setControlY(-30);
+        
+        
+        
+        path.getElements().add(qt);
+        //path.getElements().add(st);
+        PathTransition pathT = new PathTransition();
+        pathT.setDuration(Duration.millis(350));
+        //pathT.setDuration(Duration.millis(250));
+        pathT.setPath(path);
+        pathT.setNode(n);
+        
+        // Would be infefinite if breathing or something
+        pathT.setCycleCount(1);
+        //pathT.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathT.setAutoReverse(true);
+   
+        
+        ScaleTransition st = new ScaleTransition(Duration.millis(250),n);
+        st.setFromX(.01);
+        st.setFromY(1);
+        st.setToX(1);
+        st.setToY(1);
+        st.setCycleCount(1);
+        
+        ScaleTransition st2 = new ScaleTransition(Duration.millis(300),n);
+        // Used to be 3 - gone to 5
+        st2.setFromX(1.5f);
+        st2.setFromY(1);
+        st2.setToX(1);
+        st2.setToY(1);
+        st2.setCycleCount(1);
+        
+        
+        // Setting the old graphic, so we can have a
+        // shaddow come up and back down
+        curButton = (Button)n;
+        oldGraphic = curButton.getGraphic();
+        
+        // Shaddow
+        Ellipse el = new Ellipse();
+        el.setCenterX(0);
+        el.setCenterY(-20);
+        el.setRadiusX(7.0f);
+        el.setRadiusY(1.7f);
+        el.setTranslateY(23);
+        el.setStyle("-fx-opacity: 0.3;");
+        
+        ScaleTransition st3 = new ScaleTransition(Duration.millis(720),el);
+        // Used to be 3 - gone to 5
+        st3.setFromX(1.0f);
+        st3.setFromY(0.9);
+        st3.setToX(0);
+        st3.setToY(0);
+
+        st3.setCycleCount(1);
+        curButton.setGraphic(el);
+  
+        
+        
+        ParallelTransition parallelTransition = new ParallelTransition();
+        parallelTransition.getChildren().addAll(pathT,st2,st3);
+        //st2.play();
+        
+        parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+        //b1.setGraphic(oldGraphic);
+        parallelTransition.setOnFinished((e)->{
+            
+            curButton.setGraphic(oldGraphic);
+        });
         //st2.play();
         
         

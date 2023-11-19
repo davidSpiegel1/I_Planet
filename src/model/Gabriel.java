@@ -9,7 +9,7 @@ public class Gabriel extends MovableBlock{
             
             super(pos,key,maxCol);
             
-            Story sl = new Story("utilities/GabrielStory.txt");
+            Story sl = new Story("utilities/story/GabrielStory.txt");
             st = sl.getTree(); // Getting a tree
             
             

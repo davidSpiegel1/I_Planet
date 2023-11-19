@@ -201,7 +201,7 @@ public class mainPage{
     public VBox getImage(){
         ag = new AnimateEngine();
         Button guy = new Button();
-        guy.getStylesheets().add("/utilities/charCss.css");
+        guy.getStylesheets().add("/utilities/skins/charCss.css");
         VBox background = ag.getCoverImage(guy);
        
         VBox image = new VBox();

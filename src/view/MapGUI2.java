@@ -22,18 +22,20 @@ import javafx.scene.text.TextAlignment;
 //public class MapGUI2 extends Application
 public class MapGUI2
 {
+    
+    
 	public static GridPane loadFiles(String levelFile, int pos, int currentLevel)
 	{
 		GridPane level = new GridPane();
 		//Java yells at me if I don't have a try catch statment
 		try
 		{
-			File file = new File("utilities/" + levelFile);
+			File file = new File("utilities/levels/" + levelFile);
 			
 			//Make sure file exists before reading
 			if(file.exists())
 			{
-				FileInputStream fileStream = new FileInputStream("utilities/" + levelFile);
+				FileInputStream fileStream = new FileInputStream("utilities/levels/" + levelFile);
 
 				int ch;
 				int x = 0;
@@ -213,5 +215,67 @@ public class MapGUI2
 		primaryStage.setScene(new Scene(scroll, 610, 400));
 		primaryStage.show();
 	}
+    
+    public ScrollPane getMap(int pos, int currentLevel){
+        /*GridPane levelOne = loadFiles("levelOne.txt", pos, currentLevel);
+        GridPane levelTwo = loadFiles("levelTwo.txt", pos, currentLevel);
+        GridPane levelThree = loadFiles("levelThree.txt", pos, currentLevel);
+        GridPane levelFour = loadFiles("levelFour.txt", pos, currentLevel);
+        GridPane levelFive = loadFiles("levelFive.txt", pos, currentLevel);
+        GridPane levelSix = loadFiles("levelSix.txt", pos, currentLevel);*/
+        GridPane levelSeven = loadFiles("levelSeven.txt", pos, currentLevel);
+        GridPane levelEight = loadFiles("levelEight.txt", pos, currentLevel);
+    
+        
+        //Holds overall layout
+        VBox mapLayout = new VBox(8);
+        ScrollPane scroll = new ScrollPane(mapLayout);
+        scroll.setPannable(true);
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setFitToWidth(true);
+        
+        //I can't test this in a vm, so I don't know if it works
+    
+        scroll.setOnZoom(new EventHandler<ZoomEvent>() {
+            @Override public void handle(ZoomEvent event) {
+                scroll.setScaleX(scroll.getScaleX() * event.getZoomFactor());
+                scroll.setScaleY(scroll.getScaleY() * event.getZoomFactor());
+                System.out.println("Rectangle: Zoom event" +
+                ", inertia: " + event.isInertia() +
+                ", direct: " + event.isDirect());
+         
+                event.consume();
+            }
+        });
+
+        scroll.setOnZoomStarted(new EventHandler<ZoomEvent>() {
+            @Override public void handle(ZoomEvent event) {
+                //inc(scroll);
+                System.out.println("Rectangle: Zoom event started");
+                event.consume();
+            }
+        });
+
+        scroll.setOnZoomFinished(new EventHandler<ZoomEvent>() {
+            @Override public void handle(ZoomEvent event) {
+                //dec(scroll);
+                System.out.println("Rectangle: Zoom event finished");
+                event.consume();
+            }
+        });
+
+
+        //Populate vbox
+        /*mapLayout.getChildren().add(levelOne);
+        mapLayout.getChildren().add(levelTwo);
+        mapLayout.getChildren().add(levelThree);
+        mapLayout.getChildren().add(levelFour);
+        mapLayout.getChildren().add(levelFive);
+        mapLayout.getChildren().add(levelSix);*/
+        mapLayout.getChildren().add(levelSeven);
+        mapLayout.getChildren().add(levelEight);
+        return scroll;
+    }
 
 }
