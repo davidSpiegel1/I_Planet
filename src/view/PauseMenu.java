@@ -3,6 +3,10 @@
 
 package view;
 
+import java.util.ArrayList;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Menu;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.Scene;
@@ -12,6 +16,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import java.lang.Thread;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -44,6 +49,7 @@ import javafx.beans.binding.Bindings;
 import model.Parse;
 import model.Scan;
 import model.MusicPlay;
+
 import javafx.scene.control.ScrollPane;
 import javafx.event.ActionEvent;
 
@@ -64,7 +70,7 @@ public class PauseMenu{
     }
     
     
-    public void setPane(Character user, ScrollPane map1,MusicPlay mp){
+    public void setPane(Character user, ScrollPane map1,MusicPlay mp, ArrayList<MenuButton> inventoryButtons){
         
         pane = new GridPane();
         
@@ -80,19 +86,45 @@ public class PauseMenu{
                 leftCol.setHgrow(Priority.NEVER);
 
         ColumnConstraints rightCol = new ColumnConstraints();
-                rightCol.setHgrow(Priority.ALWAYS);
+                rightCol.setHgrow(Priority.NEVER);
+                rightCol.setHalignment(HPos.LEFT);
+                //rightCol.setHgrow(Priority.NEVER);
 
         pane.getColumnConstraints().addAll(leftCol, rightCol);
         
         
         
         ScrollPane map = map1;
+        /*map.setStyle("-fx-background-color: #484646;"
+                     +"-fx-border-radius: 4.0;"
+                     +"-fx-border-width: 3.0;"
+                     +"-fx-border-color: GREY;"
+                     +"-fx-opacity: 0.85;");*/
+        //BorderPane bp = new BorderPane();
+       // bp.setCenter(map);
+        VBox bp = new VBox(map);
+        
+    
+        bp.setAlignment(Pos.CENTER);
+        
+        //bp.getChildren().add(map);
+        //map.setContent(bp);
+        bp.setStyle("-fx-background-color: #484646;"
+                    +"-fx-border-radius: 4.0;"
+                    +"-fx-border-width: 3.0;"
+                    +"-fx-border-color: GREY;"
+                    +"-fx-opacity: 0.85;");
         VBox charInfo = this.userInfo(user.getName(),user.getLife());
         //Button charInfo = new Button("Char Info");
         VBox sounds = mp.displaySoundsVB();
+        sounds.setStyle("-fx-background-color: #484646;"
+                        +"-fx-border-radius: 4.0;"
+                        +"-fx-border-width: 3.0;"
+                        +"-fx-border-color: GREY;"
+                        +"-fx-opacity: 0.85;");
         
         
-        Button inventory = new Button("Inventory");
+        VBox inventory = constructInventory(inventoryButtons);
         Button crafting = new Button("Crafting");
         
         //charInfo.setOpacity(1);
@@ -105,13 +137,17 @@ public class PauseMenu{
                           "-fx-font-family: Courier New;"
                           );*/
         //charInfo.getStylesheets().add("/model/myButton2.css");
-        pane.add(map,0,0);
-        map.prefWidthProperty().bind(Bindings.min(pane.widthProperty().divide(3),
+        pane.add(bp,0,0);
+        bp.prefWidthProperty().bind(Bindings.min(pane.widthProperty().divide(3),
                                                                     pane.heightProperty().divide(5/3)));
-        map.prefHeightProperty().bind(Bindings.min(pane.widthProperty().divide(3),
+        bp.prefHeightProperty().bind(Bindings.min(pane.widthProperty().divide(3),
                                                                     pane.heightProperty().divide(5/3)));
-        GridPane.setHalignment(map,HPos.LEFT);
+        GridPane.setHalignment(bp,HPos.LEFT);
         pane.add(charInfo,1,0);
+        charInfo.prefWidthProperty().bind(Bindings.min(pane.widthProperty().divide(3),
+                                                                    pane.heightProperty().divide(5/3)));
+        charInfo.prefHeightProperty().bind(Bindings.min(pane.widthProperty().divide(3),
+                                                                    pane.heightProperty().divide(5/3)));
         pane.add(sounds,0,1);
         sounds.prefWidthProperty().bind(Bindings.min(pane.widthProperty().divide(3),
                                                                     pane.heightProperty().divide(5/3)));
@@ -125,12 +161,50 @@ public class PauseMenu{
                    mp.displaySounds();
             }
         });*/
+        //HBox inventory = constructInventory(inventoryButtons);
         pane.add(inventory,1,1);
         pane.add(crafting,0,2);
       
 
         pane.getColumnConstraints().addAll(leftCol, rightCol);
         pane.setBackground(Background.EMPTY);
+    }
+    
+    public VBox constructInventory(ArrayList<MenuButton> mb){
+        
+        VBox vb = new VBox(15);
+        
+        HBox hb = new HBox(10);
+        // Setting size of inventory to be 6
+        for (int i = 0; i<= 5;i++){
+            if (i <= mb.size()-1){
+                //mb.get(i).setStyle("-fx-font-size: 15;"
+                  //                 +"-fx-font-family: Courier New;"+
+                    //               "-fx-font-weight: bold;");
+                hb.getChildren().add(mb.get(i));
+            }else{
+                Button blankButton = new Button(".");
+                blankButton.setStyle("-fx-background-color: #515151;"
+                                     +"-fx-text-fill: #515151; -fx-font-size: 15;"
+                                     +"-fx-font-family: Courier New;"+
+                                     "-fx-font-weight: bold;");
+                
+                hb.getChildren().add(blankButton);
+            }
+        }
+        
+        Label title = new Label("Inventory: ");
+        title.setStyle("-fx-text-fill: cadetblue; -fx-font-size: 30;"
+                             +"-fx-font-family: Courier New;"+
+                             "-fx-font-weight: bold;");
+        vb.getChildren().addAll(title,hb);
+        
+        vb.setStyle("-fx-background-color: #484646;"
+                     +"-fx-border-radius: 4.0;"
+                     +"-fx-border-width: 3.0;"
+                     +"-fx-border-color: GREY;"
+                     +"-fx-opacity: 0.85;");
+        return vb;
     }
     
     
@@ -201,9 +275,7 @@ public class PauseMenu{
                               
                               
                             }  );
-        //st.setOpacity(0.5);
-        //st.getStylesheets().add("/model/myButton2.css");
-        //scene.setBackground(Background.EMPTY);
+
         scene.setFill(Color.rgb(0,26,0,0.5));
         st.setScene(scene);
         

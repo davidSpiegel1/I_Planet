@@ -234,6 +234,7 @@ public class MapGUI2
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
         
         //I can't test this in a vm, so I don't know if it works
     

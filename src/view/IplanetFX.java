@@ -130,6 +130,7 @@ public class IplanetFX extends Application{
     private Stage s2;
     private MusicPlay mp;
     private PauseMenu pm;
+    private int dayLightCounter = 0;
     
     // Some constants
     private final int SCENE_SIZE_ROW = 715;
@@ -292,7 +293,6 @@ public class IplanetFX extends Application{
        // Bloom bloom = new Bloom();
        /// bloom.setThreshold(0.78);
 
-       //mainGame.setEffect(bloom);
         
         
         infoDeck.setAlignment(Pos.BOTTOM_CENTER);
@@ -312,6 +312,22 @@ public class IplanetFX extends Application{
                   event -> {
                       
                       c.moveBlocks(mainGame,labelList,infoDeck,statButton);
+                      // Incrementing a daylight counter to have day and night
+                      this.dayLightCounter++;
+                      if (dayLightCounter%200 == 0){
+                          System.out.println(dayLightCounter+" DAY LIGHT COUNTER");
+                          Lighting light = new Lighting();
+                          Light.Point l = new Light.Point();
+                          l.xProperty().set(0);
+                          l.yProperty().set(0);
+                          l.setZ(4000);
+                          l.setColor(Color.GREY);
+                          light.setLight(l);
+                          mainGame.setEffect(light);
+                      }else if (dayLightCounter%100==0){
+                          mainGame.setEffect(null);
+                      }
+                      
                       Character c2 = (Character)c.getCurBlock();
                       if (c2.isJumping()){
                           c2.setJumping(false);
@@ -1205,8 +1221,14 @@ public class IplanetFX extends Application{
         pm = new PauseMenu();
         MapGUI2 mapInfo = new MapGUI2();
         ScrollPane scroll = mapInfo.getMap(c.getCharPos(),c.getCurrentLevel());
+        
         Character c2 = (Character)c.getCurBlock();
-        pm.setPane(c2,scroll,mp);
+        
+        Block curB = c.getCurBlock();
+        ArrayList<Block> inventory = c.getInventory(curB);
+        ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
+        
+        pm.setPane(c2,scroll,mp,inventoryButtons);
         Stage st9 = pm.getStage(SCENE_SIZE_ROW,SCENE_SIZE_COL);
         st9.show();
         
