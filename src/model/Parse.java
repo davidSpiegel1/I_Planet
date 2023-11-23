@@ -64,6 +64,16 @@ import model.Edog;
 
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.shape.MeshView;
+import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.input.DragEvent;
+
 
 public class Parse {
 
@@ -485,7 +495,7 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
 
             setOnDragDetected(b);
 
-            setOnDragDone(b);
+            //setOnDragDone(b);
 
             b.setOnMouseEntered(new EventHandler<MouseEvent>() {
 
@@ -688,7 +698,8 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
             b1.getStylesheets().add(evilDogStyle);
         }else if(type.equals("-")){
             b1.getStylesheets().add(block3DStyle);
-            b1.setTranslateY(10);
+            //b1.setTranslateY(10);
+            //b1.setGraphic(this.getMesh(""));
             //b1.setLayoutY(b1.getLayoutY());
             }
         b1.setText("");
@@ -698,7 +709,36 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         return b1;
     }
 
-    // Main function to test
+    // A function that will return a goup graphic determined by a key
+    // Not working currently, gonna stick with stylesheets for now
+    public  Group getMesh(String key){
+        Group group3d = null;
+        try{
+        //PerspectiveCamera camera = new PerspectiveCamera(true);
+        //camera.setTranslateZ(600);
+        
+        FXMLLoader loader = new FXMLLoader(Parse.class.getResource("/model/suzzane.fxml"));
+      
+        loader.load();
+        MeshView mesh = (MeshView) loader.getRoot();
+        int scale = 7;
+        mesh.setScaleZ(scale);
+        mesh.setScaleY(scale);
+        mesh.setScaleX(scale);
+        group3d = new Group(mesh);
+            
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        
+        //if (key.equals("C")){
+            
+            
+        //}
+        return group3d;
+        
+        
+    }
 
 
     // Translate up to emulate movement
@@ -735,100 +775,20 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         source.setOnDragDetected((MouseEvent event) -> {
             /* drag was detected, start drag-and-drop gesture */
             System.out.println("onDragDetected");
-
+            System.out.println(source.getId());
             /* allow any transfer mode */
             Dragboard db = source.startDragAndDrop(TransferMode.ANY);
 
             /* put a string on dragboard */
             ClipboardContent content = new ClipboardContent();
-            content.putString(source.getText());
+            content.putString(source.getId());
             db.setContent(content);
 
             event.consume();
         });
     }
 
-    public void setOnDragDone(MenuButton source) {
-        source.setOnDragDone((DragEvent event) -> {
-            /* the drag-and-drop gesture ended */
-            System.out.println("onDragDone");
-            /* if the data was successfully moved, clear it */
-            // if (event.getTransferMode() == TransferMode.MOVE) {
-            // source.setText("");
-            // }
-
-            event.consume();
-        });
-    }
-
-    // target event handlers
-    public void setOnDragOver(StackPane target) {
-        target.setOnDragOver((DragEvent event) -> {
-            /* data is dragged over the target */
-            System.out.println("onDragOver");
-
-            /*
-             * accept it only if it is not dragged from the same node
-             * and if it has a string data
-             */
-            if (event.getGestureSource() != target
-                    && event.getDragboard().hasString()) {
-                /* allow for both copying and moving, whatever user chooses */
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            }
-
-            event.consume();
-        });
-    }
-
-    public void setOnDragEntered(StackPane target) {
-        target.setOnDragEntered((DragEvent event) -> {
-            /* the drag-and-drop gesture entered the target */
-            System.out.println("onDragEntered");
-            /* show to the user that it is an actual gesture target */
-            if (event.getGestureSource() != target
-                    && event.getDragboard().hasString()) {
-                target.setStyle("-fx-background-color: green;");
-            }
-
-            event.consume();
-        });
-    }
-
-    public void setOnDragExited(StackPane target) {
-        target.setOnDragExited((DragEvent event) -> {
-            /* mouse moved away, remove the graphical cues */
-            target.setStyle("-fx-background-color: transparent;");
-
-            event.consume();
-        });
-    }
-
-    public void setOnDragDropped(StackPane target) {
-        target.setOnDragDropped((DragEvent event) -> {
-            /* data dropped */
-            System.out.println("onDragDropped");
-            /* if there is a string data on dragboard, read it and use it */
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasString()) {
-                // target.setText(db.getString());
-                Button tempBoat = new Button(db.getString());
-                tempBoat.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                // target.getChildren().clear();
-                // target.getChildren().add(tempBoat);
-                success = true;
-            }
-            /*
-             * let the source know whether the string was successfully
-             * transferred and used
-             */
-            event.setDropCompleted(success);
-
-            event.consume();
-        });
-    }
-
+ 
     public ArrayList<MovableBlock> getMovableBlocks() {
 
         return this.movingBlocks;

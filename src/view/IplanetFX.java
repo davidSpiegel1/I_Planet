@@ -1230,6 +1230,7 @@ public class IplanetFX extends Application{
         
         pm.setPane(c2,scroll,mp,inventoryButtons);
         Stage st9 = pm.getStage(SCENE_SIZE_ROW,SCENE_SIZE_COL);
+        //st9.setX(50);
         st9.show();
         
     }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.Scene;
@@ -45,13 +46,19 @@ import model.MovableBlock;
 import model.Spider;
 import model.Edog;
 import javafx.beans.binding.Bindings;
-
+import javafx.scene.shape.Circle;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.input.DragEvent;
 import model.Parse;
 import model.Scan;
 import model.MusicPlay;
 
 import javafx.scene.control.ScrollPane;
 import javafx.event.ActionEvent;
+
 
 
 public class PauseMenu{
@@ -78,8 +85,8 @@ public class PauseMenu{
         pane.setHgap(10);
         pane.setVgap(10);
         pane.setPadding(new Insets(10,10,10,10));
-        pane.setPrefSize(width,height);
-        pane.setMinSize(width,height);
+        pane.setPrefSize(width,height-20);
+        pane.setMinSize(width,height-20);
        // pane.setMaxSize(width,height/2);
         ColumnConstraints leftCol = new ColumnConstraints();
                 leftCol.setHalignment(HPos.RIGHT);
@@ -95,11 +102,11 @@ public class PauseMenu{
         
         
         ScrollPane map = map1;
-        /*map.setStyle("-fx-background-color: #484646;"
-                     +"-fx-border-radius: 4.0;"
+        map.setStyle("-fx-background-color: #484646;"
+                     +"-fx-border-radius: 10.0;"
                      +"-fx-border-width: 3.0;"
                      +"-fx-border-color: GREY;"
-                     +"-fx-opacity: 0.85;");*/
+                     +"-fx-opacity: 0.85;");
         //BorderPane bp = new BorderPane();
        // bp.setCenter(map);
         VBox bp = new VBox(map);
@@ -110,8 +117,8 @@ public class PauseMenu{
         //bp.getChildren().add(map);
         //map.setContent(bp);
         bp.setStyle("-fx-background-color: #484646;"
-                    +"-fx-border-radius: 4.0;"
-                    +"-fx-border-width: 3.0;"
+                    +"-fx-border-radius: 5.0;"
+                    +"-fx-border-width: 4.0;"
                     +"-fx-border-color: GREY;"
                     +"-fx-opacity: 0.85;");
         VBox charInfo = this.userInfo(user.getName(),user.getLife());
@@ -125,7 +132,7 @@ public class PauseMenu{
         
         
         VBox inventory = constructInventory(inventoryButtons);
-        Button crafting = new Button("Crafting");
+        HBox crafting = getCraftModule();
         
         //charInfo.setOpacity(1);
         /*charInfo.setStyle("-fx-border-radius: 3.0;"+
@@ -163,11 +170,139 @@ public class PauseMenu{
         });*/
         //HBox inventory = constructInventory(inventoryButtons);
         pane.add(inventory,1,1);
-        pane.add(crafting,0,2);
+        // Building out crafting method with new HBox
+        
+       
+        pane.add(crafting,0,2,2,1);
       
 
         pane.getColumnConstraints().addAll(leftCol, rightCol);
         pane.setBackground(Background.EMPTY);
+    }
+    
+    
+    public HBox getCraftModule(){
+        HBox craftModule = new HBox(10);
+        
+        
+        // The drags
+        VBox drags = new VBox(5);
+        Button dragOne = new Button("Object 1");
+        dragOne.setMaxWidth(100.0);
+        dragOne.setMinWidth(50.0);
+        dragOne.setMaxHeight(100.0);
+        dragOne.setMinHeight(50.0);
+        dragOne.setStyle("-fx-background-color: #515151;"
+                            +"-fx-text-fill: white; -fx-font-size: 15;"
+                            +"-fx-font-family: Courier New;"
+                         +"-fx-border-radius: 4.0;"
+                         +"-fx-border-width: 3.0;"
+                         +"-fx-border-color: GREY;"
+                            +"-fx-font-weight: bold;");
+        
+        
+        Button dragTwo = new Button("Object 2");
+        dragTwo.setMaxWidth(100.0);
+        dragTwo.setMinWidth(50.0);
+        dragTwo.setMaxHeight(100.0);
+        dragTwo.setMinHeight(50.0);
+        dragTwo.setStyle("-fx-background-color: #515151;"
+                            +"-fx-text-fill: white; -fx-font-size: 15;"
+                            +"-fx-font-family: Courier New;"
+                         +"-fx-border-radius: 4.0;"
+                         +"-fx-border-width: 3.0;"
+                         +"-fx-border-color: GREY;"
+                            +"-fx-font-weight: bold;");
+        drags.getChildren().addAll(dragOne,dragTwo);
+        
+        // The craft button
+        Button craftMe = new Button("Craft me!");
+        craftMe.setStyle("-fx-background-color: #515151;"
+                            +"-fx-text-fill: white; -fx-font-size: 15;"
+                            +"-fx-font-family: Courier New;"
+                         +"-fx-border-radius: 4.0;"
+                         +"-fx-border-width: 3.0;"
+                         +"-fx-border-color: GREY;"
+                            +"-fx-font-weight: bold;");
+        craftMe.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                craftMe.setStyle("-fx-background-color: #515151;"
+                                  +"-fx-text-fill: white; -fx-font-size: 15;"
+                                  +"-fx-font-family: Courier New;"
+                               +"-fx-border-radius: 4.0;"
+                               +"-fx-border-width: 3.0;"
+                               +"-fx-border-color: GREY;"
+                                  +"-fx-font-weight: bold;");
+            }
+            
+        });// For exiting the button
+        craftMe.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                craftMe.setStyle("-fx-background-color: #333333;"
+                                 +"-fx-text-fill: white; -fx-font-size: 15;"
+                                 +"-fx-font-family: Courier New;"
+                              +"-fx-border-radius: 4.0;"
+                              +"-fx-border-width: 3.0;"
+                              +"-fx-border-color: GREY;"
+                                 +"-fx-font-weight: bold;");
+            }
+        });
+        
+        
+        // The image of the new crafted object
+        Button newObject = new Button();
+        newObject.setStyle("-fx-background-color: #515151;"
+                            +"-fx-text-fill: #515151; -fx-font-size: 15;"
+                            +"-fx-font-family: Courier New;"+
+                            "-fx-font-weight: bold;");
+        newObject.setMaxWidth(400.0);
+        newObject.setMinWidth(350.0);
+        newObject.setMaxHeight(100.0);
+        newObject.setMinHeight(90.0);
+        
+        
+        dragOne.setOnDragOver(new EventHandler<DragEvent>() {
+            @Override public void handle(DragEvent event) {
+                //crafting.setText("HERE!!");
+                Dragboard db = event.getDragboard();
+                if (db.hasString()) {
+                    dragOne.setText(db.getString());
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                }
+                event.consume();
+            }
+        });
+        
+        dragTwo.setOnDragOver(new EventHandler<DragEvent>() {
+            @Override public void handle(DragEvent event) {
+                //crafting.setText("HERE!!");
+                Dragboard db = event.getDragboard();
+                if (db.hasString()) {
+                    dragTwo.setText(db.getString());
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                }
+                event.consume();
+            }
+        });
+        craftModule.getChildren().addAll(drags,newObject,craftMe);
+        craftModule.setStyle("-fx-background-color: #484646;"
+                     +"-fx-border-radius: 4.0;"
+                     +"-fx-border-width: 1.0;"
+                     +"-fx-border-color: GREY;"
+                     +"-fx-opacity: 0.85;");
+        
+        //craftModule.setPrefSize(width,height/14);
+        //craftModule.setMinSize(width,height/14);
+        //craftModule.setMinHeight(height/4);
+        //craftModule.setMaxHeight(height/2);
+        //craftModule.setBackground(Background.EMPTY);
+        craftModule.setAlignment(Pos.CENTER);
+        return craftModule;
+        
     }
     
     public VBox constructInventory(ArrayList<MenuButton> mb){
@@ -177,7 +312,12 @@ public class PauseMenu{
         HBox hb = new HBox(10);
         // Setting size of inventory to be 6
         for (int i = 0; i<= 5;i++){
+            
+         
+            
             if (i <= mb.size()-1){
+                
+            
                 //mb.get(i).setStyle("-fx-font-size: 15;"
                   //                 +"-fx-font-family: Courier New;"+
                     //               "-fx-font-weight: bold;");
@@ -260,8 +400,26 @@ public class PauseMenu{
         this.width = width;
         this.height = height;
         
+       
         
-        scene = new Scene(pane,width,height);
+        HBox hbox = getDash();
+       
+        
+        VBox root = new VBox(1);
+        root.setAlignment(Pos.CENTER);
+        root.setBackground(Background.EMPTY);
+        VBox.setVgrow(pane, Priority.ALWAYS);
+        //VBox.setVgrow(closeButton, Priority.NEVER);
+        
+        //pane.setHgap(10);
+        //pane.setVgap(10);
+        //pane.setPadding(new Insets(10,10,10,10));
+        root.setPrefSize(width,height);
+        root.setMinSize(width,height);
+        
+        
+        root.getChildren().addAll(hbox,pane);
+        scene = new Scene(root,width,height);
         scene.setFill(null);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             
@@ -271,19 +429,79 @@ public class PauseMenu{
                         st.close();
                     }
                 }
-            
-                              
-                              
                             }  );
 
         scene.setFill(Color.rgb(0,26,0,0.5));
         st.setScene(scene);
         
-        
         return st;
+
+    }
+    
+    public HBox getDash(){
+        MenuBar file = new MenuBar();
+        file.setId("file");
+        Button closeButton = new Button("x");
+        closeButton.setStyle("-fx-background-color: #C13B5F;"
+                     +"-fx-border-radius: 50.0;"
+                     +"-fx-border-width: 1.0;"
+                     +"-fx-border-color: GREY;"
+                     +"-fx-opacity: 1.0;"
+                    +"-fx-text-fill: #C13B5F;");
+        closeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                st.close();
+            }
+        });
+        closeButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                closeButton.setStyle("-fx-background-color: #C13B5F;"
+                             +"-fx-border-radius: 50.0;"
+                             +"-fx-border-width: 1.0;"
+                             +"-fx-border-color: GREY;"
+                             +"-fx-opacity: 1.0;"
+                            +"-fx-text-fill: #C13B5F;");
+            }
+            
+        });// For exiting the button
+        closeButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                closeButton.setStyle("-fx-background-color: #D14F72;"
+                                    +"-fx-border-radius: 50.0;"
+                                    +"-fx-border-width: 1.0;"
+                                    +"-fx-border-color: GREY;"
+                                    +"-fx-opacity: 1.0;"
+                                     +"-fx-text-fill: #52091C;"
+                                     +"-fx-font-weight: bold;"
+                                     +"-fx-font-size: 9;");
+            }
+        });
+        closeButton.setShape(new Circle(100));
+        closeButton.setMaxWidth(17.0);
+        closeButton.setMinWidth(15.0);
+        closeButton.setMaxHeight(17.0);
+        closeButton.setMinHeight(15.0);
+        HBox hbox = new HBox(10);
+        //hbox.setHgap(10);
+        //hbox.setVgap(10);
+        hbox.setPadding(new Insets(30,10,10,10));
+        hbox.getChildren().addAll(closeButton);
+        hbox.setStyle("-fx-background-color: #484646;"
+                     +"-fx-border-radius: 4.0;"
+                     +"-fx-border-width: 1.0;"
+                     +"-fx-border-color: GREY;"
+                     +"-fx-opacity: 1.0;");
+        hbox.setPrefSize(width,height/14);
+        hbox.setMinSize(width,height/14);
+        hbox.setBackground(Background.EMPTY);
+        hbox.setAlignment(Pos.CENTER_LEFT);
         
-        
-        
+        return hbox;
         
     }
     
