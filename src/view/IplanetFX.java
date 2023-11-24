@@ -680,8 +680,10 @@ public class IplanetFX extends Application{
                     Block curB = c.getCurBlock();
                     ArrayList<Block> inventory = c.getInventory(curB);
                     boolean canHit = false;
+                    String weaponType = "";
                     for (int i = 0; i<= inventory.size()-1;i++){
-                        if (inventory.get(i).getKey().equals("K")){
+                        if (inventory.get(i).getKey().equals("K") || inventory.get(i).getKey().equals("$")){
+                            weaponType = inventory.get(i).getKey();
                             canHit = true;
                         }
                     }
@@ -696,8 +698,9 @@ public class IplanetFX extends Application{
                         //c3.setStick(true);
                         //c.setCurBlock(c4);
                         Button n2 = new Button("");
-                        n2.getStylesheets().add("/utilities/skins/knifeCss.css");
-                        
+                        //n2.getStylesheets().add("/utilities/skins/knifeCss.css");
+                        Parse pr = c.getParser();
+                        n2 = pr.buttonBuilder(weaponType);
                    
                         n2.setMinWidth(10);
                         n2.setMinHeight(10);
@@ -1225,15 +1228,105 @@ public class IplanetFX extends Application{
         Character c2 = (Character)c.getCurBlock();
         
         Block curB = c.getCurBlock();
+        Parse p1 = c.getParser();
+        Scan s1 = c.getScanner();
+        
         ArrayList<Block> inventory = c.getInventory(curB);
         ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
         
-        pm.setPane(c2,scroll,mp,inventoryButtons);
+        pm.setPane(c2,scroll,mp,inventoryButtons,p1,s1);
         Stage st9 = pm.getStage(SCENE_SIZE_ROW,SCENE_SIZE_COL);
+        
+        
+      
+        
+        
+        ArrayList<MenuButton> in = pm.updateMenuButtons();
+        
+        st9.setOnHiding((e)->{
+                ArrayList<Block> newBlock2 = pm.getNewBlocks();
+                //ArrayList<Block> inventory = c2.getInventory();
+                for (int k = 0; k<= newBlock2.size()-1;k++){
+                    System.out.println("What is in inventory: "+newBlock2.get(k));
+                    c2.addToInventory(newBlock2.get(k));
+                }
+                updateInventoryPause(in, c2);
+        
+            
+        });
+       
+   
+     
         //st9.setX(50);
         st9.show();
         
     }
+    
+    public void updateInventoryPause(ArrayList<MenuButton> in, Character c2){
+        //displayInventory();
+        ArrayList<Block> charInventory = c2.getInventory();
+        System.out.println("----- The inventory: "+charInventory);
+        ArrayList<Block> newInventory = new ArrayList<Block>();
+        // Change the char Invenoty to this new one
+        for (int p = 0; p<= in.size()-1;p++){
+                String curTag = in.get(p).getText(); // For each tag we only want n amount
+                int curAmount = Integer.parseInt(((Button)in.get(p).getGraphic()).getText());
+                System.out.println("The tag: "+curTag+" The amount: "+curAmount);
+                Block curBlock = null;
+                //Block alternativeBlock = null;
+                // Getting the block that is reffered to
+                for (int j=0; j<= charInventory.size()-1;j++){
+                    if (charInventory.get(j).getKey().equals(curTag)){
+                        curBlock = charInventory.get(j);
+                        break;
+                    }
+                }
+            // Now we have the button, we place n amounts into new invenotry
+            if (curBlock != null){
+                for (int m = 0; m<= curAmount-1; m++){
+                    newInventory.add(curBlock);
+                }
+            }
+        }
+        
+        // Checking if we missed anything
+        ArrayList<Block> newIn = new ArrayList<Block>();
+        for (int n = 0; n<= charInventory.size()-1;n++){
+            
+            String key2 = charInventory.get(n).getKey();
+            boolean isFound = false;
+            for (int f = 0; f<= newInventory.size()-1;f++){
+                if (newInventory.get(f).getKey().equals(key2)){
+                    isFound = true;
+                }
+            }
+            if (!isFound){
+                newIn.add(charInventory.get(n));
+            }
+        }
+        for (int jn = 0; jn<= newIn.size()-1; jn++){
+            newInventory.add(newIn.get(jn));
+        }
+        
+        System.out.println("----- The new inventory: "+newInventory);
+        c2.setInventory(newInventory);
+        c.updateCharacter(c2);
+        
+        
+        infoDeck = clearButtons(infoDeck);
+        curHeader.setText("Inventory: ");
+        curDescription.setText("");
+        
+        //Block curB = c.getCurBlock();
+        ArrayList<Block> inventory = c.getInventory(c2);
+        ArrayList<MenuButton> inventoryButtons = c.parseInventory(inventory,infoDeck,curDescription,curHeader);
+        for (int i = 0; i<= inventoryButtons.size()-1;i++){
+            infoDeck.add(inventoryButtons.get(i),i+2,0);
+            
+        }
+    }
+    
+    
     
     
     public void displayCharInfo(){

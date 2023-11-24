@@ -61,6 +61,7 @@ import javafx.event.ActionEvent;
 
 
 
+
 public class PauseMenu{
     
     private Stage st;
@@ -68,16 +69,34 @@ public class PauseMenu{
     private Scene scene;
     private int height;
     private int width;
+    private Button newObject;
+    private String o1;
+    private String o2;
+    ArrayList<MenuButton> mb;
+    private Scan sc;
+    private Parse p;
+    private Button currentGraphic;
+    private ArrayList<Block> newBlocks;
     // The constructor
+    
+    public static final String woodStyle = "/utilities/skins/woodCss.css";
+    
+    
     public PauseMenu(){
         
         st = new Stage();
         st.initStyle(StageStyle.TRANSPARENT);
+        newBlocks = new ArrayList<Block>();
         //st.setOpacity(0.5);
     }
     
     
-    public void setPane(Character user, ScrollPane map1,MusicPlay mp, ArrayList<MenuButton> inventoryButtons){
+    public void setPane(Character user, ScrollPane map1,MusicPlay mp, ArrayList<MenuButton> inventoryButtons, Parse p, Scan sc){
+        
+        this.p = p;
+        this.sc = sc;
+        
+        mb = inventoryButtons;
         
         pane = new GridPane();
         
@@ -131,7 +150,7 @@ public class PauseMenu{
                         +"-fx-opacity: 0.85;");
         
         
-        VBox inventory = constructInventory(inventoryButtons);
+        VBox inventory = constructInventory();
         HBox crafting = getCraftModule();
         
         //charInfo.setOpacity(1);
@@ -160,15 +179,7 @@ public class PauseMenu{
                                                                     pane.heightProperty().divide(5/3)));
         sounds.prefHeightProperty().bind(Bindings.min(pane.widthProperty().divide(3),
                                                                     pane.heightProperty().divide(5/3)));
-        
-        /*sounds.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                System.out.println("Sounds Pressed!");
-                   mp.displaySounds();
-            }
-        });*/
-        //HBox inventory = constructInventory(inventoryButtons);
+
         pane.add(inventory,1,1);
         // Building out crafting method with new HBox
         
@@ -224,6 +235,35 @@ public class PauseMenu{
                          +"-fx-border-width: 3.0;"
                          +"-fx-border-color: GREY;"
                             +"-fx-font-weight: bold;");
+        craftMe.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (o1 != null && o2 != null){
+                    newObject.setGraphic(craftButton(o1,o2));
+                    for (int p =0; p<= mb.size()-1;p++){
+                   
+                        if (mb.get(p).getText().equals(o1)){
+                            int num = Integer.parseInt(((Button)mb.get(p).getGraphic()).getText());
+                            num--;
+                            //Button b9 = ((Button)mb.get(p).getGraphic());
+                            //b9.setText(String.valueOf(num));
+                            ((Button)mb.get(p).getGraphic()).setText(String.valueOf(num));
+                            
+                        }
+                        
+                        if (mb.get(p).getText().equals(o2) ){
+                            int num = Integer.parseInt(((Button)mb.get(p).getGraphic()).getText());
+                            num--;
+                            //Button b9 = ((Button)mb.get(p).getGraphic());
+                            //b9.setText(String.valueOf(num));
+                            ((Button)mb.get(p).getGraphic()).setText(String.valueOf(num));
+                            
+                        }
+                    }
+                }
+                
+            }
+        });
         craftMe.setOnMouseExited(new EventHandler<MouseEvent>() {
 
             @Override
@@ -253,12 +293,15 @@ public class PauseMenu{
         });
         
         
+        
         // The image of the new crafted object
-        Button newObject = new Button();
+        newObject = new Button();
         newObject.setStyle("-fx-background-color: #515151;"
                             +"-fx-text-fill: #515151; -fx-font-size: 15;"
                             +"-fx-font-family: Courier New;"+
-                            "-fx-font-weight: bold;");
+                            "-fx-font-weight: bold;"
+                           +"-fx-opacity: 0.65;");
+      
         newObject.setMaxWidth(400.0);
         newObject.setMinWidth(350.0);
         newObject.setMaxHeight(100.0);
@@ -271,6 +314,7 @@ public class PauseMenu{
                 Dragboard db = event.getDragboard();
                 if (db.hasString()) {
                     dragOne.setText(db.getString());
+                    o1 = db.getString();
                     event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
                 event.consume();
@@ -283,6 +327,7 @@ public class PauseMenu{
                 Dragboard db = event.getDragboard();
                 if (db.hasString()) {
                     dragTwo.setText(db.getString());
+                    o2 = db.getString();
                     event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
                 event.consume();
@@ -300,16 +345,61 @@ public class PauseMenu{
         //craftModule.setMinHeight(height/4);
         //craftModule.setMaxHeight(height/2);
         //craftModule.setBackground(Background.EMPTY);
+        
         craftModule.setAlignment(Pos.CENTER);
         return craftModule;
         
     }
     
-    public VBox constructInventory(ArrayList<MenuButton> mb){
+    
+    public Button craftButton(String typeOne, String typeTwo){
+        currentGraphic = new Button(typeOne);
+        if (typeOne.equals("t") && typeTwo.equals("t")){
+            //b1.getStylesheets().add(woodStyle);
+            currentGraphic.getStylesheets().add(p.buttonBuilder("#").getStylesheets().get(0));
+            currentGraphic.setText("#");
+        }
+        else if (typeOne.equals("#") && typeTwo.equals("#")){
+            currentGraphic.getStylesheets().add(p.buttonBuilder("$").getStylesheets().get(0));
+            currentGraphic.setText("$");
+        }
+        else if (typeOne.equals("]") && typeTwo.equals("]")){
+            currentGraphic.getStylesheets().add(p.buttonBuilder(",").getStylesheets().get(0));
+            currentGraphic.setText(",");
+        }
+        
+        currentGraphic.setDisable(false);
+        currentGraphic.setOnDragDetected((MouseEvent event) -> {
+            /* drag was detected, start drag-and-drop gesture */
+            System.out.println("onDragDetected");
+            //System.out.println(source.getId());
+            
+            /* allow any transfer mode */
+            Dragboard db = currentGraphic.startDragAndDrop(TransferMode.ANY);
+
+            /* put a string on dragboard */
+            ClipboardContent content = new ClipboardContent();
+            content.putString(currentGraphic.getText());
+            db.setContent(content);
+
+            event.consume();
+        });
+        
+        return currentGraphic;
+        
+    }
+    
+    
+    public ArrayList<MenuButton> updateMenuButtons(){
+        return mb;
+    }
+    
+    public VBox constructInventory(){
         
         VBox vb = new VBox(15);
         
         HBox hb = new HBox(10);
+        
         // Setting size of inventory to be 6
         for (int i = 0; i<= 5;i++){
             
@@ -323,11 +413,33 @@ public class PauseMenu{
                     //               "-fx-font-weight: bold;");
                 hb.getChildren().add(mb.get(i));
             }else{
+                
                 Button blankButton = new Button(".");
                 blankButton.setStyle("-fx-background-color: #515151;"
                                      +"-fx-text-fill: #515151; -fx-font-size: 15;"
                                      +"-fx-font-family: Courier New;"+
                                      "-fx-font-weight: bold;");
+                
+                blankButton.setOnDragOver(new EventHandler<DragEvent>() {
+                    @Override public void handle(DragEvent event) {
+                        //crafting.setText("HERE!!");
+                        Dragboard db = event.getDragboard();
+                        System.out.println("The string: "+db.getString() );
+                        
+                        if (db.hasString() && currentGraphic != null) {
+                            //dragOne.setText(db.getString());
+                            //o1 = db.getString();
+                            //blankButton.setText(currentGraphic.getText());
+                            //blankButton.setStyle("-fx-text-fill: white; -fx-font-size: 15;");
+                            newBlocks.add(sc.findBlock(currentGraphic.getText()));
+                            blankButton.setGraphic(currentGraphic);
+                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                            currentGraphic = null;
+                        }
+                        event.consume();
+                    }
+                });
+                
                 
                 hb.getChildren().add(blankButton);
             }
@@ -345,6 +457,10 @@ public class PauseMenu{
                      +"-fx-border-color: GREY;"
                      +"-fx-opacity: 0.85;");
         return vb;
+    }
+    
+    public ArrayList<Block> getNewBlocks(){
+        return newBlocks;
     }
     
     

@@ -37,6 +37,32 @@ public class Block {
         }else if (k.equals("w")){
             description ="A web. stay away";
         }
+        else if (k.equals("#")){
+	    description = "Wood!";
+        }
+        else if (k.equals("$")){
+        description = "A wooden weapon";
+        }
+        else if (k.equals("^")){
+        description = "A palm tree";
+        }
+        else if (k.equals("<")){
+        description = "A snowy tree";
+        }
+        else if (k.equals("*")){
+        description = "Snow!";
+        }
+        else if (k.equals(",")){
+        description = "A jacket!";
+        }
+        else if (k.equals("[")){
+        description = "A stone";
+        }
+        else if (k.equals("]")){
+        description = "Wool. Can make clothes";
+        }
+        
+
         else if (k.equals("o")){
             description = "next levelz";
         }

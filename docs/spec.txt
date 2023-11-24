@@ -36,10 +36,38 @@
 			. We can also fix character movements while we are at it 
 				* Need to make the grab function more robust
 		
-		* IDEA: Make a Clara  called the 'AnimateEngine' that makes:
+		* IDEA: Make a class called the 'AnimateEngine' that makes:
 			1.) All character movements
 			2.) Micro Movements for procedural animations
-			3.) 
+
+
+		* Some new chars added (Blocks for the game):
+
+
+
+			  al.add("$"); // For wooden weapon
+
+        			 al.add("^"); // Palm Tree
+        			 al.add("x"); // For gun
+        			 al.add("v"); // For Alyosha
+        			 al.add("V"); // For Alyosha too (Maybe will need tis char)
+        			 al.add("<"); // For snowy tree
+        			 al.add("*"); // For snow
+        			 al.add(","); // For jacket effect
+			 al.add("?"); // For bunny
+        			 al.add(";"); // For Dmitri
+        			 al.add("{"); // For ivans father (Fyodor)
+        			 al.add("("); // For Ivans wife
+        			 al.add(")"); // For evil angels
+			 al.add("}"); // For Pavel
+			 al.add("z"); // For Iyusha (Young boy in story who dies)
+			 al.add("Z"); // For Captain Snegiryov (Young boys father)
+			 al.add("+");
+			 al.add("="); // 
+			 al.add("["); // For stone
+			 al.add("]"); // For wool
+			 al.add("N"); // For notes
+		
 
 
 	-- Issues --
@@ -61,6 +89,7 @@
 					to make the objects move with purpose
 				(2) - Fix animation and time between ticks to make the characters
 				         look more fluid
+
 
 
 	-- For Kyle --

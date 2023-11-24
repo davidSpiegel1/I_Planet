@@ -51,6 +51,7 @@ import model.Animal;
 import model.Gabriel;
 import model.Devil;
 import model.Edog;
+import model.Alyosha;
 import view.AnimateEngine;
 
 import javafx.scene.shape.MoveTo;
@@ -143,6 +144,13 @@ public class Controller2{
         
     }
     
+    public Parse getParser(){
+        return p;
+    }
+
+    public Scan getScanner(){
+        return sc;
+    }
     public ArrayList<String> populateCurrentTask(){
         ArrayList<String> curT = new ArrayList<String>();
         
@@ -178,18 +186,18 @@ public class Controller2{
     
     public ArrayList<String> populateLevelNames(ArrayList<String> arr){
         /*arr.add("model/testFile.txt");
-        arr.add("utilities/levelOne.txt");
-        arr.add("utilities/levelTwo.txt");
-        arr.add("utilities/levelThree.txt");
-        arr.add("utilities/levelFour.txt");
-        arr.add("utilities/levelFive.txt");
-        arr.add("utilities/levelSix.txt");*/
+        arr.add("utilities/levels/levelOne.txt");
+        arr.add("utilities/levels/levelTwo.txt");
+        arr.add("utilities/levels/levelThree.txt");
+        arr.add("utilities/levels/levelFour.txt");
+        arr.add("utilities/levels/levelFive.txt");
+        arr.add("utilities/levels/levelSix.txt");
         arr.add("utilities/levels/levelSeven.txt");
         arr.add("utilities/levels/levelEight.txt");
         arr.add("utilities/levels/levelNine.txt");
         arr.add("utilities/levels/levelTen.txt");
         arr.add("utilities/levels/levelEleven.txt");
-        arr.add("utilities/levels/levelTwelve.txt");
+        arr.add("utilities/levels/levelTwelve.txt");*/
         arr.add("utilities/levels/levelThirteen.txt");
         arr.add("utilities/levels/levelFourteen.txt");
         arr.add("utilities/levels/levelFifteen.txt");
@@ -199,18 +207,18 @@ public class Controller2{
         
         
         /*this.levelR.add("..");
-        this.levelR.add("utilities/roomOneA.txt");
-        this.levelR.add("utilities/roomTwoA.txt");
-        this.levelR.add("utilities/roomThreeA.txt");
-        this.levelR.add("utilities/roomFourA.txt");
-        this.levelR.add("utilities/roomFiveA.txt");
-        this.levelR.add("utilities/roomSixA.txt");*/
+        this.levelR.add("utilities/rooms/roomOneA.txt");
+        this.levelR.add("utilities/rooms/roomTwoA.txt");
+        this.levelR.add("utilities/rooms/roomThreeA.txt");
+        this.levelR.add("utilities/rooms/roomFourA.txt");
+        this.levelR.add("utilities/rooms/roomFiveA.txt");
+        this.levelR.add("utilities/rooms/roomSixA.txt");
         this.levelR.add("utilities/rooms/roomSevenA.txt");
         this.levelR.add("utilities/rooms/roomEightA.txt");
         this.levelR.add("utilities/rooms/roomNineA.txt");
         this.levelR.add("utilities/rooms/roomTenA.txt");
         this.levelR.add("utilities/rooms/roomElevenA.txt");
-        this.levelR.add("utilities/rooms/roomTwelveA.txt");
+        this.levelR.add("utilities/rooms/roomTwelveA.txt");*/
         this.levelR.add("utilities/rooms/roomThirteenA.txt");
         this.levelR.add("utilities/rooms/roomFourteenA.txt");
         this.levelR.add("utilities/rooms/roomFifteenA.txt");
@@ -598,6 +606,13 @@ public class Controller2{
         this.p.setChar(newC);
         
     }
+    public void updateCharacter(Character c){
+        Character newC = c;
+        this.levelArr.set(this.charPos,newC);
+        this.sc.setCharacter(newC);
+        this.p.setChar(newC);
+        
+    }
     
     
     public void decrementFound(){
@@ -773,12 +788,8 @@ public class Controller2{
                 
                 globalTool.setAutoHide(false);
                 globalTool.setGraphic(hb);
-                //tp.show(b9,b9.getLayoutX(),b9.getLayoutY());
                 globalTool.setMinWidth(Region.USE_PREF_SIZE);
                 globalTool.setMinHeight(Region.USE_PREF_SIZE);
-                //globalTool.setMaxWidth((gabrielBlock.getComment().length()*12)+200);
-                //globalTool.setMinHeight(gabrielBlock.getComment().length()*7);
-                //globalTool.setMaxHeight(gabrielBlock.getComment().length()*12);
                 globalTool.setStyle("-fx-font: normal bold 20 Langdon; "
                     + "-fx-base: #BDB4D0; "
                     + "-fx-text-fill: white;");
@@ -825,8 +836,6 @@ public class Controller2{
                         }
                         else if (e.getCode().equals(KeyCode.RIGHT)){
                             devilBlock.goRight();
-                            
-                            
                             //globalTool.setText(gabrielBlock.getComment()+"\n"+gabrielBlock.getOptionOne()+" | "+gabrielBlock.getOptionTwo());
                             VBox hb = new VBox();
                             System.out.println("The comment: "+devilBlock.getComment());
@@ -852,14 +861,11 @@ public class Controller2{
                             b9.setFocusTraversable(true);
                             b9.setTooltip(null);
                             globalTool.setOpacity(0.0);
-
                         }
                     }
                 });
-                
                     ag.hitAnimation(ml.get(i).getGraphic());
             }
-            
         }
         
     }
@@ -891,26 +897,16 @@ public class Controller2{
             Button n2 = new Button();
             String p1 = p.getUsedNode();
             System.out.println("What p1 is: "+p1);
-            if (p1.equalsIgnoreCase("G")){
-                Character c4 = (Character)this.getCurBlock();
-                c4.setStick(false);
-                this.setCurBlock(c4);
-                n2.getStylesheets().add("/utilities/skins/grassCss.css");
-                
-            }else if(p1.equals("t")){
-                Character c4 = (Character)this.getCurBlock();
-                c4.setStick(false);
-                this.setCurBlock(c4);
-                n2.getStylesheets().add("/utilities/skins/myCss.css");
-            }
+      
             
-            else if (p1.equals("K")){
+            if (p1.equals("K") || p1.equals("$")){
             
                 Character c4 = (Character)this.getCurBlock();
                 c4.setStick(true);
                 this.setCurBlock(c4);
                 
-                n2.getStylesheets().add("/utilities/skins/knifeCss.css");
+                //n2.getStylesheets().add("/utilities/skins/knifeCss.css");
+                n2 = this.p.buttonBuilder(p.getUsedNode());
             }
             else if (p1.equals("f")){
                 Character c4 = (Character)this.getCurBlock();
@@ -968,7 +964,8 @@ public class Controller2{
                 c4.setStick(false);
                 this.setCurBlock(c4);
                 
-                n2.setText(".");
+                //n2.setText(".");
+                n2 = this.p.buttonBuilder(p.getUsedNode());
             }
             if (n2 != null){
                 n2.setMinWidth(10);
@@ -999,6 +996,7 @@ public class Controller2{
                 
                 boolean canHit = true;
                 if (mb.get(i) instanceof Devil){
+                        
                         canHit = ((Devil)mb.get(i)).getIsAngry();
                         if (mb.get(i).isDead()){
                             taskOne = true;
@@ -1063,6 +1061,7 @@ public class Controller2{
                     // If the current position and enemy is same
                     System.out.println("The enemy position: "+e1.getPos()+" The char position: "+this.charPos);
                     if (e1.getPos()==this.charPos){
+                        if (!(e1 instanceof Alyosha)){
                         if (!e1.getKey().equals("u")){
                         ag.grabAnimation(n);
                         }else{
@@ -1071,9 +1070,13 @@ public class Controller2{
                         }
                     
                         // Then, the users life must go down
-                        Character c1 = (Character)this.getCurBlock();
-                        c1.setGettingHit(true);
-                        this.setCurBlock(c1);
+                        // If it is not Alyosha
+                   
+                            
+                            Character c1 = (Character)this.getCurBlock();
+                            c1.setGettingHit(true);
+                            this.setCurBlock(c1);
+                        }
                     }
                      
                     

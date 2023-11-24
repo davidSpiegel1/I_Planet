@@ -34,6 +34,9 @@ public class Scan{
                 System.out.println("Error loading file: "+e); // Change to throw something
             }
     }
+    
+    
+    
     public ArrayList<String> populateAllowedChars(ArrayList<String> al){
         al.add("A");
         al.add("a");
@@ -65,6 +68,30 @@ public class Scan{
         al.add(">");// For a gate
         al.add("e"); // For evil dog
         al.add("-"); // For a three d block
+        al.add("#"); // For wood
+        al.add("$"); // For wooden weapon
+        al.add("^"); // Palm Tree
+        //al.add("x"); // For gun
+        al.add("v"); // For Alyosha
+        al.add("V"); // For Alyosha too (Maybe will need tis char)
+        al.add("<"); // For snowy tree
+        al.add("*"); // For snow
+        al.add(","); // For jacket effect
+        al.add("?"); // For bunny
+        al.add(";"); // For Dmitri
+        al.add("{"); // For ivans father (Fyodor)
+        al.add("("); // For Ivans wife
+        al.add(")"); // For evil angels
+        al.add("}"); // For Pavel
+        al.add("z"); // For Iyusha (Young boy in story who dies)
+        al.add("Z"); // For Captain Snegiryov (Young boys father)
+        al.add("+");  //
+        al.add("="); //
+        al.add("["); // For stone
+        al.add("]"); // For wool
+        al.add("N"); // For notes
+        
+        
     
         
         return al;
@@ -132,6 +159,9 @@ public class Scan{
                 else if (initText == 'X'){
                     this.nodeList.add(new Devil(simIndex,"X",20));
                 }
+                else if (initText == 'v'){
+                    this.nodeList.add(new Alyosha(simIndex,"v",20));
+                }
                 else{
                     if (initText == 'f'){
                         healthStops.add(simIndex);
@@ -153,6 +183,37 @@ public class Scan{
         
         
         return this.nodeList;
+    }
+    
+    
+    public Block findBlock(String initText){
+        int simIndex = 0;
+        // If it is an allowed text, we will determine what it is
+        if (this.allowedChars.contains(String.valueOf(initText))){
+            
+            if (initText.equals("E")){
+                return new Enemies(simIndex,"E",20); // May need to fix amountCol now that it's used
+            }
+            else if (initText.equals("e")){
+                return new Edog(simIndex,"e",20);
+            }
+            else if (initText.equals("a")){
+                return new Gabriel(simIndex,"a",20); // May need to fix amountCol now that it's used
+            }
+            else if (initText.equals("u")){
+                return new Spider(simIndex,"u",20);
+            }
+            else if (initText.equals("X")){
+                return new Devil(simIndex,"X",20);
+            }else{
+                return new Block(initText);
+            }
+        
+        
+    }else{
+        return null;
+    }
+        
     }
     
     public ArrayList<Block> getNodeList(){
