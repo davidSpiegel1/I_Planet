@@ -6,7 +6,7 @@ import model.Character;
 
 
 
-import model.Environment;
+//import model.Environment;
 import model.Person;
 
 
