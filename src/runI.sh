@@ -1,4 +1,4 @@
 #!/bin/bash
-javac --module-path $HOME/Documents/java/javafx-sdk-17.0.8/lib/ --add-modules javafx.controls,javafx.fxml view/IplanetFX.java
+javac --module-path $HOME/Documents/java/javafx-sdk-17.0.8/lib/ --add-modules javafx.controls,javafx.fxml,javafx.media view/IplanetFX.java
 
-java --module-path $HOME/Documents/java/javafx-sdk-17.0.8/lib/ --add-modules javafx.controls,javafx.fxml view.IplanetFX
+java --module-path $HOME/Documents/java/javafx-sdk-17.0.8/lib/ --add-modules javafx.controls,javafx.fxml,javafx.media view.IplanetFX

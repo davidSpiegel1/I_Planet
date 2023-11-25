@@ -37,7 +37,6 @@ import javafx.scene.paint.Color;
 import model.Block;
 import model.Character;
 import model.Enemy;
-import model.Environment;
 import model.Person;
 import model.Enemies;
 import model.Animal;

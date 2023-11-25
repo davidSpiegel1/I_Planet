@@ -7,7 +7,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
-import controller.Controller;
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -69,7 +68,6 @@ import javafx.scene.shape.Rectangle;
 import model.Block;
 import model.Character;
 import model.Enemy;
-import model.Environment;
 import model.Person;
 import model.Enemies;
 
