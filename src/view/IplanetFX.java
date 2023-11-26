@@ -1210,11 +1210,12 @@ public class IplanetFX extends Application{
 
     public void displayMap()
     {
-	MapGUI2 mapInfo = new MapGUI2();
+    //Pass character object to map in order to determine character position
+	MapGUI2 mapInfo = new MapGUI2(c);
 	Stage mapWindow = new Stage();
 
 	System.out.println("Current Character Position: " + c.getCharPos());
-	mapInfo.start(mapWindow, c.getCharPos(), c.getCurrentLevel());
+	mapInfo.start(mapWindow);
 	//mapInfo.start(this.stage1);
     }
     
@@ -1222,7 +1223,7 @@ public class IplanetFX extends Application{
     public void displayPauseMenu(){
         
         pm = new PauseMenu();
-        MapGUI2 mapInfo = new MapGUI2();
+        MapGUI2 mapInfo = new MapGUI2(c);
         ScrollPane scroll = mapInfo.getMap(c.getCharPos(),c.getCurrentLevel());
         
         Character c2 = (Character)c.getCurBlock();
