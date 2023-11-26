@@ -1,0 +1,32 @@
+.menu-button > .arrow-button {
+    -fx-padding: 0;
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+
+
+.menu-button:showing {
+    -fx-base: transparent;
+    -fx-background-color: grey;
+    -fx-opacity: 0.8;
+}
+
+.menu-item {
+    -fx-background-color: grey;
+    -fx-text-fill: white;
+    -fx-opacity: 0.8;
+
+}
+.menu-item: focused{
+    -fx-background: -fx-accent;
+    -fx-background-color: grey;
+    -fx-opacity: 1.0;
+    
+}
+
+.menu-item: focused:disabled{
+    -fx-background-color: lightgray;
+    
+}
