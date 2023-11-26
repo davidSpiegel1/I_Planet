@@ -353,7 +353,7 @@ public class PauseMenu{
     
     public Button craftButton(String typeOne, String typeTwo){
         currentGraphic = new Button(typeOne);
-        if (typeOne.equals("t") && typeTwo.equals("t")){
+        if ((typeOne.equals("t") && typeTwo.equals("t")) || (typeOne.equals("<") && typeTwo.equals("<"))){
             //b1.getStylesheets().add(woodStyle);
             currentGraphic.getStylesheets().add(p.buttonBuilder("#").getStylesheets().get(0));
             currentGraphic.setText("#");
@@ -365,6 +365,10 @@ public class PauseMenu{
         else if (typeOne.equals("]") && typeTwo.equals("]")){
             currentGraphic.getStylesheets().add(p.buttonBuilder(",").getStylesheets().get(0));
             currentGraphic.setText(",");
+        }
+        else if (typeOne.equals("[") && typeTwo.equals("[")){
+            currentGraphic.getStylesheets().add(p.buttonBuilder("K").getStylesheets().get(0));
+            currentGraphic.setText("K");
         }
         
         currentGraphic.setDisable(false);

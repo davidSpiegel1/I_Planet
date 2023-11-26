@@ -3,13 +3,13 @@
 }
 
 .button{
-    -fx-font-size: 15pt;
+    -fx-font-size: 18pt;
     -fx-text-fill: black;
-    -fx-effect: dropshadow(three-pass-box,#646464,3,.5,2,2);
+    -fx-effect: dropshadow(three-pass-box,#5B716F,3,.5,2,2);
     -fx-shape: "M 20 20 A 2 2 90 0 0 13 12 A 2 2 90 0 0 20 20 M 18 24 A 2 2 90 0 0 15 24 Q 4 37 17 39 Q 27 36 18 24 M 20 20 A 2 2 90 0 0 20 20 M 2 15 Q 5 24 16 23 Q 6 19 7 16 M 16 8 Q 28 7 17 5 Q 6 7 14 8 M 27 16 Q 24 20 18 23 Q 26 24 32 15";
     
-    -fx-background-color: #C7C7C7;
-    -fx-opacity: 0.8;
+    -fx-background-color: #9BB8B6;
+    -fx-opacity: 0.95;
     
     
     

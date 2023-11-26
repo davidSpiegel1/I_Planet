@@ -1,0 +1,17 @@
+*{
+    -fx-base: #F0CDC1;
+}
+
+.button{
+    -fx-font-size: 12pt;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box,#BAC25D,3,.5,2,2);
+    -fx-shape: "M 10 79 C 14 40 31 45 10 79 C 11 64 22 40 11 20 L 90 20 C 105 40 90 60 90 80 Z M 15 20 L 85 20 M 20 40 Q 65 33 26 35 T 83 36 Q 50 31 80 40 M 20 49 Q 49 41 26 49 T 84 47 Q 51 43 80 50 M 37 66 Q 41 55 19 61 T 81 63 Q 36 63 81 52";
+    
+    -fx-background-color: #D0D599;
+    -fx-opacity: 0.8;
+    
+    
+    
+
+}

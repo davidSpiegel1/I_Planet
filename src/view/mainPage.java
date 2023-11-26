@@ -40,7 +40,7 @@ public class mainPage{
         st.show();
     }
     public Button getStartButton(){
-        Button startButton = new Button("Start game");
+        Button startButton = new Button("New game");
         b1 = new Button("Start Game");
         b1.setStyle("-fx-background-color: "+startColor+"; "+"-fx-font-family: Courier New; " + "-fx-font-weight: bold; " +
                                 "-fx-font-size: 15; "+
@@ -175,6 +175,76 @@ public class mainPage{
         
         
         return creditButton;
+    }
+    
+    
+    public Button getContinueButton(){
+        Button continueButton = new Button("Continue");
+        continueButton.setStyle("-fx-background-color: "+creditColor+"; "+"-fx-font-family: Courier New; " + "-fx-font-weight: bold; " +
+            "-fx-font-size: 15; "+
+            "-fx-text-fill: "+fontColor+";");
+        
+        
+        
+        continueButton.setAlignment(Pos.BASELINE_RIGHT);
+        
+        
+        continueButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            
+            @Override
+            public void handle(MouseEvent t) {
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = continueButton.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Back color: " + backColor);
+               
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The Font color: " + fontColor);
+                    }
+                }
+                continueButton.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");}});
+        
+        continueButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+
+                // Setting color to this
+                String backColor = "";
+                String fontColor = "";
+                String[] styles = continueButton.getStyle().split(";");
+                for (String style : styles) {
+                    if (style.contains("-fx-background-color")) {
+                        backColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + backColor);
+                    }
+                    if (style.contains("-fx-text-fill:")) {
+                        fontColor = style.split(":")[1]; // the color of the button
+                        System.out.println("The color: " + fontColor);
+                    }
+                }
+
+                continueButton.setStyle("-fx-text-fill:" + backColor + ";" +
+                        "-fx-background-color:" + fontColor + ";" +
+                        "-fx-font-family: Courier New;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-mark-color: " + fontColor + ";");
+            }
+        });
+        
+        return continueButton;
+        
     }
     public Label getTitleLabel(){
         Label l1 = new Label("I Planet");

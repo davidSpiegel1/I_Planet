@@ -52,6 +52,7 @@ import model.Gabriel;
 import model.Devil;
 import model.Edog;
 import model.Alyosha;
+import model.SaveEngine;
 import view.AnimateEngine;
 
 import javafx.scene.shape.MoveTo;
@@ -72,6 +73,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.scene.layout.Region;
+
 //import javafx.scene.TextInputDialog;
 
 // The class of the controller
@@ -89,7 +91,7 @@ public class Controller2{
     private Devil devilBlock = null;
     private boolean didMove = false;// An instance variable to check if the person moved or not
     private boolean inRoom = false;
-    
+    private boolean newGame = true;
     
     private ArrayList<Block>levelArr; // list of blocks for the level we are on
     
@@ -100,6 +102,8 @@ public class Controller2{
     private Scan sc; // Scanner object
     private Parse p; // Parse object
     
+    // Save engine
+    private SaveEngine saveEngine;
     // A Label for current label
     private Label curLabel;
     private Label prevLabel;
@@ -139,7 +143,7 @@ public class Controller2{
         // Initalizing the current label and the previous label
         this.curLabel = null;
         this.prevLabel = null;
-        
+        this.saveEngine = new SaveEngine();
         
         
     }
@@ -527,6 +531,9 @@ public class Controller2{
     }
     
     public void changeLevel(){
+        
+        saveEngine.saveData(this.levelNames.get(this.currentLevel),this.levelArr);
+        
         this.inRoom = false;
         if (this.currentLevel <= this.levelNames.size()-1){
         this.currentLevel++;
@@ -548,6 +555,9 @@ public class Controller2{
     }
     
     public void changeLevel(int valz){
+        
+        saveEngine.saveData(this.levelNames.get(this.currentLevel),this.levelArr);
+        
         if (this.currentLevel+valz <= this.levelNames.size()-1 && this.currentLevel+valz >= 0){
         this.currentLevel= currentLevel+valz;
         }else{
@@ -555,6 +565,19 @@ public class Controller2{
         }
         updateCharacter();
         this.charPos = this.sc.getCharPosition();
+        
+    }
+    
+    
+    public boolean isSaved(){
+        return saveEngine.isDir();
+    }
+    
+    public void setNewGame(boolean newGame){
+        if (newGame == true){
+            saveEngine.clearDirectory();
+        }
+        this.newGame = newGame;
         
     }
     
@@ -615,7 +638,7 @@ public class Controller2{
     }
     
     
-    public void decrementFound(){
+    public void decrementFound(ArrayList<Label> labelList){
         ArrayList<MovableBlock> mb = this.p.getMovableBlocks();
         ArrayList<Label> ml = this.p.getMovableLabels();
         
@@ -629,6 +652,24 @@ public class Controller2{
                 ag.hitAnimation(ml.get(i).getGraphic());
                 if (mb.get(i).getLife() <= 0){
                     ag.deadAnimation(ml.get(i).getGraphic());
+                    // Okay, so here is where we will try and construct a flower goming out
+                    int cur = mb.get(i).getPos();
+                    Block newBlock = null;
+                    Button newLabel = null;
+                    if (mb.get(i).getLife() == 0){
+                        if (mb.get(i) instanceof Enemies){
+                            newBlock = sc.findBlock("f");
+                            newLabel = p.buttonBuilder("f");
+                        }else{
+                            newBlock = sc.findBlock("]");
+                            newLabel = p.buttonBuilder("]");
+                        }
+                        //levelArr.set(cur,flowerBlock);
+                        this.prevBlock = newBlock;
+                        //this.prevLabel.setGraphic(newLabel);
+                        labelList.get(cur).setGraphic(newLabel);
+                        //((Button)ml.get(i).getGraphic()).setGraphic(flowerLabel);
+                        }
                 }
             }
             

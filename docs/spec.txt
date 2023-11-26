@@ -67,6 +67,28 @@
 			 al.add("["); // For stone
 			 al.add("]"); // For wool
 			 al.add("N"); // For notes
+
+	* Some things to do:
+		- Need to make life 'grow' from dead enemies (DONE)
+		- Need to make wool spawn from dead livestock (DONE)
+		- Need to make Notes with note app (DONE -- Make it look better)
+		- Going to try and make generated areas when moving past screen
+			- The idea is that if the character moves too far past the screen
+			- the game will automatically generate the next level
+				* (Note that this means we will have to have 4 dimensional space
+				   and the character can go up down left right)
+
+		
+		- Must make Place operation (Press 'P' and then press Left/Right and enter)
+		- Must make saving operation  (Possibly after every change of level)
+			- What this looks like is we have a directory in utilities that has user 			
+			  data saved. When user data is not saved it says new game.
+			- To delete data, you say new game. 
+			- We have to save the whole file because we need to keep placed objects 
+			- And location of things
+
+		- Need to make snow animals
+
 		
 
 
@@ -89,6 +111,10 @@
 					to make the objects move with purpose
 				(2) - Fix animation and time between ticks to make the characters
 				         look more fluid
+
+		* One of the biggest issues with location of character:
+			* When moving back and forth, the character doesn't preserve it's location
+			* Meaning, it is always on the first block on a new level
 
 
 
