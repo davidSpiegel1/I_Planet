@@ -1210,21 +1210,23 @@ public class IplanetFX extends Application{
 
     public void displayMap()
     {
-    //Pass character object to map in order to determine character position
-	MapGUI2 mapInfo = new MapGUI2(c);
-	Stage mapWindow = new Stage();
+        //Pass character object to map in order to determine character position
+        MapGUI2 mapInfo = new MapGUI2(c);
+        Stage mapWindow = new Stage();
 
-	System.out.println("Current Character Position: " + c.getCharPos());
-	mapInfo.start(mapWindow);
-	//mapInfo.start(this.stage1);
+        System.out.println("Current Character Position: " + c.getCharPos());
+        mapInfo.start(mapWindow);
+        //mapInfo.start(this.stage1);
     }
     
     
     public void displayPauseMenu(){
         
         pm = new PauseMenu();
+        //Initialize map by passing Controller object. This allows map to keep track of the characters current location
         MapGUI2 mapInfo = new MapGUI2(c);
-        ScrollPane scroll = mapInfo.getMap(c.getCharPos(),c.getCurrentLevel());
+        //ScrollPane scroll = mapInfo.getMap(c.getCharPos(),c.getCurrentLevel());
+        ScrollPane scroll = mapInfo.loadCurrentLevel();
         
         Character c2 = (Character)c.getCurBlock();
         

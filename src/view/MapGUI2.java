@@ -150,12 +150,27 @@ public class MapGUI2
 	}
 	
 
-	public static GridPane loadCurrentLevel()
+	//Load the map the player is currently on
+	public static ScrollPane loadCurrentLevel()
 	{
-		int curLevel = character.getCurrentLevel();
+		int curLevel = character.getCurrentLevel() + 1;
 		String fileName = curLevel + ".txt";
+		
+		System.out.println("[INFO] getting level " + fileName);
 
-		return loadFiles(fileName);
+		//Get read file into gridpane
+		GridPane map = loadFiles(fileName);
+        
+		ScrollPane mapLevel = new ScrollPane();
+		mapLevel.setContent(map);
+		
+		mapLevel.setPannable(true);
+        mapLevel.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        mapLevel.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        mapLevel.setFitToWidth(true);
+        mapLevel.setFitToHeight(true);
+
+		return mapLevel;
 
 	}
 
@@ -236,6 +251,7 @@ public class MapGUI2
 		primaryStage.show();
 	}
     
+	//Load all maps when character opens map menu
     public ScrollPane getMap(int pos, int currentLevel){
         /*GridPane levelOne = loadFiles("1.txt", pos, currentLevel);
         GridPane levelTwo = loadFiles("2.txt", pos, currentLevel);
