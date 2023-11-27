@@ -17,6 +17,7 @@ import java.util.Scanner;
 import java.io.IOException;
 import java.io.FileInputStream;
 import javafx.scene.input.ZoomEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.TextAlignment;
 import controller.Controller2;
 
@@ -168,8 +169,64 @@ public class MapGUI2
 		mapLevel.setPannable(true);
         mapLevel.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         mapLevel.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        //mapLevel.setFitToWidth(true);
-        //mapLevel.setFitToHeight(true);
+      
+		map.setMinHeight(mapLevel.getWidth());
+		map.setMinWidth(mapLevel.getHeight());
+		//Handle zoom via mouse wheel
+		map.setOnScroll(new EventHandler<ScrollEvent>() {
+			@Override public void handle(ScrollEvent event) {
+				System.out.println("Scroll event detected");
+               
+				double detectDirection = event.getDeltaY();
+
+				if(detectDirection >= 0) {
+					map.setScaleX(map.getScaleX() + .5); 
+					map.setScaleY(map.getScaleY() + .5);
+					System.out.println("Zoom in");
+				}
+				else {
+					map.setScaleX(map.getScaleX() * .8); 
+					map.setScaleY(map.getScaleY() * .8);
+					System.out.println("Zoom out");
+				}
+				//map.setScaleX(map.getScaleX() * (event.getDeltaY()/20));
+                //map.setScaleY(map.getScaleY() * (event.getDeltaY()/20));
+				System.out.println("Current Scale: " + map.getScaleY());
+				System.out.println("DELTA: " + detectDirection);
+				event.consume();
+			}
+		});
+
+		//Touch event
+		/*
+		mapLevel.setOnZoom(new EventHandler<ZoomEvent>() {
+            @Override public void handle(ZoomEvent event) {
+                mapLevel.setScaleX(mapLevel.getScaleX() * event.getZoomFactor());
+                mapLevel.setScaleY(mapLevel.getScaleY() * event.getZoomFactor());
+                System.out.println("Rectangle: Zoom event" +
+                ", inertia: " + event.isInertia() +
+                ", direct: " + event.isDirect());
+         
+                event.consume();
+            }
+        });
+
+        mapLevel.setOnZoomStarted(new EventHandler<ZoomEvent>() {
+            @Override public void handle(ZoomEvent event) {
+                //inc(scroll);
+                System.out.println("Rectangle: Zoom event started");
+                event.consume();
+            }
+        });
+
+        mapLevel.setOnZoomFinished(new EventHandler<ZoomEvent>() {
+            @Override public void handle(ZoomEvent event) {
+                //dec(scroll);
+                System.out.println("Rectangle: Zoom event finished");
+                event.consume();
+            }
+		});
+		*/
 
 		return mapLevel;
 
