@@ -1,6 +1,7 @@
 // New Controller class
 package controller;
 import java.util.*;
+import java.io.*;
 import model.Block;
 import model.Character;
 
@@ -242,7 +243,13 @@ public class Controller2{
         return this.amountCol;
     }
     public ArrayList<Block> constructMap(){
-        String levelName = this.levelNames.get(this.currentLevel); // Getting our level name
+        String levelName = "";
+       /* if (newGame){
+        levelName = this.levelNames.get(this.currentLevel); // Getting our level name
+        }else{*/
+            newGame = false;
+            levelName = newPath(this.levelNames.get(this.currentLevel));
+        //}
         this.levelArr = new ArrayList<Block>();
         Character newC = null;
         try{
@@ -271,8 +278,21 @@ public class Controller2{
         return this.levelArr;
         
     }
+    public String newPath(String levelName){
+        String newPath = "./utilities/userData/"+levelName.split("/")[2];
+        File file = new File(newPath);
+        if (!file.exists()){
+            newPath = levelName;
+        }
+        return newPath;
+    }
+    
+    
     public ArrayList<Block> constructMap2(){
+     
         String levelName = this.levelR.get(this.currentLevel); // Getting our level name
+     
+ 
         System.out.println("The level name: "+levelName);
         this.levelArr = new ArrayList<Block>();
         Character newC = null;

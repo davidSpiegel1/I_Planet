@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.io.IOException;
-import org.apache.commons.io.FileUtils;
+
 
 import model.Block;
 
@@ -75,7 +75,11 @@ public class SaveEngine{
             if (i%colNum == 0 && i!=0){
                 levelStr += "\n";
             }
+            if (level.get(i).getKey().equals("C")){
+                levelStr += "f";
+            }else{
             levelStr += level.get(i).getKey();
+            }
         }
         try{
         
@@ -90,7 +94,13 @@ public class SaveEngine{
     
     
     public void clearDirectory(){
-        FileUtils.cleanDirectory(dir); 
+        File dir2 = new File("."+dir);
+        System.out.println("The file list: "+dir2.listFiles());
+        for(File file: dir2.listFiles()){
+            if (!file.isDirectory()){
+                file.delete();
+            }
+        }
     }
     
     

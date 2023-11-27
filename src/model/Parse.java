@@ -285,7 +285,7 @@ public class Parse {
             b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
             prevBackground = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
         }
-        else if (key.equals(".") || key.equals("g")){
+        else if ( key.equals("g")){
             b = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
             
             prevBackground = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
@@ -327,7 +327,7 @@ public class Parse {
                  key.equals("K") || key.equals(">") || key.equals("-") ||
                  key.equals("#") || key.equals("$") || key.equals("^") ||
                  key.equals("<") || key.equals(",") || key.equals("[") ||
-                 key.equals("]") || key.equals("v") || key.equals("N")) {
+                 key.equals("]") || key.equals("v") || key.equals("N") || key.equals(".")) {
             if (prevBackground != null){
                 b = new Background(prevBackground.getFills().get(0));
             }else{
@@ -724,7 +724,8 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         } else if (type.equals("W")) {
             b1.getStylesheets().add(WaterStyle);
 
-        } else if (type.equals(".")) {
+        }
+        else if (type.equals(".")) {
             b1.getStylesheets().add(BlockStyle);
         } else if (type.equals("CK")) {
             b1.getStylesheets().add(CharKnifeStyle);
