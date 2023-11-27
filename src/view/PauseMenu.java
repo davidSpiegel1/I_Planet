@@ -118,19 +118,23 @@ public class PauseMenu{
         pane.getColumnConstraints().addAll(leftCol, rightCol);
         
         
+        //I removed the vbox the map scroll pane was being put in because it seemed redundant
+        //All the coded is still there, so if there was a reason for this I missed, you can uncomment and rename bp back to map
+        //ScrollPane map = map1;
+        ScrollPane bp = map1;
         
-        ScrollPane map = map1;
-        map.setStyle("-fx-background-color: #484646;"
-                     +"-fx-border-radius: 10.0;"
-                     +"-fx-border-width: 3.0;"
-                     +"-fx-border-color: GREY;"
-                     +"-fx-opacity: 0.85;");
+        //Setting the style on both the scrollpane and vbox caused a double border, so I removed one
+        //map.setStyle("-fx-background-color: #484646;"
+        //             +"-fx-border-radius: 10.0;"
+        //             +"-fx-border-width: 3.0;"
+        //             +"-fx-border-color: GREY;"
+        //             +"-fx-opacity: 0.85;");
         //BorderPane bp = new BorderPane();
        // bp.setCenter(map);
-        VBox bp = new VBox(map);
+        //VBox bp = new VBox(map);
         
     
-        bp.setAlignment(Pos.CENTER);
+        //bp.setAlignment(Pos.CENTER);
         
         //bp.getChildren().add(map);
         //map.setContent(bp);

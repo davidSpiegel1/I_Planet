@@ -142,8 +142,9 @@ public class MapGUI2
 			System.out.print("error");
 			e.printStackTrace();
 		}
-		level.setMinSize(400, 400);
-		level.setPadding(new Insets(10, 10, 10, 10));
+
+		int calcSize = (22 * 25) + ((22-2) * 2);
+		level.setMinSize(300, 300);
 		level.setVgap(2);
 		level.setHgap(2);
 		return level;
@@ -167,8 +168,8 @@ public class MapGUI2
 		mapLevel.setPannable(true);
         mapLevel.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         mapLevel.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        mapLevel.setFitToWidth(true);
-        mapLevel.setFitToHeight(true);
+        //mapLevel.setFitToWidth(true);
+        //mapLevel.setFitToHeight(true);
 
 		return mapLevel;
 
@@ -204,7 +205,7 @@ public class MapGUI2
 		scroll.setPannable(true);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scroll.setFitToWidth(true);
+		scroll.setPrefHeight(400);
 		
 		//I can't test this in a vm, so I don't know if it works
 	
@@ -247,18 +248,20 @@ public class MapGUI2
 		mapLayout.getChildren().add(levelSeven);
 		mapLayout.getChildren().add(levelEight);
 	
-		primaryStage.setScene(new Scene(scroll, 610, 400));
+		int calcSize = (22 * 25) + ((22-2) * 2);
+		//primaryStage.setScene(new Scene(scroll, calcSize, 400));
+		primaryStage.setScene(new Scene(scroll));
 		primaryStage.show();
 	}
-    
+/* 
 	//Load all maps when character opens map menu
     public ScrollPane getMap(int pos, int currentLevel){
-        /*GridPane levelOne = loadFiles("1.txt", pos, currentLevel);
+        GridPane levelOne = loadFiles("1.txt", pos, currentLevel);
         GridPane levelTwo = loadFiles("2.txt", pos, currentLevel);
         GridPane levelThree = loadFiles("3.txt", pos, currentLevel);
         GridPane levelFour = loadFiles("4.txt", pos, currentLevel);
         GridPane levelFive = loadFiles("5.txt", pos, currentLevel);
-        GridPane levelSix = loadFiles("6.txt", pos, currentLevel);*/
+        GridPane levelSix = loadFiles("6.txt", pos, currentLevel);
         GridPane levelSeven = loadFiles("7.txt");
         GridPane levelEight = loadFiles("8.txt");
     
@@ -304,14 +307,15 @@ public class MapGUI2
 
 
         //Populate vbox
-        /*mapLayout.getChildren().add(levelOne);
+        mapLayout.getChildren().add(levelOne);
         mapLayout.getChildren().add(levelTwo);
         mapLayout.getChildren().add(levelThree);
         mapLayout.getChildren().add(levelFour);
         mapLayout.getChildren().add(levelFive);
-        mapLayout.getChildren().add(levelSix);*/
+        mapLayout.getChildren().add(levelSix);
         mapLayout.getChildren().add(levelSeven);
         mapLayout.getChildren().add(levelEight);
         return scroll;
     }
+*/
 }
