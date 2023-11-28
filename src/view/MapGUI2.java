@@ -172,25 +172,27 @@ public class MapGUI2
       
 		map.setMinHeight(mapLevel.getWidth());
 		map.setMinWidth(mapLevel.getHeight());
+		map.setAlignment(Pos.CENTER);
+
 		//Handle zoom via mouse wheel
-		map.setOnScroll(new EventHandler<ScrollEvent>() {
+		mapLevel.addEventFilter(ScrollEvent.ANY, new EventHandler<ScrollEvent>() {
 			@Override public void handle(ScrollEvent event) {
 				System.out.println("Scroll event detected");
                
 				double detectDirection = event.getDeltaY();
 
-				if(detectDirection >= 0) {
-					map.setScaleX(map.getScaleX() + .5); 
-					map.setScaleY(map.getScaleY() + .5);
-					System.out.println("Zoom in");
+				if(map.getWidth() > mapLevel.getWidth() && map.getHeight() > mapLevel.getHeight()) {
+					if(detectDirection > 0) {
+						map.setScaleX(map.getScaleX() + .1); 
+						map.setScaleY(map.getScaleY() + .1);
+						System.out.println("Zoom in");
+					}
+					else if(detectDirection < 0) {
+						map.setScaleX(map.getScaleX() - .1); 
+						map.setScaleY(map.getScaleY() - .1);
+						System.out.println("Zoom out");
+					}
 				}
-				else {
-					map.setScaleX(map.getScaleX() * .8); 
-					map.setScaleY(map.getScaleY() * .8);
-					System.out.println("Zoom out");
-				}
-				//map.setScaleX(map.getScaleX() * (event.getDeltaY()/20));
-                //map.setScaleY(map.getScaleY() * (event.getDeltaY()/20));
 				System.out.println("Current Scale: " + map.getScaleY());
 				System.out.println("DELTA: " + detectDirection);
 				event.consume();
@@ -210,6 +212,7 @@ public class MapGUI2
                 event.consume();
             }
         });
+		/*
 
         mapLevel.setOnZoomStarted(new EventHandler<ZoomEvent>() {
             @Override public void handle(ZoomEvent event) {
