@@ -180,21 +180,36 @@ public class MapGUI2
 				System.out.println("Scroll event detected");
                
 				double detectDirection = event.getDeltaY();
+				double curMapWidth = map.getWidth() * map.getScaleX();
 
-				if(map.getWidth() > mapLevel.getWidth() && map.getHeight() > mapLevel.getHeight()) {
-					if(detectDirection > 0) {
-						map.setScaleX(map.getScaleX() + .1); 
-						map.setScaleY(map.getScaleY() + .1);
-						System.out.println("Zoom in");
-					}
-					else if(detectDirection < 0) {
+				if(detectDirection > 0) {
+					map.setScaleX(map.getScaleX() + .1); 
+					map.setScaleY(map.getScaleY() + .1);
+					System.out.println("Zoom in");
+				}
+				else if(detectDirection < 0) {
+
+					double propScale = (map.getScaleX() - .1) * map.getWidth();
+
+					//While map is larger than scrollpane view port, scale down
+					if(propScale > mapLevel.getWidth()){
 						map.setScaleX(map.getScaleX() - .1); 
 						map.setScaleY(map.getScaleY() - .1);
 						System.out.println("Zoom out");
 					}
+					//When next scale event would cause map to be smaller than viewport
+					//Set map to be same size as view port
+					else {
+						//Calculate what factor map needs to be scaled by
+						//to match width of view port
+						double testWidth = -1 * ((mapLevel.getWidth() / map.getWidth()) - map.getScaleX());
+						map.setScaleX(map.getScaleX() - testWidth);
+						map.setScaleY(map.getScaleY() - testWidth);
+
+					}
+						
 				}
-				System.out.println("Current Scale: " + map.getScaleY());
-				System.out.println("DELTA: " + detectDirection);
+				
 				event.consume();
 			}
 		});
