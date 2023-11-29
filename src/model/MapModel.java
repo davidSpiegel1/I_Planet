@@ -25,9 +25,9 @@ public class MapModel {
 	public ArrayList<ArrayList> populateMapList() throws Exception{
 		// Using the environment object to get lots of maps
 			Character c = new Character(0,0,"C");
-			Environment env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/levelOne.txt");
+			Environment env = new Environment(c,"/Users/davidspiegel/git/I_Planet/src/utilities/1.txt");
 				try {
-					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/levelOne.txt");
+					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/1.txt");
 					env.placeBlock(col,row,new Character(0,0,"C"));
 					env.deleteBlock(0, 0);
 					mapList.add(env.getMap());
@@ -37,7 +37,7 @@ public class MapModel {
 			
 		
 				try {
-					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/levelTwo.txt");
+					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/2.txt");
 					env.placeBlock(col,row,new Character(0,0,"C"));
 					env.deleteBlock(0, 0);
 					mapList.add(env.getMap());
@@ -47,7 +47,7 @@ public class MapModel {
 			
 			
 				try {
-					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/levelThree.txt");
+					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/3.txt");
 					env.placeBlock(col,row,new Character(0,0,"C"));
 					env.deleteBlock(0, 0);
 					mapList.add(env.getMap());
@@ -58,7 +58,7 @@ public class MapModel {
 			
 				try {
 					
-					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/levelFour.txt");
+					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/4.txt");
 					env.placeBlock(col,row,new Character(0,0,"C"));
 					env.deleteBlock(0, 0);
 					mapList.add(env.getMap());
@@ -68,7 +68,7 @@ public class MapModel {
 			
 			
 				try {
-					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/levelFive.txt");
+					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/5.txt");
 					env.placeBlock(row,col,new Character(0,0,"C"));
 					env.deleteBlock(0, 0);
 					mapList.add(env.getMap());
@@ -79,7 +79,7 @@ public class MapModel {
 			
 			
 				try {
-					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/levelSix.txt");
+					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/6.txt");
 					env.placeBlock(row,col,new Character(0,0,"C"));
 					env.deleteBlock(0, 0);
 					mapList.add(env.getMap());
@@ -89,7 +89,7 @@ public class MapModel {
 			
 
 				try {
-					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/levelSeven.txt");
+					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/7.txt");
 					mapList.add(env.getMap());
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -97,7 +97,7 @@ public class MapModel {
 			
 		
 				try {
-					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/levelEight.txt");
+					env = new Environment(c, "/Users/davidspiegel/git/I_Planet/src/utilities/8.txt");
 					mapList.add(env.getMap());
 				} catch (Exception e) {
 					e.printStackTrace();

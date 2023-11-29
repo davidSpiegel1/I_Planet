@@ -191,24 +191,24 @@ public class Controller2{
     
     public ArrayList<String> populateLevelNames(ArrayList<String> arr){
         /*arr.add("model/testFile.txt");
-        arr.add("utilities/levels/levelOne.txt");
-        arr.add("utilities/levels/levelTwo.txt");
-        arr.add("utilities/levels/levelThree.txt");
-        arr.add("utilities/levels/levelFour.txt");
-        arr.add("utilities/levels/levelFive.txt");
-        arr.add("utilities/levels/levelSix.txt");
-        arr.add("utilities/levels/levelSeven.txt");
-        arr.add("utilities/levels/levelEight.txt");
-        arr.add("utilities/levels/levelNine.txt");
-        arr.add("utilities/levels/levelTen.txt");
-        arr.add("utilities/levels/levelEleven.txt");
-        arr.add("utilities/levels/levelTwelve.txt");*/
-        arr.add("utilities/levels/levelThirteen.txt");
-        arr.add("utilities/levels/levelFourteen.txt");
-        arr.add("utilities/levels/levelFifteen.txt");
-        arr.add("utilities/levels/levelSixteen.txt");
-        arr.add("utilities/levels/levelSeventeen.txt");
-        arr.add("utilities/levels/levelEighteen.txt");
+        arr.add("utilities/levels/1.txt");
+        arr.add("utilities/levels/2.txt");
+        arr.add("utilities/levels/3.txt");
+        arr.add("utilities/levels/4.txt");
+        arr.add("utilities/levels/5.txt");
+        arr.add("utilities/levels/6.txt");
+        arr.add("utilities/levels/7.txt");
+        arr.add("utilities/levels/8.txt");
+        arr.add("utilities/levels/9.txt");
+        arr.add("utilities/levels/10.txt");
+        arr.add("utilities/levels/11.txt");
+        arr.add("utilities/levels/12.txt");*/
+        arr.add("utilities/levels/13.txt");
+        arr.add("utilities/levels/14.txt");
+        arr.add("utilities/levels/15.txt");
+        arr.add("utilities/levels/16.txt");
+        arr.add("utilities/levels/17.txt");
+        arr.add("utilities/levels/18.txt");
         
         
         /*this.levelR.add("..");
