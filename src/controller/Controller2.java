@@ -76,7 +76,7 @@ import javafx.scene.text.*;
 import javafx.scene.layout.Region;
 
 //import javafx.scene.TextInputDialog;
-
+// New Content!!
 // The class of the controller
 public class Controller2{
     
