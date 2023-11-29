@@ -4,6 +4,7 @@ package model;
 
 import java.util.*;
 import java.io.*;
+
 import model.Edog;
 
 
@@ -162,6 +163,9 @@ public class Scan{
                 else if (initText == 'v'){
                     this.nodeList.add(new Alyosha(simIndex,"v",20));
                 }
+                else if (initText == 'N'){
+                    this.nodeList.add(new Notes("N"));
+                }
                 else{
                     if (initText == 'f'){
                         healthStops.add(simIndex);
@@ -183,6 +187,7 @@ public class Scan{
         
         
         return this.nodeList;
+        
     }
     
     

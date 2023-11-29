@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.*;
 //import controller.Controller;
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
@@ -149,7 +150,7 @@ public class IplanetFX extends Application{
         
         ag = new AnimateEngine();
         
-        
+        c = new Controller2(); // Initalizing the controller
         //mp.start(new Stage());
         s1 = new Stage();
         s2 = new Stage();
@@ -160,9 +161,18 @@ public class IplanetFX extends Application{
         mainPage mp = new mainPage();
         Button startButton = mp.getStartButton();
         Button credits = mp.getCreditButton();
+        Button continueButton = mp.getContinueButton();
         Label title = mp.getTitleLabel();
+        
+        continueButton.setOnAction((e)->{
+            c.setNewGame(false);
+            s1.close();
+           this.start1(s2);
+        });
+        
         startButton.setOnAction((e)->{
             //prevStage.close();
+            c.setNewGame(true);
             s1.close();
            this.start1(s2);
         });
@@ -178,7 +188,13 @@ public class IplanetFX extends Application{
         vb.setVgrow(title,Priority.ALWAYS);
         vb.setMargin(title,new Insets(80,0,10,0));
         vb.setMargin(credits,new Insets(0,0,50,0));
+        
+        // Checking if the game is saved or not:
+        if (!c.isSaved()){
         vb.getChildren().addAll(title,startButton,credits,image);
+        }else{
+            vb.getChildren().addAll(title,startButton,continueButton,credits,image);
+        }
         
         vb.setStyle("-fx-background-color: #484646");
         vb.setAlignment(Pos.CENTER);
@@ -214,7 +230,7 @@ public class IplanetFX extends Application{
  
         
 		stage.setTitle("I Planet");
-        c = new Controller2(); // Initalizing the controller
+        
         c.setAnimateEngine(ag);
         
         // Initalizing mainGame
@@ -332,10 +348,7 @@ public class IplanetFX extends Application{
                       if (c2.isJumping()){
                           c2.setJumping(false);
                       }
-                      // MOVING SORD!!
-                     // if (((Character)c.getCurBlock()).hasStick()){
-                       //   ag.grabAnimation(((Button)labelList.get(0).getGraphic()).getGraphic());
-                      //}
+
                       if (c.getPrevBlock().getKey().equals("W") || ((Character)c.getCurBlock()).getGettingHit() || c.getPrevBlock().getKey().equals("F")  ){
                           
                           Label l1 = labelList.get(0);
@@ -462,6 +475,16 @@ public class IplanetFX extends Application{
                         ag.swimmingDown(labelList.get(0).getGraphic());
                     }
                     
+                    // Okay, so we have to check if the character has moved to the next level
+                    // To do this, we check if the character has passed through the edge
+                    System.out.println("--> The character position: "+curPos);
+                    int colAmount = c.getAmountCol();
+                    int modOfRight = curPos%(colAmount+2);
+                    System.out.println("--> The mod of right: "+modOfRight);
+                    if (modOfRight == 0){
+                       
+                        changeLevel();
+                    }
                 }
                 if (e.getCode().equals(KeyCode.UP)) {
                     
@@ -484,6 +507,18 @@ public class IplanetFX extends Application{
                     if (((Character)c.getCurBlock()).isSwimming()){
                         // Going to do some swimming animation
                         ag.swimmingUp(labelList.get(0).getGraphic());
+                    }
+                    
+                    
+                    // Going left takes you back to whatever was there before
+                    // This is the code to do just that
+                    int colAmount = c.getAmountCol();
+                    int modOfRight = curPos%(colAmount+2);
+                    System.out.println("--> The mod of right: "+modOfRight);
+                    if (modOfRight == colAmount+1){
+                        changeLevel(-1);
+                        System.out.println("Back");
+                        //changeLevel();
                     }
                      
                      }
@@ -603,7 +638,7 @@ public class IplanetFX extends Application{
                         Button b9 = (Button)n;
                         Node n5 = b9.getGraphic();
                         ag.grabAnimation(n5);
-                        c.decrementFound();
+                        c.decrementFound(labelList);
                         
                     }else{
                        // infoDeck = clearButtons(infoDeck);

@@ -55,11 +55,13 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.*;
 
 import view.AnimateEngine;
+import view.NotePad;
 import model.Animal;
 import model.Gabriel;
 import model.Spider;
 import model.Devil;
 import model.Edog;
+import model.Notes;
 
 
 import javafx.scene.effect.Light;
@@ -73,6 +75,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.input.DragEvent;
+
 
 
 public class Parse {
@@ -118,7 +121,12 @@ public class Parse {
     public static final String stoneStyle = "/utilities/skins/stoneCss.css";
     public static final String woolStyle = "/utilities/skins/woolCss.css";
     public static final String alyoshaStyle = "/utilities/skins/alyoshaCss.css";
-
+    public static final String notesStyle = "/utilities/skins/notesCss.css";
+    
+    
+    // The story
+    public static final String notePath = "/utilities/story/note";
+    
     // Making a character object
     private Character char1;
     private boolean shouldAdd;
@@ -135,6 +143,8 @@ public class Parse {
     private Background prevBackground = null;
     private Block placedBlock = null;
     private boolean isPlaced = false;
+    private int noteInt = 1;
+    private Notes curNote = null;
 
     public Parse() {
         labelList = new ArrayList<Label>();
@@ -184,6 +194,14 @@ public class Parse {
         for (int i = 0; i <= arr.size() - 1; i++) {
             Label l1 = new Label();
             l1.setGraphic(null);
+            // Here is where we will implement the notes
+            //if (arr.get(i).getKey().equals("N")){
+            if (arr.get(i) instanceof Notes){
+                
+                String finalPath = "."+notePath+Integer.toString(noteInt)+".txt";
+                ((Notes)arr.get(i)).setNoteFile(finalPath);
+                noteInt++;
+            }
             if (arr.get(i).getKey().equals("C")) {
                 
                 l1.setBackground(findBackGround(prevBlock.getKey()));
@@ -202,6 +220,7 @@ public class Parse {
                     arr.get(i).getKey().equals("a") || arr.get(i).getKey().equals("u") ||
                     arr.get(i).getKey().equals("X") || arr.get(i).getKey().equals("v")) {
                     
+              
            
 
                     l1.setBackground(findBackGround(arr.get(i).getKey()));
@@ -266,7 +285,7 @@ public class Parse {
             b = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
             prevBackground = new Background(new BackgroundFill(Color.rgb(0, 110, 28), CornerRadii.EMPTY, Insets.EMPTY));
         }
-        else if (key.equals(".") || key.equals("g")){
+        else if ( key.equals("g")){
             b = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
             
             prevBackground = new Background(new BackgroundFill(Color.rgb(137, 110, 77), CornerRadii.EMPTY, Insets.EMPTY));
@@ -308,7 +327,7 @@ public class Parse {
                  key.equals("K") || key.equals(">") || key.equals("-") ||
                  key.equals("#") || key.equals("$") || key.equals("^") ||
                  key.equals("<") || key.equals(",") || key.equals("[") ||
-                 key.equals("]") || key.equals("v")) {
+                 key.equals("]") || key.equals("v") || key.equals("N") || key.equals(".")) {
             if (prevBackground != null){
                 b = new Background(prevBackground.getFills().get(0));
             }else{
@@ -342,7 +361,10 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         
         
         for (int i = 0; i <= blockArr.size() - 1; i++) {
-            
+            // Seeing if it is a note
+            if (blockArr.get(i) instanceof Notes){
+                this.curNote = (Notes)blockArr.get(i);
+            }
             System.out.println("The class name: "+blockArr.get(i).getKey());
             if (!foundTypes.contains(blockArr.get(i).getKey())){
             
@@ -403,7 +425,12 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
                     
                     
                     }
-    
+                    else if (((MenuItem) e.getSource()).getId().equals("N"))
+                            System.out.println("Using the note pad!");
+                            NotePad note = new NotePad(curNote);
+                            Stage st = note.getStage();
+                            st.show();
+                            
                     }
 
             });
@@ -697,7 +724,8 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         } else if (type.equals("W")) {
             b1.getStylesheets().add(WaterStyle);
 
-        } else if (type.equals(".")) {
+        }
+        else if (type.equals(".")) {
             b1.getStylesheets().add(BlockStyle);
         } else if (type.equals("CK")) {
             b1.getStylesheets().add(CharKnifeStyle);
@@ -763,6 +791,9 @@ public ArrayList<MenuButton> parseInventory(ArrayList<Block> blockArr, GridPane 
         }
         else if (type.equals("v")){
             b1.getStylesheets().add(alyoshaStyle);
+        }
+        else if (type.equals("N")){
+            b1.getStylesheets().add(notesStyle);
         }
         
         b1.setText("");
