@@ -210,7 +210,9 @@ public class Scan{
             }
             else if (initText.equals("X")){
                 return new Devil(simIndex,"X",20);
-            }else{
+            }
+    
+            else{
                 return new Block(initText);
             }
         

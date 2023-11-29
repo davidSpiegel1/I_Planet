@@ -190,7 +190,8 @@ public class Controller2{
    }
     
     public ArrayList<String> populateLevelNames(ArrayList<String> arr){
-        /*arr.add("model/testFile.txt");
+        ///*
+         //arr.add("/model/testFile.txt");
         arr.add("utilities/levels/levelOne.txt");
         arr.add("utilities/levels/levelTwo.txt");
         arr.add("utilities/levels/levelThree.txt");
@@ -202,7 +203,8 @@ public class Controller2{
         arr.add("utilities/levels/levelNine.txt");
         arr.add("utilities/levels/levelTen.txt");
         arr.add("utilities/levels/levelEleven.txt");
-        arr.add("utilities/levels/levelTwelve.txt");*/
+        arr.add("utilities/levels/levelTwelve.txt");
+         //*/
         arr.add("utilities/levels/levelThirteen.txt");
         arr.add("utilities/levels/levelFourteen.txt");
         arr.add("utilities/levels/levelFifteen.txt");
@@ -211,7 +213,8 @@ public class Controller2{
         arr.add("utilities/levels/levelEighteen.txt");
         
         
-        /*this.levelR.add("..");
+        ///*
+         //this.levelR.add("..");
         this.levelR.add("utilities/rooms/roomOneA.txt");
         this.levelR.add("utilities/rooms/roomTwoA.txt");
         this.levelR.add("utilities/rooms/roomThreeA.txt");
@@ -223,7 +226,8 @@ public class Controller2{
         this.levelR.add("utilities/rooms/roomNineA.txt");
         this.levelR.add("utilities/rooms/roomTenA.txt");
         this.levelR.add("utilities/rooms/roomElevenA.txt");
-        this.levelR.add("utilities/rooms/roomTwelveA.txt");*/
+        this.levelR.add("utilities/rooms/roomTwelveA.txt");
+        //*/
         this.levelR.add("utilities/rooms/roomThirteenA.txt");
         this.levelR.add("utilities/rooms/roomFourteenA.txt");
         this.levelR.add("utilities/rooms/roomFifteenA.txt");
@@ -250,12 +254,15 @@ public class Controller2{
             newGame = false;
             levelName = newPath(this.levelNames.get(this.currentLevel));
         //}
+        
         this.levelArr = new ArrayList<Block>();
         Character newC = null;
         try{
             if (this.sc != null){
                 
                 newC = this.sc.getCharacter();
+                // Trying to gather the inventory if possible
+                newC = this.setProperInventory(newC);
                 this.sc = new Scan(levelName);
                 this.sc.setCharacter(newC);
                 this.levelArr = sc.scan();
@@ -263,7 +270,11 @@ public class Controller2{
             }else{
                 
             this.sc = new Scan(levelName);
+            Character c0 = new Character();
+           // c0 = this.setProperInventory(c0);
+            
             this.levelArr = sc.scan();
+            this.sc.setCharacter(c0);
             
             }
         
@@ -272,8 +283,14 @@ public class Controller2{
         }
         if (newC == null){
             this.levelArr = this.placeChar(levelArr,null);
+            Character c9 = sc.getCharacter();
+            c9 = this.setProperInventory(c9);
+            this.setCurBlock(c9);
+          
         }else{
             this.levelArr = this.placeChar(levelArr,newC);
+            this.setCurBlock(newC);
+            
         }
         return this.levelArr;
         
@@ -285,6 +302,17 @@ public class Controller2{
             newPath = levelName;
         }
         return newPath;
+    }
+    
+    public Character setProperInventory(Character ch){
+        
+        ArrayList<Block> bl = saveEngine.getInventory(sc);
+        System.out.println("SAVED INVENTORY:  "+bl);
+        if (!bl.isEmpty()){
+            ch.setInventory(bl);
+        }
+        //this.setCurBlock(ch);
+        return ch;
     }
     
     
@@ -318,7 +346,9 @@ public class Controller2{
            this.levelArr = this.placeChar(levelArr,null);
         }else{
             this.levelArr = this.placeChar(levelArr,newC);
+            
         }
+        
         return this.levelArr;
         
     }
@@ -552,8 +582,8 @@ public class Controller2{
     
     public void changeLevel(){
         
-        saveEngine.saveData(this.levelNames.get(this.currentLevel),this.levelArr);
-        
+        saveEngine.saveData(this.levelNames.get(this.currentLevel),this.levelArr,(Character)this.levelArr.get(this.charPos));
+        //saveEngine.saveData((Character)this.levelArr.get(this.charPos));
         this.inRoom = false;
         if (this.currentLevel <= this.levelNames.size()-1){
         this.currentLevel++;
@@ -576,7 +606,7 @@ public class Controller2{
     
     public void changeLevel(int valz){
         
-        saveEngine.saveData(this.levelNames.get(this.currentLevel),this.levelArr);
+        saveEngine.saveData(this.levelNames.get(this.currentLevel),this.levelArr,(Character)this.levelArr.get(this.charPos));
         
         if (this.currentLevel+valz <= this.levelNames.size()-1 && this.currentLevel+valz >= 0){
         this.currentLevel= currentLevel+valz;
